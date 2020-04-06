@@ -49,6 +49,7 @@ class Start extends Component {
       this.setState({
         isRegiModalOpen: !this.state.isRegiModalOpen
       })
+  
     };
 
     // function that toggles the status of the modal for login
