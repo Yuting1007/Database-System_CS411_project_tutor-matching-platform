@@ -2,13 +2,15 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 
-// Connection variable
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'password', // PUT your own password here whatever it is locally
-  database: '411project'
-})
+// Function that gets connection to SQL database
+function getConnection() {
+  return mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: 'password', // PUT your own password here whatever it is locally
+      database: '411project'
+    })
+}
 
 /* GET home page. (this is for the express page, idk if we need this) */
 router.get('/', function(req, res, next) {
