@@ -16,45 +16,45 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get("/users", (req, res) => {
-  const queryString = "SELECT * FROM students";
-  connection.query(queryString, (err, rows, fields) => {
-    if (err) {
-      console.log("Failed to query for users: " + err);
-      res.sendStatus(500);
-      //res.end();
-      return;
-    }
+// router.get("/users", (req, res) => {
+//   const queryString = "SELECT * FROM students";
+//   connection.query(queryString, (err, rows, fields) => {
+//     if (err) {
+//       console.log("Failed to query for users: " + err);
+//       res.sendStatus(500);
+//       //res.end();
+//       return;
+//     }
 
-    console.log("I think we fetched users successfully")
-    console.log(rows)
-    res.json(rows)
-  })
-})
+//     console.log("I think we fetched users successfully")
+//     console.log(rows)
+//     res.json(rows)
+//   })
+// })
 
-////
-// GET request that takes a user's id a returns specifics
-////
-router.get('/user/:id', (req, res) => {
-  console.log("Fetching user with id: " + req.params.id)
+// ////
+// // GET request that takes a user's id a returns specifics
+// ////
+// router.get('/user/:id', (req, res) => {
+//   console.log("Fetching user with id: " + req.params.id)
 
 
-  const userId = req.params.id;
-  const queryString = "SELECT * FROM students WHERE s_id = ?";
-  connection.query(queryString, [userId], (err, rows, fields) => {
-    if (err) {
-      console.log("Failed to query for users: " + err);
-      res.sendStatus(500);
-      //res.end();
-      return;
-    }
+//   const userId = req.params.id;
+//   const queryString = "SELECT * FROM students WHERE s_id = ?";
+//   connection.query(queryString, [userId], (err, rows, fields) => {
+//     if (err) {
+//       console.log("Failed to query for users: " + err);
+//       res.sendStatus(500);
+//       //res.end();
+//       return;
+//     }
 
-    console.log("I think we fetched users successfully")
-    console.log(rows)
-    res.json(rows)
-  })
+//     console.log("I think we fetched users successfully")
+//     console.log(rows)
+//     res.json(rows)
+//   })
 
-  //res.end()
-})
+//   //res.end()
+// })
 
 module.exports = router;
