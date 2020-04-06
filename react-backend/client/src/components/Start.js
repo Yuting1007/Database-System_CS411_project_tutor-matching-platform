@@ -17,10 +17,14 @@ import {
     Redirect
   } from "react-router-dom";
 import '../css/Start.css'
+//import { response } from 'express';
 
 class Start extends Component {
     constructor(props) {
         super(props);
+        this.state={
+          userID:''
+        }
 
         sessionStorage.setItem('userID', '1234')
         this.state = {
@@ -81,8 +85,55 @@ class Start extends Component {
           [e.target.name]: e.target.value
       })
     }
-    
-    
+
+
+    //login functions ===================================================
+    onLoginFormSubmit = (e) => {
+      e.preventDefault();
+      let id = ''
+       let formResults = {
+        id: this.state.userID
+       }
+      console.log(formResults)
+         // not correct syntax i dont think
+      //  database.push(formResults);
+       this.setState({
+        id: ''
+       })
+       this.login(id)
+    };
+
+    handleLoginChange = (e) => {
+      this.setState({
+          [e.target.name]: e.target.value
+      })
+    }
+
+    login = (id) =>{
+      fetch('/users/:' + id)
+        .then(res => {
+          console.log(res);
+          return res.json()
+        })
+        .then(users => {
+          console.log(users);
+          this.setState({ users })
+        });
+    }
+
+    // login = () =>{
+    //   fetch('/users/:' + id)
+    //     .then(res => {
+    //       console.log(res);
+    //       return res.json()
+    //     })
+    //     .then(users => {
+    //       console.log(users);
+    //       this.setState({ users })
+    //     });
+    // }
+
+  
     render() {
       
         return (
@@ -161,11 +212,19 @@ class Start extends Component {
                                 <Modal isOpen={this.state.isLoginModalOpen} toggle={this.toggleLoginModal} >
                                   <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
                                   <ModalBody>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    <Form onSubmit={this.onLoginFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="userID">Enter your userID</Label>
+                                        <Input type="text" name="userID" id="userID" onChange={e => this.handleLoginChange(e)} />
+                                      </FormGroup>
+                                      <Button type="submit">Login</Button>
+                                    </Form>
                                   </ModalBody>
+
                                   <ModalFooter>
-                                    <Button color="primary" onClick={this.toggleLoginModal}>Do Something</Button>{' '}
-                                    <Button color="secondary" onClick={this.toggleLoginModal}>Cancel</Button>
+
+                                  <Button color="primary" onClick={this.toggleLoginModal}>Do Something</Button>{' '}
+                                  <Button color="secondary" onClick={this.toggleLoginModal}>Cancel</Button>
                                   </ModalFooter>
                                 </Modal>
                                      
