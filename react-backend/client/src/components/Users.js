@@ -28,7 +28,7 @@ class Users extends Component {
 
     
   
-    componentDidMount() {
+    async componentDidMount() {
       fetch('/users')
         .then(res => {
           console.log(res);
