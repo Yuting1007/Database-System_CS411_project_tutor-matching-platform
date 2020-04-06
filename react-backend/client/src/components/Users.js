@@ -29,7 +29,7 @@ class Users extends Component {
     
   
     async componentDidMount() {
-      fetch('/users')
+      fetch('/matches/all-students')
         .then(res => {
           console.log(res);
           return res.json()
@@ -47,7 +47,7 @@ class Users extends Component {
                     <Container>
                         <Row>
                             <Col>
-                                <h1>Users</h1>
+                                <h1>Students</h1>
                                 <div className="App">
                                 {this.state.users.map(user =>
                                     <div key={user.s_id}>{user.s_name}</div>
