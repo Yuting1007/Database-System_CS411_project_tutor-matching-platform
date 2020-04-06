@@ -72,6 +72,19 @@ class Start extends Component {
       console.log(formResults)
          // not correct syntax i dont think
       //  database.push(formResults);
+      
+      //POST req here
+      const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({formResults})
+      };
+      fetch('/start/student-create', requestOptions)
+        // .then(response => response.json())
+        // .then(data => console.log('POST response: ' + data));
+
+
+
        this.setState({
         name: '',
         age: 0,
