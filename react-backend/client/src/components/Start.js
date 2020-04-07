@@ -22,9 +22,9 @@ import '../css/Start.css'
 class Start extends Component {
     constructor(props) {
         super(props);
-        this.state={
-          userID:''
-        }
+        // this.state={
+        //   userID:''
+        // }
 
         sessionStorage.setItem('userID', '1234')
         this.state = {
@@ -33,7 +33,8 @@ class Start extends Component {
             isLoginModalOpen: false,
             regi_name: '',
             regi_age: 0,
-            regi_location: ''
+            regi_location: '',
+            userID:''
         };
 
         this.toggleRegiModal = this.toggleRegiModal.bind();
@@ -102,16 +103,16 @@ class Start extends Component {
     //login functions ===================================================
     onLoginFormSubmit = (e) => {
       e.preventDefault();
-      let id = ''
-       let formResults = {
-        id: this.state.userID
-       }
-      console.log(formResults)
+      let id = this.state.userID
+      //  let formResults = {
+      //   id: this.state.userID
+      //  }
+      // console.log(formResults)
          // not correct syntax i dont think
       //  database.push(formResults);
-       this.setState({
-        id: ''
-       })
+      //  this.setState({
+      //   id: ''
+      //  })
        this.login(id)
     };
 
@@ -122,7 +123,8 @@ class Start extends Component {
     }
 
     login = (id) =>{
-      fetch('/users/:' + id)
+      let url = '/start/student/' + id
+      fetch(url)
         .then(res => {
           console.log(res);
           return res.json()

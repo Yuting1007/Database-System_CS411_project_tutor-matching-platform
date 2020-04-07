@@ -8,7 +8,9 @@ function getConnection() {
         host: 'localhost',
         user: 'root',
         password: 'password', // PUT your own password here whatever it is locally
-        database: '411project'
+        database: '411project',
+        port: 3307
+        //insecureAuth : true
       })
 }
 
