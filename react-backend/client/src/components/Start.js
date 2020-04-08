@@ -142,7 +142,15 @@ class Start extends Component {
           }
           this.toggleLoginModal()
         } else {
+
+          //store studenet info into local storage
+          localStorage.setItem('s_id', data[0].s_id);
           localStorage.setItem('s_name', data[0].s_name);
+          localStorage.setItem('s_age', data[0].s_age);
+          localStorage.setItem('s_location', data[0].s_location);
+          localStorage.setItem('s_gender', data[0].s_gender);
+          localStorage.setItem('s_rating', data[0].s_ratings);
+
           console.log(localStorage.getItem('s_name'));
           this.state.s_name = ", " + localStorage.getItem('s_name') + "!"
 
