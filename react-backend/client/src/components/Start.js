@@ -17,30 +17,35 @@ import {
     Redirect
   } from "react-router-dom";
 import '../css/Start.css'
+import Users from './Users';
 //import { response } from 'express';
 
 class Start extends Component {
     constructor(props) {
         super(props);
-        // this.state={
-        //   userID:''
-        // }
 
-        sessionStorage.setItem('userID', '1234')
+
+        //sessionStorage.setItem('userID', '1234')
+
         this.state = {
             toSettings: false,
             isRegiModalOpen: false,
             isLoginModalOpen: false,
+            isLoginRejectOpen: false,
             regi_name: '',
             regi_age: 0,
             regi_location: '',
-            userID:''
+            userID:'',
+            s_name:''
         };
 
         this.toggleRegiModal = this.toggleRegiModal.bind();
         this.toggleLoginModal = this.toggleLoginModal.bind();
         this.onRegiFormSubmit = this.onRegiFormSubmit.bind();
         this.handleRegiChange = this.handleRegiChange.bind();
+
+        this.toogleLoginRejectModal = this.toogleLoginRejectModal.bind();
+        
 
     }
 
@@ -62,6 +67,13 @@ class Start extends Component {
         isLoginModalOpen: !this.state.isLoginModalOpen
       })
     };
+
+    // function that toggles the status of the modal for login reject
+    toogleLoginRejectModal = () => {
+      this.setState({
+        isLoginRejectOpen: !this.state.isLoginRejectOpen
+      })
+    }
 
     onRegiFormSubmit = (e) => {
       e.preventDefault();
@@ -104,16 +116,7 @@ class Start extends Component {
     onLoginFormSubmit = (e) => {
       e.preventDefault();
       let id = this.state.userID
-      //  let formResults = {
-      //   id: this.state.userID
-      //  }
-      // console.log(formResults)
-         // not correct syntax i dont think
-      //  database.push(formResults);
-      //  this.setState({
-      //   id: ''
-      //  })
-       this.login(id)
+      this.login(id)
     };
 
     handleLoginChange = (e) => {
@@ -122,30 +125,36 @@ class Start extends Component {
       })
     }
 
+
     login = (id) =>{
       let url = '/start/student/' + id
       fetch(url)
-        .then(res => {
-          console.log(res);
-          return res.json()
-        })
-        .then(users => {
-          console.log(users);
-          this.setState({ users })
-        });
-    }
+      .then(res => res.json())
 
-    // login = () =>{
-    //   fetch('/users/:' + id)
-    //     .then(res => {
-    //       console.log(res);
-    //       return res.json()
-    //     })
-    //     .then(users => {
-    //       console.log(users);
-    //       this.setState({ users })
-    //     });
-    // }
+      //need to catch error somehow
+      
+      .then(data => {
+        console.log("reach this point")
+        console.log(data)
+        if (data.length === 0) {
+          if (this.state.isLoginRejectOpen === false) {
+            this.toogleLoginRejectModal()
+          }
+          this.toggleLoginModal()
+        } else {
+          localStorage.setItem('s_name', data[0].s_name);
+          console.log(localStorage.getItem('s_name'));
+          this.state.s_name = ", " + localStorage.getItem('s_name') + "!"
+
+          if (this.state.isLoginModalOpen === true) {
+            this.toggleLoginModal();
+          }
+          if (this.state.isLoginRejectOpen === true) {
+            this.toogleLoginRejectModal();
+          }
+        }
+      });
+    }
 
   
     render() {
@@ -156,7 +165,7 @@ class Start extends Component {
                     <Container>
                         <Row>
                             <Col>
-                                <h1>Welcome to eduFY</h1>
+                                <h1>Welcome to eduFY {this.state.s_name} </h1>
                                 <p>
 
                                 <Button
@@ -171,7 +180,7 @@ class Start extends Component {
                                 </Button>
 
                                 <Modal isOpen={this.state.isRegiModalOpen} toggle={this.toggleRegiModal} >
-                                  <ModalHeader toggle={this.toggleRegiModal}>Register for eduFY!</ModalHeader>
+                                  <ModalHeader toggle={this.toggleRegiModal}>Register for eduFY! </ModalHeader>
                                   <ModalBody>
                                       <Form onSubmit={this.onRegiFormSubmit}>
                                         <FormGroup>
@@ -231,14 +240,33 @@ class Start extends Component {
                                         <Label for="userID">Enter your userID</Label>
                                         <Input type="text" name="userID" id="userID" onChange={e => this.handleLoginChange(e)} />
                                       </FormGroup>
-                                      <Button type="submit">Login</Button>
+                                      <Button color="primary" type="submit">Login</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleLoginModal}>Cancel</Button>
                                     </Form>
                                   </ModalBody>
 
                                   <ModalFooter>
+                                      Forgot your userID? Well, idk what to do...
+                                  </ModalFooter>
 
-                                  <Button color="primary" onClick={this.toggleLoginModal}>Do Something</Button>{' '}
-                                  <Button color="secondary" onClick={this.toggleLoginModal}>Cancel</Button>
+                                  
+                                </Modal>
+
+                                <Modal isOpen={this.state.isLoginRejectOpen} toggle={this.toogleLoginRejectModal}>
+                                  <ModalHeader toggle={this.toogleLoginRejectModal}>Login Fail</ModalHeader>
+                                  <ModalBody>
+                                    Sorry, the userID you entered is not valid. Please try again!
+                                  </ModalBody>
+
+                                  <ModalFooter>
+                                      <Button color="primary" onClick={this.toggleLoginModal}>
+                                        Try again
+                                      </Button>
+                                      <Button 
+                                        color="secondary" 
+                                        onClick={this.toogleLoginRejectModal}
+                                        >Cancel
+                                      </Button>
                                   </ModalFooter>
                                 </Modal>
                                      
