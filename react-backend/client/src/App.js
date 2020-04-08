@@ -4,6 +4,7 @@ import Start from './components/Start';
 import Settings from './components/Settings';
 import Navbar from './components/NavBar';
 import Users from './components/Users';
+import Home from './components/Home'
  
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
              <Route path="/" component={Start} exact/>
              <Route path="/settings" component={Settings}/>
              <Route path="/users" component={Users}/>
+             <Route path="/home" component={Home}/>
            </Switch>
         </div> 
       </BrowserRouter>

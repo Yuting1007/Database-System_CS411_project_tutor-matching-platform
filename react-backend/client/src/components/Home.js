@@ -20,8 +20,12 @@ class Home extends Component {
         super(props);
 
         this.state = {
-            
+            s_name: localStorage.getItem('s_name') + '!'
         };
+    }
+
+    async componentDidMount() {
+        this.state.s_name = localStorage.getItem('s_name')
     }
 
     render() {
@@ -31,7 +35,7 @@ class Home extends Component {
                     <Container>
                         <Row>
                             <Col>
-                                <h1>Home Page!</h1>
+                                <h1>Welcome, {this.state.s_name}</h1>
                                 <p>
 
                                 </p>
