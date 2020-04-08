@@ -11,6 +11,9 @@ var usersRouter = require('./routes/users');
 var matchesRouter = require('./routes/matches');
 var startRouter = require('./routes/start');
 
+//not sure if we need a router for home page
+//var homeRouter = require('./routes/home');
+
 
 var app = express();
 
@@ -36,6 +39,9 @@ app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 app.use('/start', startRouter);
 app.use('/matches', matchesRouter);
+
+//not sure if we need a router for home page
+//app.use('/home', homeRouter);
 
 
 // catch 404 and forward to error handler

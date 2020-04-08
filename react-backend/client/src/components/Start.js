@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from './NavBar';
 import Settings from './Settings';
+import Home from './Home'
 import {
     Container,
     Row,
@@ -36,7 +37,11 @@ class Start extends Component {
             regi_age: 0,
             regi_location: '',
             userID:'',
-            s_name:''
+            s_name:'',
+
+            //redirect states
+            redirect_home_link: "/home",
+            redirect_home: false
         };
 
         this.toggleRegiModal = this.toggleRegiModal.bind();
@@ -152,7 +157,9 @@ class Start extends Component {
           localStorage.setItem('s_rating', data[0].s_ratings);
 
           console.log(localStorage.getItem('s_name'));
-          this.state.s_name = ", " + localStorage.getItem('s_name') + "!"
+          //this.state.s_name = ", " + localStorage.getItem('s_name') + "!"
+
+          this.state.redirect_home = true;
 
           if (this.state.isLoginModalOpen === true) {
             this.toggleLoginModal();
@@ -160,12 +167,17 @@ class Start extends Component {
           if (this.state.isLoginRejectOpen === true) {
             this.toogleLoginRejectModal();
           }
+
+          
         }
       });
     }
 
   
     render() {
+      if (this.state.redirect_home) {
+        return <Redirect to={this.state.redirect_home_link} />
+      }
       
         return (
             <div>
