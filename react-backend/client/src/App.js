@@ -4,7 +4,8 @@ import Start from './components/Start';
 import Settings from './components/Settings';
 import Navbar from './components/NavBar';
 import Users from './components/Users';
-import Home from './components/Home'
+import Home from './components/Home';
+import Matches from './components/Matches';
  
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
              <Route path="/settings" component={Settings}/>
              <Route path="/users" component={Users}/>
              <Route path="/home" component={Home}/>
+             <Route path="/matches" component={Matches}/>
            </Switch>
         </div> 
       </BrowserRouter>
