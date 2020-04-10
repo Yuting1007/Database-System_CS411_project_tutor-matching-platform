@@ -16,6 +16,16 @@ import {
     Modal,
     ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText
 } from 'reactstrap';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useHistory,
+    Redirect
+  } from "react-router-dom";
+import '../css/Start.css'
+import Users from './Users';
 
 
 class Settings extends Component {
@@ -27,6 +37,7 @@ class Settings extends Component {
             isEditAgeModalOpen:false,
             isEditLocationModalOpen:false,
             isEditGenderModalOpen:false,
+            isDeleteConfirmModalOpen: false,
 
             //student info
             s_id: sessionStorage.getItem('s_id'),
@@ -40,13 +51,24 @@ class Settings extends Component {
             updated_name:'',
             updated_age:'',
             updated_location:'',
-            updated_gender:''
+            updated_gender:'', 
+
+            //redirect states
+            redirect_start_link: "/",
+            redirect_start: false
         };
 
         this.toggleEditNameModal = this.toggleEditNameModal.bind();
         this.toggleEditAgeModal = this.toggleEditAgeModal.bind();
         this.toggleEditLocationModal = this.toggleEditLocationModal.bind();
         this.toggleEditGenderModal = this.toggleEditGenderModal.bind();
+        this.toggleDeleteConfirmModal = this.toggleDeleteConfirmModal.bind();
+    }
+
+    toggleDeleteConfirmModal = () => {
+        this.setState({
+            isDeleteConfirmModalOpen: !this.state.isDeleteConfirmModalOpen
+          })
     }
 
     toggleEditNameModal = () => {
@@ -186,7 +208,25 @@ class Settings extends Component {
         })
     }
 
+    //delete account 
+    deleteAccount = () => {
+        let url = '/settings/delete/' + this.state.s_id
+        fetch(url);
+        sessionStorage.clear();
+
+        this.state.redirect_start = true;
+
+        if (this.state.isDeleteConfirmModalOpen === true) {
+            this.toggleDeleteConfirmModal();
+        }
+    }
+
     render() {
+
+        if (this.state.redirect_start) {
+            return <Redirect to={this.state.redirect_start_link} />
+          }
+
         return (
 
             <React.Fragment>
@@ -256,6 +296,19 @@ class Settings extends Component {
                                         </Button>
                                     </Col>                                  
                                 </Row>
+
+                                <Button color="primary" size="sm" onClick={this.toggleDeleteConfirmModal}>
+                                    Delete Account
+                                </Button>
+
+                                <Modal isOpen={this.state.isDeleteConfirmModalOpen} toggle={this.toggleDeleteConfirmModal} >
+                                  <ModalHeader toggle={this.toggleDeleteConfirmModal}>Confirm Delete</ModalHeader>
+                                  <ModalBody>
+                                      <Button color="primary" onClick={this.deleteAccount} type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleDeleteConfirmModal}>Cancel</Button>
+                                  </ModalBody>
+                                </Modal>
+                                
 
                                 <Modal isOpen={this.state.isEditNameModalOpen} toggle={this.toggleEditNameModal} >
                                   <ModalHeader toggle={this.toggleEditNameModal}>Edit Name</ModalHeader>
