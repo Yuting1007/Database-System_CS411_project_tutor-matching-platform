@@ -4,7 +4,8 @@ import Start from './components/Start';
 import Settings from './components/Settings';
 import Navbar from './components/NavBar';
 import Users from './components/Users';
-import Home from './components/Home';
+import Student_Home from './components/Home';
+import TutorHome from './components/TutorHome';
 import Matches from './components/Matches';
  
 class App extends Component {
@@ -18,7 +19,8 @@ class App extends Component {
              <Route path="/" component={Start} exact/>
              <Route path="/settings" component={Settings}/>
              <Route path="/users" component={Users}/>
-             <Route path="/home" component={Home}/>
+             <Route path="/student/home" component={Student_Home}/>
+             <Route path="/tutor/home" component={TutorHome}/>
              <Route path="/matches" component={Matches}/>
            </Switch>
         </div> 
