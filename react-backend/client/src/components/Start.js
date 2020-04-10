@@ -88,9 +88,7 @@ class Start extends Component {
         location: this.state.regi_location
        }
       console.log(formResults)
-         // not correct syntax i dont think
-      //  database.push(formResults);
-      
+       
       //POST req here
       const requestOptions = {
         method: 'POST',
@@ -149,14 +147,14 @@ class Start extends Component {
         } else {
 
           //store studenet info into local storage
-          localStorage.setItem('s_id', data[0].s_id);
-          localStorage.setItem('s_name', data[0].s_name);
-          localStorage.setItem('s_age', data[0].s_age);
-          localStorage.setItem('s_location', data[0].s_location);
-          localStorage.setItem('s_gender', data[0].s_gender);
-          localStorage.setItem('s_rating', data[0].s_ratings);
+          sessionStorage.setItem('s_id', data[0].s_id);
+          sessionStorage.setItem('s_name', data[0].s_name);
+          sessionStorage.setItem('s_age', data[0].s_age);
+          sessionStorage.setItem('s_location', data[0].s_location);
+          sessionStorage.setItem('s_gender', data[0].s_gender);
+          sessionStorage.setItem('s_ratings', data[0].s_ratings);
 
-          console.log(localStorage.getItem('s_name'));
+          console.log(sessionStorage.getItem('s_name'));
           //this.state.s_name = ", " + localStorage.getItem('s_name') + "!"
 
           this.state.redirect_home = true;

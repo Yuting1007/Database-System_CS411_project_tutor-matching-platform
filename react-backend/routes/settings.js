@@ -1,0 +1,121 @@
+var express = require('express');
+var router = express.Router();
+var mysql = require('mysql');
+
+// Function that gets connection to SQL database
+function getConnection() {
+    return mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'password', // PUT your own password here whatever it is locally
+        database: '411project',
+        port: 3307
+        //insecureAuth : true
+      })
+}
+
+// update name ================================================================================
+router.post('/update-name', (req, res) => {
+    console.log("Trying to update a name...")
+    console.log(typeof req.body.formResults.name)
+    console.log(req.body)
+    const name = req.body.formResults.name;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE students SET s_name = ? WHERE s_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [name, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student name')
+        res.end()
+    })
+});
+
+//update age ==========================================================
+router.post('/update-age', (req, res) => {
+    console.log("Trying to update a age...")
+    console.log(typeof req.body.formResults.age)
+    console.log(req.body)
+    const age = req.body.formResults.age;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE students SET s_age = ? WHERE s_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [age, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student age')
+        res.end()
+    })
+});
+
+//update location =======================================================
+router.post('/update-location', (req, res) => {
+    console.log("Trying to update a location...")
+    console.log(typeof req.body.formResults.location)
+    console.log(req.body)
+    const location = req.body.formResults.location;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE students SET s_location = ? WHERE s_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [location, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student location')
+        res.end()
+    })
+});
+
+//update gender ==============================================================
+router.post('/update-gender', (req, res) => {
+    console.log("Trying to update a gender...")
+    console.log(typeof req.body.formResults.gender)
+    console.log(req.body)
+    const gender = req.body.formResults.gender;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE students SET s_gender = ? WHERE s_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [gender, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student gender')
+        res.end()
+    })
+});
+
+module.exports = router;

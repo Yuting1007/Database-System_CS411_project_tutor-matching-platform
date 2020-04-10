@@ -10,6 +10,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var matchesRouter = require('./routes/matches');
 var startRouter = require('./routes/start');
+var settingsRouter = require('./routes/settings');
 
 //not sure if we need a router for home page
 //var homeRouter = require('./routes/home');
@@ -36,9 +37,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // /matches/all-users
 ////
 app.use('/', indexRouter);
-//app.use('/users', usersRouter);
 app.use('/start', startRouter);
 app.use('/matches', matchesRouter);
+app.use('/settings', settingsRouter);
 
 //not sure if we need a router for home page
 //app.use('/home', homeRouter);
