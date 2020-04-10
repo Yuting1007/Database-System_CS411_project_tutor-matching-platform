@@ -15,7 +15,7 @@ import {
     Button
 } from 'reactstrap';
 
-class Home extends Component {
+class StudentHome extends Component {
     constructor(props) {
         super(props);
 
@@ -48,4 +48,4 @@ class Home extends Component {
     }
 }
 
-export default Home;
+export default StudentHome;
