@@ -14,26 +14,47 @@ import {
     Jumbotron,
     Button
 } from 'reactstrap';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+    useHistory,
+    Redirect
+  } from "react-router-dom";
 
 class StudentHome extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            s_name: sessionStorage.getItem('s_name') + '!'
+            s_name: sessionStorage.getItem('s_name') + '!',
+            redirect_settings: false,
+            redirect_settings_link: '/settings'
         };
         this.onMatchButtonClick = this.onMatchButtonClick.bind();
     }
+
+    //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
     }
 
+<<<<<<< HEAD
     onMatchButtonClick = () => {
         this.props.history.push('/matches');
+=======
+    redirectToSetting = () => {
+        this.state.redirect_settings = true;
+>>>>>>> a09a37a08628fd4b0f66c5a789dbe8e98995f461
     }
 
     render() {
+        if (this.state.redirect_settings) {
+            return <Redirect to={this.state.redirect_settings_link} />
+        }
+        
         return (
             <div>
                 <Jumbotron>
@@ -45,6 +66,13 @@ class StudentHome extends Component {
                                     <Button onClick={this.onMatchButtonClick}>Matches</Button>
 
                                 </p>
+                            </Col>
+
+                            
+                            <Col>
+                                <Button color="primary" size="sm" onClick={this.redirectToSetting}>
+                                    Settings
+                                </Button>                                 
                             </Col>
                         </Row>
                     </Container>
