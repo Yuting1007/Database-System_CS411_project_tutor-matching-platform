@@ -161,8 +161,9 @@ class Matches extends Component {
                     </Container>
                 </Jumbotron>
                 <Row>
+                    <div className='matches-text'>Current Matches</div>
                     <Button onClick={this.getMatches}>Show/Refresh Matches!</Button>
-                    <div>Current Matches</div>
+                    
                 </Row>
                 <Table striped className="matches-table">
                     <thead>
@@ -185,7 +186,7 @@ class Matches extends Component {
                     )}
                     </tbody>
                 </Table>
-                <div>All Tutors</div>
+                <div className='matches-text'>All Tutors</div>
                 <Table striped className="tutors-table">
                     <thead>
                         <tr>

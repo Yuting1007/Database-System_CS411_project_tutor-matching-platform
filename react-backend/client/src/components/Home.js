@@ -41,13 +41,12 @@ class StudentHome extends Component {
         this.state.s_name = sessionStorage.getItem('s_name')
     }
 
-<<<<<<< HEAD
     onMatchButtonClick = () => {
-        this.props.history.push('/matches');
-=======
+        this.props.history.push('/matches')
+    }
+
     redirectToSetting = () => {
         this.state.redirect_settings = true;
->>>>>>> a09a37a08628fd4b0f66c5a789dbe8e98995f461
     }
 
     render() {
@@ -70,9 +69,9 @@ class StudentHome extends Component {
 
                             
                             <Col>
-                                <Button color="primary" size="sm" onClick={this.redirectToSetting}>
+                                {/* <Button color="primary" size="sm" onClick={this.redirectToSetting}>
                                     Settings
-                                </Button>                                 
+                                </Button>                                  */}
                             </Col>
                         </Row>
                     </Container>

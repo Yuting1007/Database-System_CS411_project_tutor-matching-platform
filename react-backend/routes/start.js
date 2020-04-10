@@ -77,7 +77,7 @@ router.post('/tutor-create', (req, res) => {
     const major = req.body.formResults.major;
 
     
-    const queryString = 'INSERT INTO tutors (t_name, t_age, t_location, t_gender, t_edu_level, t_grade, major, t_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, 5)'
+    const queryString = 'INSERT INTO tutors (t_name, t_age, t_location, t_gender, t_edu_level, t_grade, t_major, t_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, 5)'
     
     getConnection().query(queryString, [name, age, location, gender, edu_level, grade, major], (err, results, fields) => {
         if (err) {
