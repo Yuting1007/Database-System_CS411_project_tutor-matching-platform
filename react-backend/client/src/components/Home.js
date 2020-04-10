@@ -32,12 +32,17 @@ class StudentHome extends Component {
             redirect_settings: false,
             redirect_settings_link: '/settings'
         };
+        this.onMatchButtonClick = this.onMatchButtonClick.bind();
     }
 
     //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
+    }
+
+    onMatchButtonClick = () => {
+        this.props.history.push('/matches')
     }
 
     redirectToSetting = () => {
@@ -57,15 +62,16 @@ class StudentHome extends Component {
                             <Col>
                                 <h1>Welcome, {this.state.s_name}</h1>
                                 <p>
+                                    <Button onClick={this.onMatchButtonClick}>Matches</Button>
 
                                 </p>
                             </Col>
 
                             
                             <Col>
-                                <Button color="primary" size="sm" onClick={this.redirectToSetting}>
+                                {/* <Button color="primary" size="sm" onClick={this.redirectToSetting}>
                                     Settings
-                                </Button>                                 
+                                </Button>                                  */}
                             </Col>
                         </Row>
                     </Container>

@@ -156,6 +156,8 @@ class Start extends Component {
         age: 0,
         location: ''
        })
+       this.toggleStudentRegiModal();
+       this.toggleChoosingModal();
     };
 
     onTutorRegiFormSubmit = (e) => {
@@ -184,6 +186,8 @@ class Start extends Component {
         age: 0,
         location: ''
        })
+      this.toggleTutorRegiModal();
+      this.toggleChoosingModal();
     };
 
 
