@@ -20,12 +20,12 @@ class Home extends Component {
         super(props);
 
         this.state = {
-            s_name: localStorage.getItem('s_name') + '!'
+            s_name: sessionStorage.getItem('s_name') + '!'
         };
     }
 
     async componentDidMount() {
-        this.state.s_name = localStorage.getItem('s_name')
+        this.state.s_name = sessionStorage.getItem('s_name')
     }
 
     render() {
