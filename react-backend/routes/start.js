@@ -91,4 +91,29 @@ router.post('/tutor-create', (req, res) => {
     })
 })
 
+
+router.post('/student-create', (req, res) => {
+  console.log("Trying to create a new tutor...")
+  console.log(typeof req.body.formResults.name)
+  console.log(req.body)
+  const name = req.body.formResults.name;
+  const age = parseInt(req.body.formResults.age);
+  const location = req.body.formResults.location;
+  const gender = req.body.formResults.gender;
+
+  
+  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender,  s_ratings) VALUES (?, ?, ?, ?, 5)'
+  
+  getConnection().query(queryString, [name, age, location, gender], (err, results, fields) => {
+      if (err) {
+          console.log("Failed to insert new user: " + err)
+          res.sendStatus(500)
+          return
+      }
+
+      console.log('Inserted a new student with id: ')
+      res.end()
+  })
+})
+
 module.exports = router;
