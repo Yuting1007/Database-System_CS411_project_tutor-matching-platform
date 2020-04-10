@@ -9,8 +9,8 @@ function getConnection() {
         user: 'root',
         password: 'password', // PUT your own password here whatever it is locally
         database: '411project',
-        port: 3307
-        //port: 3306
+        //port: 3307
+        port: 3306
         //insecureAuth : true
       })
 }
@@ -75,6 +75,28 @@ router.get('/show-tutor-matches/:id', (req, res) => {
   
     //res.end()
   })
+
+  //delete match
+router.get('/delete/:s_id/:t_id', (req, res) => {
+    console.log("Deleting match with id: " + req.params.s_id)
+  
+    const connection = getConnection();
+  
+    const s_id = req.params.s_id;
+    const t_id = req.params.t_id;
+    const queryString = "DELETE FROM matches WHERE s_id = ? AND t_id = ?";
+    connection.query(queryString, [s_id, t_id], (err, rows, fields) => {
+      if (err) {
+        console.log("Failed to query for student: " + err);
+        res.sendStatus(500);
+        return;
+      }
+  
+      console.log("I think we fetched users successfully")
+      console.log(rows)
+      res.json(rows)
+    })
+})
 
   router.post('/match-create', (req, res) => {
     console.log("Trying to create a new match...")

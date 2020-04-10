@@ -30,6 +30,7 @@ class Matches extends Component {
 
         this.onStudentToTutorMatchClick = this.onStudentToTutorMatchClick.bind();
         this.getMatches = this.getMatches.bind();
+        this.deleteMatches = this.deleteMatches.bind();
     }
 
     
@@ -63,6 +64,12 @@ class Matches extends Component {
         this.getMatches();
     }
 
+    deleteMatches = (e) => {
+        let deleteTarget = e.target.id;
+        let url = '/matches/delete/' + this.state.userID + '/' + deleteTarget;
+        fetch(url);
+    }
+
     getMatches = () => {
         let tutorIds = [];
         console.log("getting matches");
@@ -74,7 +81,7 @@ class Matches extends Component {
         for (let x of matches) {
             tutorIds.push(x['t_id'])
         }
-        console.log('tutor ids: ' + tutorIds);
+        //console.log('tutor ids: ' + tutorIds);
         let myTutorMatches = []
         for (let id of tutorIds)  {
             for (let x of this.state.tutors) {
@@ -84,11 +91,11 @@ class Matches extends Component {
                 }
             }
         }
-        console.log('tutor matches here: ' + myTutorMatches)
+        //console.log('tutor matches here: ' + myTutorMatches)
         //now remove duplicates
         let uniqueTutors = new Set(myTutorMatches);
         let uniqueTutorMatches = [...uniqueTutors];
-        console.log('unique tutors: ' + uniqueTutorMatches)
+        //console.log('unique tutors: ' + uniqueTutorMatches)
         this.setState({
             tutorMatches: uniqueTutorMatches
         })
@@ -170,7 +177,7 @@ class Matches extends Component {
                             <td>{tutor.t_name}</td>
                             <td>{tutor.t_age}</td>
                             <td>{tutor.t_location}</td>
-                            <td><Button id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Unmatch!</Button></td>
+                            <td><Button id={tutor.t_id} onClick={this.deleteMatches}>Unmatch!</Button></td>
                         </tr>
                     )}
                     </tbody>
