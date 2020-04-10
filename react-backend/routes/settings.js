@@ -118,4 +118,26 @@ router.post('/update-gender', (req, res) => {
     })
 });
 
+
+//delete account
+router.get('/delete/:id', (req, res) => {
+    console.log("Deleting user with id: " + req.params.id)
+  
+    const connection = getConnection();
+  
+    const userId = req.params.id;
+    const queryString = "DELETE FROM students WHERE s_id = ?";
+    connection.query(queryString, [userId], (err, rows, fields) => {
+      if (err) {
+        console.log("Failed to query for student: " + err);
+        res.sendStatus(500);
+        return;
+      }
+  
+      console.log("I think we fetched users successfully")
+      console.log(rows)
+      res.json(rows)
+    })
+})
+
 module.exports = router;
