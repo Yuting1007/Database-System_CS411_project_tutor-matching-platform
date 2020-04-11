@@ -9,8 +9,8 @@ function getConnection() {
         user: 'root',
         password: 'password', // PUT your own password here whatever it is locally
         database: '411project',
-        //port: 3307
-        port: 3306
+        port: 3307
+        //port: 3306
         //insecureAuth : true
       })
 }
@@ -131,6 +131,209 @@ router.get('/delete/:id', (req, res) => {
     connection.query(queryString, [userId], (err, rows, fields) => {
       if (err) {
         console.log("Failed to query for student: " + err);
+        res.sendStatus(500);
+        return;
+      }
+  
+      console.log("I think we fetched users successfully")
+      console.log(rows)
+      res.json(rows)
+    })
+})
+
+
+// TUTOR SECTION =============================================================================
+//===============================================================================================
+// update name ================================================================================
+router.post('/tutor-update-name', (req, res) => {
+    console.log("Trying to update a name...")
+    console.log(typeof req.body.formResults.name)
+    console.log(req.body)
+    const name = req.body.formResults.name;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE tutors SET t_name = ? WHERE t_id = ?'
+
+    getConnection().query(queryString, [name, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutor name')
+        res.end()
+    })
+});
+
+//update age ==========================================================
+router.post('/tutor-update-age', (req, res) => {
+    console.log("Trying to update a age...")
+    console.log(typeof req.body.formResults.age)
+    console.log(req.body)
+    const age = req.body.formResults.age;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+
+    const queryString = 'UPDATE tutors SET t_age = ? WHERE t_id = ?'
+
+    
+    getConnection().query(queryString, [age, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutors age')
+        res.end()
+    })
+});
+
+//update location =======================================================
+router.post('/tutor-update-location', (req, res) => {
+    console.log("Trying to update a location...")
+    console.log(typeof req.body.formResults.location)
+    console.log(req.body)
+    const location = req.body.formResults.location;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE tutors SET t_location = ? WHERE t_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [location, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutor location')
+        res.end()
+    })
+});
+
+//update gender ==============================================================
+router.post('/tutor-update-gender', (req, res) => {
+    console.log("Trying to update a gender...")
+    console.log(typeof req.body.formResults.gender)
+    console.log(req.body)
+    const gender = req.body.formResults.gender;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE tutors SET t_gender = ? WHERE t_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [gender, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutor gender')
+        res.end()
+    })
+});
+
+//update education level ==============================================================
+router.post('/tutor-update-edu-level', (req, res) => {
+    console.log("Trying to update education level for a tutor...")
+    console.log(typeof req.body.formResults.edu_level)
+    console.log(req.body)
+    const edu_level = req.body.formResults.edu_level;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE tutors SET t_edu_level = ? WHERE t_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [edu_level, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutor edu_level')
+        res.end()
+    })
+});
+
+//update grade ==============================================================
+router.post('/tutor-update-grade', (req, res) => {
+    console.log("Trying to update grade of a tutor...")
+    console.log(typeof req.body.formResults.grade)
+    console.log(req.body)
+    const grade = req.body.formResults.grade;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE tutors SET t_grade = ? WHERE t_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [grade, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutor grade')
+        res.end()
+    })
+});
+
+//update major ==============================================================
+router.post('/tutor-update-major', (req, res) => {
+    console.log("Trying to update a major...")
+    console.log(typeof req.body.formResults.major)
+    console.log(req.body)
+    const major = req.body.formResults.major;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE tutors SET t_major = ? WHERE t_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [major, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutor major')
+        res.end()
+    })
+});
+
+
+//delete account
+router.get('/tutor-delete/:id', (req, res) => {
+    console.log("Deleting tutor with id: " + req.params.id)
+  
+    const connection = getConnection();
+  
+    const userId = req.params.id;
+    const queryString = "DELETE FROM tutors WHERE t_id = ?";
+    connection.query(queryString, [userId], (err, rows, fields) => {
+      if (err) {
+        console.log("Failed to query for tutor: " + err);
         res.sendStatus(500);
         return;
       }

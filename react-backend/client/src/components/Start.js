@@ -284,7 +284,7 @@ class Start extends Component {
           sessionStorage.setItem('t_location', data[0].t_location);
           sessionStorage.setItem('t_gender', data[0].t_gender);
           sessionStorage.setItem('t_ratings', data[0].t_ratings);
-          sessionStorage.setItem('major', data[0].major);
+          sessionStorage.setItem('t_major', data[0].t_major);
           sessionStorage.setItem('t_edu_level', data[0].t_edu_level);
           sessionStorage.setItem('t_grade', data[0].t_grade);
 

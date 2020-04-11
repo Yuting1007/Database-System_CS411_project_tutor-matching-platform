@@ -28,7 +28,7 @@ import '../css/Start.css'
 import Users from './Users';
 
 
-class Settings extends Component {
+class TutorSetting extends Component {
     constructor(props) {
         super(props);
 
@@ -37,21 +37,34 @@ class Settings extends Component {
             isEditAgeModalOpen:false,
             isEditLocationModalOpen:false,
             isEditGenderModalOpen:false,
+            isEditEduLevelModalOpen: false,
+            isEditGradeModalOpen: false,
+            isEditMajorModalOpen: false,
             isDeleteConfirmModalOpen: false,
 
-            //student info
-            s_id: sessionStorage.getItem('s_id'),
-            s_name: sessionStorage.getItem('s_name'),
-            s_age: sessionStorage.getItem('s_age'),
-            s_location: sessionStorage.getItem('s_location'),
-            s_gender: sessionStorage.getItem('s_gender'),
-            s_ratings: sessionStorage.getItem('s_ratings'),
+            //tutor info
+            t_id: sessionStorage.getItem('t_id'),
+            t_name: sessionStorage.getItem('t_name'),
+            t_age: sessionStorage.getItem('t_age'),
+            t_location: sessionStorage.getItem('t_location'),
+            t_gender: sessionStorage.getItem('t_gender'),
+            t_ratings: sessionStorage.getItem('t_ratings'),
+            t_grade: sessionStorage.getItem('t_grade'),
+            t_major: sessionStorage.getItem('t_major'),
+            t_edu_level: sessionStorage.getItem('t_edu_level'),
+            
 
             //updated info
             updated_name:'',
             updated_age:'',
             updated_location:'',
             updated_gender:'', 
+            updated_grade:'',
+            updated_edu_level:'',
+            updated_major:'',
+            updated_grade:'',
+            updated_major:'',
+            updated_edu_level:'',
 
             //redirect states
             redirect_start_link: "/",
@@ -63,6 +76,27 @@ class Settings extends Component {
         this.toggleEditLocationModal = this.toggleEditLocationModal.bind();
         this.toggleEditGenderModal = this.toggleEditGenderModal.bind();
         this.toggleDeleteConfirmModal = this.toggleDeleteConfirmModal.bind();
+        this.toggleEditEduLevelModal = this.toggleEditEduLevelModal.bind();
+        this.toggleEditGradeModal = this.toggleEditGradeModal.bind();
+        this.toggleEditMajorModal = this.toggleEditMajorModal.bind();
+    }
+
+    toggleEditMajorModal = () => {
+        this.setState({
+            isEditMajorModalOpen: !this.state.isEditMajorModalOpen
+          })
+    }
+
+    toggleEditGradeModal = () => {
+        this.setState({
+            isEditGradeModalOpen: !this.state.isEditGradeModalOpen
+          })
+    }
+
+    toggleEditEduLevelModal = () => {
+        this.setState({
+            isEditEduLevelModalOpen: !this.state.isEditEduLevelModalOpen
+          })
     }
 
     toggleDeleteConfirmModal = () => {
@@ -102,7 +136,7 @@ class Settings extends Component {
 
         let formResults = {
             name: this.state.updated_name,
-            id: this.state.s_id
+            id: this.state.t_id
         }
         const requestOptions = {
             method: 'POST',
@@ -110,9 +144,9 @@ class Settings extends Component {
             body: JSON.stringify({formResults})
         };
 
-        fetch('/settings/update-name', requestOptions)
+        fetch('/settings/tutor-update-name', requestOptions)
 
-        this.state.s_name = this.state.updated_name
+        this.state.t_name = this.state.updated_name
         if (this.state.isEditNameModalOpen === true) {
             this.toggleEditNameModal()
         }
@@ -129,7 +163,7 @@ class Settings extends Component {
         e.preventDefault();
         let formResults = {
             age: this.state.updated_age,
-            id: this.state.s_id
+            id: this.state.t_id
         }
         const requestOptions = {
             method: 'POST',
@@ -137,9 +171,9 @@ class Settings extends Component {
             body: JSON.stringify({formResults})
         };
 
-        fetch('/settings/update-age', requestOptions)
+        fetch('/settings/tutor-update-age', requestOptions)
 
-        this.state.s_age = this.state.updated_age
+        this.state.t_age = this.state.updated_age
         if (this.state.isEditAgeModalOpen === true) {
             this.toggleEditAgeModal()
         }
@@ -157,7 +191,7 @@ class Settings extends Component {
         e.preventDefault();
         let formResults = {
             location: this.state.updated_location,
-            id: this.state.s_id
+            id: this.state.t_id
         }
         const requestOptions = {
             method: 'POST',
@@ -165,9 +199,9 @@ class Settings extends Component {
             body: JSON.stringify({formResults})
         };
 
-        fetch('/settings/update-location', requestOptions)
+        fetch('/settings/tutor-update-location', requestOptions)
 
-        this.state.s_location = this.state.updated_location
+        this.state.t_location = this.state.updated_location
         if (this.state.isEditLocationModalOpen === true) {
             this.toggleEditLocationModal()
         }
@@ -186,7 +220,7 @@ class Settings extends Component {
         e.preventDefault();
         let formResults = {
             gender: this.state.updated_gender,
-            id: this.state.s_id
+            id: this.state.t_id
         }
         const requestOptions = {
             method: 'POST',
@@ -194,9 +228,9 @@ class Settings extends Component {
             body: JSON.stringify({formResults})
         };
 
-        fetch('/settings/update-gender', requestOptions)
+        fetch('/settings/tutor-update-gender', requestOptions)
 
-        this.state.s_gender = this.state.updated_gender
+        this.state.t_gender = this.state.updated_gender
         if (this.state.isEditGenderModalOpen === true) {
             this.toggleEditGenderModal()
         }
@@ -208,9 +242,90 @@ class Settings extends Component {
         })
     }
 
+    //update education level ============================================
+    onEditEduLevelFormSubmit = (e) => {
+        e.preventDefault();
+        let formResults = {
+            edu_level: this.state.updated_edu_level,
+            id: this.state.t_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/tutor-update-edu-level', requestOptions)
+
+        this.state.t_edu_level = this.state.updated_edu_level
+        if (this.state.isEditEduLevelModalOpen === true) {
+            this.toggleEditEduLevelModal()
+        }
+    };
+
+    handleEditEduLevelChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    //update major ============================================
+    onEditMajorFormSubmit = (e) => {
+        e.preventDefault();
+        let formResults = {
+            major: this.state.updated_major,
+            id: this.state.t_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/tutor-update-major', requestOptions)
+
+        this.state.t_major = this.state.updated_major
+        if (this.state.isEditMajorModalOpen === true) {
+            this.toggleEditMajorModal()
+        }
+    };
+
+    handleEditMajorChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    //update grade ============================================
+    onEditGradeFormSubmit = (e) => {
+        e.preventDefault();
+        let formResults = {
+            grade: this.state.updated_grade,
+            id: this.state.t_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/tutor-update-grade', requestOptions)
+
+        this.state.t_grade = this.state.updated_grade
+        if (this.state.isEditGradeModalOpen === true) {
+            this.toggleEditGradeModal()
+        }
+    };
+
+    handleEditGradeChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
     //delete account 
     deleteAccount = () => {
-        let url = '/settings/delete/' + this.state.s_id
+        let url = '/settings/tutor-delete/' + this.state.t_id
         fetch(url);
         sessionStorage.clear();
 
@@ -248,10 +363,10 @@ class Settings extends Component {
                     <Jumbotron>
                         
                         <Container>
-                            
+                           
                                 <Row>
                                     <Col>
-                                        Name: {this.state.s_name}
+                                        Name: {this.state.t_name}
                                     </Col>
 
                                     <Col>
@@ -263,7 +378,7 @@ class Settings extends Component {
 
                                 <Row>
                                     <Col>
-                                        Age: {this.state.s_age}
+                                        Age: {this.state.t_age}
                                     </Col>
 
                                     <Col>
@@ -275,7 +390,7 @@ class Settings extends Component {
 
                                 <Row>
                                     <Col>
-                                        Gender: {this.state.s_gender}
+                                        Gender: {this.state.t_gender}
                                     </Col>
 
                                     <Col>
@@ -287,11 +402,47 @@ class Settings extends Component {
 
                                 <Row>
                                     <Col>
-                                        Location: {this.state.s_location}
+                                        Location: {this.state.t_location}
                                     </Col>
 
                                     <Col>
                                         <Button color="primary" size="sm" onClick={this.toggleEditLocationModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                                  
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        Education Level: {this.state.t_edu_level}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditEduLevelModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                                  
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        Average Grade: {this.state.t_grade}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditGradeModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                                  
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        Major: {this.state.t_major}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditMajorModal}>
                                             Edit
                                         </Button>
                                     </Col>                                  
@@ -366,6 +517,48 @@ class Settings extends Component {
                                   </ModalBody>
                                 </Modal>
 
+                                <Modal isOpen={this.state.isEditEduLevelModalOpen} toggle={this.toggleEditEduLevelModal} >
+                                  <ModalHeader toggle={this.toggleEditEduLevelModal}>Edit Your Education Level</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditEduLevelFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_edu_level">Enter your updated gender</Label>
+                                        <Input type="text" name="updated_edu_level" id="updated_edu_level" onChange={e => this.handleEditEduLevelChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditEduLevelModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isEditGradeModalOpen} toggle={this.toggleEditGradeModal} >
+                                  <ModalHeader toggle={this.toggleEditGradeModal}>Edit Grade</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditGradeFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_grade">Enter your updated grade</Label>
+                                        <Input type="text" name="updated_grade" id="updated_grade" onChange={e => this.handleEditGradeChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditGradeModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isEditMajorModalOpen} toggle={this.toggleEditMajorModal} >
+                                  <ModalHeader toggle={this.toggleEditMajorModal}>Edit Your Major</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditMajorFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_major">Enter your updated major</Label>
+                                        <Input type="text" name="updated_major" id="updated_major" onChange={e => this.handleEditMajorChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditMajorModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
                             
                         </Container>
                     </Jumbotron>
@@ -377,4 +570,4 @@ class Settings extends Component {
     }
 }
 
-export default Settings;
+export default TutorSetting;
