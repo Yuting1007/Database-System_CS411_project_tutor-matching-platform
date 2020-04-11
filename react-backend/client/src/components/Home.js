@@ -41,7 +41,9 @@ class StudentHome extends Component {
     }
 
     redirectToSetting = () => {
-        this.state.redirect_settings = true;
+        this.setState({
+            redirect_settings: !this.state.redirect_settings
+        })
     }
 
     render() {
@@ -56,9 +58,7 @@ class StudentHome extends Component {
                         <Row>
                             <Col>
                                 <h1>Welcome, {this.state.s_name}</h1>
-                                <p>
-
-                                </p>
+                                
                             </Col>
 
                             
