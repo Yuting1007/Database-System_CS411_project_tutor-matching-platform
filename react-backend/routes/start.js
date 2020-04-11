@@ -75,11 +75,13 @@ router.post('/tutor-create', (req, res) => {
     const grade = req.body.formResults.grade;
     const edu_level = req.body.formResults.edu_level;
     const major = req.body.formResults.major;
+    const email = req.body.formResults.email;
+    const pnum = req.body.formResults.pnum;
 
     
-    const queryString = 'INSERT INTO tutors (t_name, t_age, t_location, t_gender, t_edu_level, t_grade, t_major, t_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, 5)'
+    const queryString = 'INSERT INTO tutors (t_name, t_age, t_location, t_gender, t_edu_level, t_grade, t_major, t_email, t_pnum, t_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 5)'
     
-    getConnection().query(queryString, [name, age, location, gender, edu_level, grade, major], (err, results, fields) => {
+    getConnection().query(queryString, [name, age, location, gender, edu_level, grade, major, email, pnum], (err, results, fields) => {
         if (err) {
             console.log("Failed to insert new user: " + err)
             res.sendStatus(500)
@@ -100,11 +102,13 @@ router.post('/student-create', (req, res) => {
   const age = parseInt(req.body.formResults.age);
   const location = req.body.formResults.location;
   const gender = req.body.formResults.gender;
+  const email = req.body.formResults.email;
+  const pnum = req.body.formResults.pnum;
 
   
-  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender,  s_ratings) VALUES (?, ?, ?, ?, 5)'
+  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum,  s_ratings) VALUES (?, ?, ?, ?, ?, ?, 5)'
   
-  getConnection().query(queryString, [name, age, location, gender], (err, results, fields) => {
+  getConnection().query(queryString, [name, age, location, gender, email, pnum], (err, results, fields) => {
       if (err) {
           console.log("Failed to insert new user: " + err)
           res.sendStatus(500)

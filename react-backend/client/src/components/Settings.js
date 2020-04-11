@@ -37,6 +37,8 @@ class Settings extends Component {
             isEditAgeModalOpen:false,
             isEditLocationModalOpen:false,
             isEditGenderModalOpen:false,
+            isEditEmailModalOpen: false,
+            isEditPnumModalOpen: false,
             isDeleteConfirmModalOpen: false,
 
             //student info
@@ -46,12 +48,16 @@ class Settings extends Component {
             s_location: sessionStorage.getItem('s_location'),
             s_gender: sessionStorage.getItem('s_gender'),
             s_ratings: sessionStorage.getItem('s_ratings'),
+            s_email: sessionStorage.getItem('s_email'),
+            s_pnum: sessionStorage.getItem('s_pnum'),
 
             //updated info
             updated_name:'',
             updated_age:'',
             updated_location:'',
             updated_gender:'', 
+            updated_pnum:'',
+            updated_email:'',
 
             //redirect states
             redirect_start_link: "/",
@@ -62,7 +68,21 @@ class Settings extends Component {
         this.toggleEditAgeModal = this.toggleEditAgeModal.bind();
         this.toggleEditLocationModal = this.toggleEditLocationModal.bind();
         this.toggleEditGenderModal = this.toggleEditGenderModal.bind();
+        this.toggleEditEmailModal = this.toggleEditEmailModal.bind();
+        this.toggleEditPnumModal = this.toggleEditPnumModal.bind();
         this.toggleDeleteConfirmModal = this.toggleDeleteConfirmModal.bind();
+    }
+
+    toggleEditPnumModal = () => {
+        this.setState({
+            isEditPnumModalOpen : !this.state.isEditPnumModalOpen
+           })
+    }
+
+    toggleEditEmailModal = () => {
+        this.setState({
+           isEditEmailModalOpen : !this.state.isEditEmailModalOpen
+          })
     }
 
     toggleDeleteConfirmModal = () => {
@@ -208,6 +228,62 @@ class Settings extends Component {
         })
     }
 
+    //update Email =============================================
+    onEditEmailFormSubmit = (e) => {
+        e.preventDefault();
+
+        let formResults = {
+            email: this.state.updated_email,
+            id: this.state.s_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/update-email', requestOptions)
+
+        this.state.s_email = this.state.updated_email
+        if (this.state.isEditEmailModalOpen === true) {
+            this.toggleEditEmailModal()
+        }
+    };
+
+    handleEditEmailChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    //update Phone Number =============================================
+    onEditPnumFormSubmit = (e) => {
+        e.preventDefault();
+
+        let formResults = {
+            pnum: this.state.updated_pnum,
+            id: this.state.s_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/update-pnum', requestOptions)
+
+        this.state.s_pnum = this.state.updated_pnum
+        if (this.state.isEditPnumModalOpen === true) {
+            this.toggleEditPnumModal()
+        }
+    };
+
+    handleEditPnumChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
     //delete account 
     deleteAccount = () => {
         let url = '/settings/delete/' + this.state.s_id
@@ -297,6 +373,30 @@ class Settings extends Component {
                                     </Col>                                  
                                 </Row>
 
+                                <Row>
+                                    <Col>
+                                        Phone Number: {this.state.s_pnum}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditPnumModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                               
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        Email: {this.state.s_email}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditEmailModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                               
+                                </Row>
+
                                 <Button color="primary" size="sm" onClick={this.toggleDeleteConfirmModal}>
                                     Delete Account
                                 </Button>
@@ -362,6 +462,34 @@ class Settings extends Component {
                                       </FormGroup>
                                       <Button color="primary" type="submit">Confirm</Button> {' '}
                                       <Button color="secondary" onClick={this.toggleEditGenderModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isEditEmailModalOpen} toggle={this.toggleEditEmailModal} >
+                                  <ModalHeader toggle={this.toggleEditEmailModal}>Edit Email</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditEmailFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_email">Enter your updated email</Label>
+                                        <Input type="text" name="updated_email" id="updated_email" onChange={e => this.handleEditEmailChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditEmailModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isEditPnumModalOpen} toggle={this.toggleEditPnumModal} >
+                                  <ModalHeader toggle={this.toggleEditPnumModal}>Edit Phone Number</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditPnumFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_pnum">Enter your updated phone number</Label>
+                                        <Input type="text" name="updated_pnum" id="updated_pnum" onChange={e => this.handleEditPnumChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditPnumModal}>Cancel</Button>
                                     </Form>
                                   </ModalBody>
                                 </Modal>

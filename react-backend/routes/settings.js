@@ -119,6 +119,58 @@ router.post('/update-gender', (req, res) => {
     })
 });
 
+//update Email ==============================================================
+router.post('/update-email', (req, res) => {
+    console.log("Trying to update a email...")
+    console.log(typeof req.body.formResults.email)
+    console.log(req.body)
+    const email = req.body.formResults.email;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE students SET s_email = ? WHERE s_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [email, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student email')
+        res.end()
+    })
+});
+
+//update Phone Number ==============================================================
+router.post('/update-pnum', (req, res) => {
+    console.log("Trying to update a pnum...")
+    console.log(typeof req.body.formResults.pnum)
+    console.log(req.body)
+    const pnum = req.body.formResults.pnum;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE students SET s_pnum = ? WHERE s_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [pnum, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student pnum')
+        res.end()
+    })
+});
+
 
 //delete account
 router.get('/delete/:id', (req, res) => {
@@ -318,6 +370,58 @@ router.post('/tutor-update-major', (req, res) => {
         }
 
         console.log('Update a tutor major')
+        res.end()
+    })
+});
+
+//update Email ==============================================================
+router.post('/tutor-update-email', (req, res) => {
+    console.log("Trying to update a email...")
+    console.log(typeof req.body.formResults.email)
+    console.log(req.body)
+    const email = req.body.formResults.email;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE tutors SET t_email = ? WHERE t_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [email, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutor email')
+        res.end()
+    })
+});
+
+//update Phone Number ==============================================================
+router.post('/tutor-update-pnum', (req, res) => {
+    console.log("Trying to update a major...")
+    console.log(typeof req.body.formResults.major)
+    console.log(req.body)
+    const pnum = req.body.formResults.pnum;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE tutors SET t_pnum = ? WHERE t_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [pnum, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a tutor phone number')
         res.end()
     })
 });

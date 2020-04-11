@@ -42,6 +42,8 @@ class Start extends Component {
             student_regi_age: 0,
             student_regi_location: '',
             student_regi_gender:'',
+            student_regi_pnum:'',
+            student_regi_email:'',
 
             //tutor register info
             tutor_regi_name:'',
@@ -51,6 +53,10 @@ class Start extends Component {
             tutor_regi_edu_level:'',
             tutor_regi_grade:'',
             tutor_regi_major:'',
+            tutor_regi_pnum:'',
+            tutor_regi_email:'',
+
+
             userID:'',
             s_name:'',
 
@@ -151,7 +157,9 @@ class Start extends Component {
         name: this.state.student_regi_name,
         age: this.state.student_regi_age,
         location: this.state.student_regi_location,
-        gender: this.state.student_regi_gender
+        gender: this.state.student_regi_gender,
+        email: this.state.student_regi_email,
+        pnum: this.state.student_regi_pnum
        }
       console.log(formResults)
 
@@ -167,6 +175,12 @@ class Start extends Component {
         this.toggleRegiErrorModal()
       } else if (formResults.location === '') {
         this.state.error_message = 'Location field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.email === '') {
+        this.state.error_message = 'Email field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.pnum === '') {
+        this.state.error_message = 'Phone Number field cannot be empty!'
         this.toggleRegiErrorModal()
       } else {
       //POST req here
@@ -196,7 +210,9 @@ class Start extends Component {
         gender: this.state.tutor_regi_gender,
         grade: this.state.tutor_regi_grade,
         edu_level: this.state.tutor_regi_edu_level,
-        major: this.state.tutor_regi_major
+        major: this.state.tutor_regi_major,
+        email: this.state.tutor_regi_email,
+        pnum: this.state.tutor_regi_pnum
        }
       console.log(formResults)
 
@@ -220,6 +236,12 @@ class Start extends Component {
         this.state.error_message = 'Major field cannot be empty!'
         this.toggleRegiErrorModal()
       } else if (formResults.edu_level === '') {
+        this.state.error_message = 'Education Level field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.pnum === '') {
+        this.state.error_message = 'Education Level field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.email === '') {
         this.state.error_message = 'Education Level field cannot be empty!'
         this.toggleRegiErrorModal()
       } else {
@@ -281,13 +303,16 @@ class Start extends Component {
           this.toggleLoginModal()
         } else {
 
-          //store studenet info into local storage
+          //store studenet info into session storage
           sessionStorage.setItem('s_id', data[0].s_id);
           sessionStorage.setItem('s_name', data[0].s_name);
           sessionStorage.setItem('s_age', data[0].s_age);
           sessionStorage.setItem('s_location', data[0].s_location);
           sessionStorage.setItem('s_gender', data[0].s_gender);
           sessionStorage.setItem('s_ratings', data[0].s_ratings);
+          sessionStorage.setItem('s_pnum', data[0].s_pnum);
+          sessionStorage.setItem('s_email', data[0].s_email);
+
 
           console.log(sessionStorage.getItem('s_name'));
 
@@ -338,6 +363,9 @@ class Start extends Component {
           sessionStorage.setItem('t_major', data[0].t_major);
           sessionStorage.setItem('t_edu_level', data[0].t_edu_level);
           sessionStorage.setItem('t_grade', data[0].t_grade);
+          sessionStorage.setItem('t_email', data[0].t_email);
+          sessionStorage.setItem('t_pnum', data[0].t_pnum);
+          
 
 
           console.log(sessionStorage.getItem('t_name'));
@@ -419,6 +447,14 @@ class Start extends Component {
                                           <Label for="student_regi-gender">Gender</Label>
                                           <Input type="text" name="student_regi_gender" id="student_regi-gender"  onChange={e => this.handleRegiChange(e)} />
                                         </FormGroup>
+                                        <FormGroup>
+                                          <Label for="student_regi-pnum">Phone Number</Label>
+                                          <Input type="text" name="student_regi_pnum" id="student_regi-pnum"  onChange={e => this.handleRegiChange(e)} />
+                                        </FormGroup>
+                                        <FormGroup>
+                                          <Label for="student_regi-email">Email</Label>
+                                          <Input type="text" name="student_regi_email" id="student_regi-email"  onChange={e => this.handleRegiChange(e)} />
+                                        </FormGroup>
                                         <Button type="submit">Submit</Button>
                                       </Form>
                                   </ModalBody>
@@ -460,6 +496,14 @@ class Start extends Component {
                                         <FormGroup>
                                           <Label for="tutor_regi-major">Major/Profession</Label>
                                           <Input type="text" name="tutor_regi_major" id="tutor_regi-major"  onChange={e => this.handleRegiChange(e)} />
+                                        </FormGroup>
+                                        <FormGroup>
+                                          <Label for="tutor_regi-pnum">Phone Number</Label>
+                                          <Input type="text" name="tutor_regi_pnum" id="tutor_regi-pnum"  onChange={e => this.handleRegiChange(e)} />
+                                        </FormGroup>
+                                        <FormGroup>
+                                          <Label for="tutor_regi-email">Email</Label>
+                                          <Input type="text" name="tutor_regi_email" id="tutor_regi-email"  onChange={e => this.handleRegiChange(e)} />
                                         </FormGroup>
                                         <Button type="submit">Submit</Button>
                                       </Form>
