@@ -59,7 +59,11 @@ class Start extends Component {
             redirect_student_home: false,
 
             redirect_tutor_home: false,
-            redirect_tutor_link: '/tutor/home'
+            redirect_tutor_link: '/tutor/home',
+
+            //form filling errors
+            error_message:'',
+            isRegiErrorModalOpen:false
         };
 
         this.toggleStudentRegiModal = this.toggleStudentRegiModal.bind();
@@ -73,8 +77,16 @@ class Start extends Component {
         this.toggleChoosingLoginModal = this.toggleChoosingLoginModal.bind();
         this.toggleTutorLoginModal = this.toggleTutorLoginModal.bind();
         this.toggleTutorLoginRejectModal = this.toggleTutorLoginRejectModal.bind();
+
+        this.toggleRegiErrorModal = this.toggleRegiErrorModal.bind();
         
 
+    }
+
+    toggleRegiErrorModal = () => {
+      this.setState({
+        isRegiErrorModalOpen: !this.state.isRegiErrorModalOpen
+      })
     }
 
     toggleTutorLoginRejectModal = () => {
@@ -142,7 +154,21 @@ class Start extends Component {
         gender: this.state.student_regi_gender
        }
       console.log(formResults)
-       
+
+      //check for error in the form
+      if (formResults.name === '') {
+        this.state.error_message = 'Name field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.age === '' || parseInt(formResults.age) <= 0) {
+        this.state.error_message = 'Invalid Age!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.gender === '') {
+        this.state.error_message = 'Gender field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.location === '') {
+        this.state.error_message = 'Location field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else {
       //POST req here
       const requestOptions = {
         method: 'POST',
@@ -158,6 +184,7 @@ class Start extends Component {
        })
        this.toggleStudentRegiModal();
        this.toggleChoosingModal();
+      }
     };
 
     onTutorRegiFormSubmit = (e) => {
@@ -172,22 +199,46 @@ class Start extends Component {
         major: this.state.tutor_regi_major
        }
       console.log(formResults)
-       
-      //POST req here
-      const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({formResults})
-      };
-      fetch('/start/tutor-create', requestOptions)
-        
-       this.setState({
-        name: '',
-        age: 0,
-        location: ''
-       })
-      this.toggleTutorRegiModal();
-      this.toggleChoosingModal();
+
+       //check for error in the form
+       if (formResults.name === '') {
+        this.state.error_message = 'Name field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.age === '' || parseInt(formResults.age) <= 0) {
+        this.state.error_message = 'Invalid Age!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.gender === '') {
+        this.state.error_message = 'Gender field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.location === '') {
+        this.state.error_message = 'Location field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.grade === '') {
+        this.state.error_message = 'Grade field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.major === '') {
+        this.state.error_message = 'Major field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else if (formResults.edu_level === '') {
+        this.state.error_message = 'Education Level field cannot be empty!'
+        this.toggleRegiErrorModal()
+      } else {
+        //POST req here
+        const requestOptions = {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({formResults})
+        };
+        fetch('/start/tutor-create', requestOptions)
+          
+        this.setState({
+          name: '',
+          age: 0,
+          location: ''
+        })
+        this.toggleTutorRegiModal();
+        this.toggleChoosingModal();
+      }
     };
 
 
@@ -504,6 +555,21 @@ class Start extends Component {
                                         color="secondary" 
                                         onClick={this.toggleTutorLoginRejectModal}
                                         >Cancel
+                                      </Button>
+                                  </ModalFooter>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isRegiErrorModalOpen} toggle={this.toggleRegiErrorModal}>
+                                  <ModalHeader toggle={this.toggleRegiErrorModal}>Invalid Information</ModalHeader>
+                                  <ModalBody>
+                                    {this.state.error_message}
+                                  </ModalBody>
+
+                                  <ModalFooter>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.toggleRegiErrorModal}
+                                        >Fix It
                                       </Button>
                                   </ModalFooter>
                                 </Modal>
