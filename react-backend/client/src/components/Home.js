@@ -63,21 +63,17 @@ class StudentHome extends Component {
                         <Row>
                             <Col>
                                 <h1>Welcome, {this.state.s_name}</h1>
-<<<<<<< HEAD
-                                
-=======
                                 <p>
                                     <Button onClick={this.onMatchButtonClick}>Matches</Button>
 
                                 </p>
->>>>>>> d82cc7c651e37d3ced19b4f0d2b5074439eb76ed
                             </Col>
 
                             
                             <Col>
-                                {/* <Button color="primary" size="sm" onClick={this.redirectToSetting}>
+                                <Button color="primary" size="sm" onClick={this.redirectToSetting}>
                                     Settings
-                                </Button>                                  */}
+                                </Button>                                 
                             </Col>
                         </Row>
                     </Container>
