@@ -40,7 +40,10 @@ class TutorSetting extends Component {
             isEditEduLevelModalOpen: false,
             isEditGradeModalOpen: false,
             isEditMajorModalOpen: false,
+            isEditEmailModalOpen: false,
+            isEditPnumModalOpen: false,
             isDeleteConfirmModalOpen: false,
+            
 
             //tutor info
             t_id: sessionStorage.getItem('t_id'),
@@ -52,6 +55,8 @@ class TutorSetting extends Component {
             t_grade: sessionStorage.getItem('t_grade'),
             t_major: sessionStorage.getItem('t_major'),
             t_edu_level: sessionStorage.getItem('t_edu_level'),
+            t_email: sessionStorage.getItem('t_email'),
+            t_pnum: sessionStorage.getItem('t_pnum'),
             
 
             //updated info
@@ -65,6 +70,8 @@ class TutorSetting extends Component {
             updated_grade:'',
             updated_major:'',
             updated_edu_level:'',
+            updated_pnum:'',
+            updated_email:'',
 
             //redirect states
             redirect_start_link: "/",
@@ -79,6 +86,20 @@ class TutorSetting extends Component {
         this.toggleEditEduLevelModal = this.toggleEditEduLevelModal.bind();
         this.toggleEditGradeModal = this.toggleEditGradeModal.bind();
         this.toggleEditMajorModal = this.toggleEditMajorModal.bind();
+        this.toggleEditEmailModal = this.toggleEditEmailModal.bind();
+        this.toggleEditPnumModal = this.toggleEditPnumModal.bind();
+    }
+
+    toggleEditPnumModal = () => {
+        this.setState({
+            isEditPnumModalOpen: !this.state.isEditPnumModalOpen
+          })
+    }
+
+    toggleEditEmailModal = () => {
+        this.setState({
+            isEditEmailModalOpen: !this.state.isEditEmailModalOpen
+          })
     }
 
     toggleEditMajorModal = () => {
@@ -323,6 +344,60 @@ class TutorSetting extends Component {
         })
     }
 
+    //update phone number ============================================
+    onEditPnumFormSubmit = (e) => {
+        e.preventDefault();
+        let formResults = {
+            pnum: this.state.updated_pnum,
+            id: this.state.t_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/tutor-update-pnum', requestOptions)
+
+        this.state.t_pnum = this.state.updated_pnum
+        if (this.state.isEditPnumModalOpen === true) {
+            this.toggleEditPnumModal()
+        }
+    };
+
+    handleEditPnumChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    //update email ============================================
+    onEditEmailFormSubmit = (e) => {
+        e.preventDefault();
+        let formResults = {
+            email: this.state.updated_email,
+            id: this.state.t_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/tutor-update-email', requestOptions)
+
+        this.state.t_email = this.state.updated_email
+        if (this.state.isEditEmailModalOpen === true) {
+            this.toggleEditEmailModal()
+        }
+    };
+
+    handleEditEmailChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
     //delete account 
     deleteAccount = () => {
         let url = '/settings/tutor-delete/' + this.state.t_id
@@ -448,6 +523,30 @@ class TutorSetting extends Component {
                                     </Col>                                  
                                 </Row>
 
+                                <Row>
+                                    <Col>
+                                        Phone Number: {this.state.t_pnum}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditPnumModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                                  
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        Email: {this.state.t_email}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditEmailModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                                  
+                                </Row>
+
                                 <Button color="primary" size="sm" onClick={this.toggleDeleteConfirmModal}>
                                     Delete Account
                                 </Button>
@@ -555,6 +654,34 @@ class TutorSetting extends Component {
                                       </FormGroup>
                                       <Button color="primary" type="submit">Confirm</Button> {' '}
                                       <Button color="secondary" onClick={this.toggleEditMajorModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isEditEmailModalOpen} toggle={this.toggleEditEmailModal} >
+                                  <ModalHeader toggle={this.toggleEditEmailModal}>Edit Your Email</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditEmailFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_email">Enter your updated email</Label>
+                                        <Input type="text" name="updated_email" id="updated_email" onChange={e => this.handleEditEmailChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditEmailModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isEditPnumModalOpen} toggle={this.toggleEditPnumModal} >
+                                  <ModalHeader toggle={this.toggleEditPnumModal}>Edit Your Phone Number</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditPnumFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_pnum">Enter your updated phone number</Label>
+                                        <Input type="text" name="updated_pnum" id="updated_pnum" onChange={e => this.handleEditPnumChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditPnumModal}>Cancel</Button>
                                     </Form>
                                   </ModalBody>
                                 </Modal>
