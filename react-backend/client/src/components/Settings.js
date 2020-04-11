@@ -235,7 +235,7 @@ class Settings extends Component {
                         <Container>
                             <Row>
                                 <Col>
-                                    <h1>Settings1</h1>
+                                    <h1>Settings</h1>
                                     
                                 </Col>
                             </Row>
