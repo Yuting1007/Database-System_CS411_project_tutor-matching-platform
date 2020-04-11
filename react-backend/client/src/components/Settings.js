@@ -248,7 +248,7 @@ class Settings extends Component {
                     <Jumbotron>
                         
                         <Container>
-                            <p>
+                            
                                 <Row>
                                     <Col>
                                         Name: {this.state.s_name}
@@ -366,7 +366,7 @@ class Settings extends Component {
                                   </ModalBody>
                                 </Modal>
 
-                            </p>
+                            
                         </Container>
                     </Jumbotron>
                 </div>
