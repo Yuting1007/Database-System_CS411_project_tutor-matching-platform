@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var passwordHash = require('password-hash');
+
 
 
 // Function that gets connection to SQL database
@@ -78,11 +80,14 @@ router.post('/tutor-create', (req, res) => {
     const email = req.body.formResults.email;
     const pnum = req.body.formResults.pnum;
 
+    const password = req.body.formResults.hashedPassword;
+
     
-    const queryString = 'INSERT INTO tutors (t_name, t_age, t_location, t_gender, t_edu_level, t_grade, t_major, t_email, t_pnum, t_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 5)'
+    const queryString = 'INSERT INTO tutors (t_name, t_age, t_location, t_gender, t_edu_level, t_grade, t_major, t_email, t_pnum, t_password, t_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 5)'
     
-    getConnection().query(queryString, [name, age, location, gender, edu_level, grade, major, email, pnum], (err, results, fields) => {
-        if (err) {
+    getConnection().query(queryString, [name, age, location, gender, edu_level, grade, major, email, pnum, password], (err, results, fields) => {
+        
+      if (err) {
             console.log("Failed to insert new user: " + err)
             res.sendStatus(500)
             return
@@ -104,11 +109,12 @@ router.post('/student-create', (req, res) => {
   const gender = req.body.formResults.gender;
   const email = req.body.formResults.email;
   const pnum = req.body.formResults.pnum;
+  const password = req.body.formResults.hashedPassword;
 
   
-  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum,  s_ratings) VALUES (?, ?, ?, ?, ?, ?, 5)'
+  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum, s_password,  s_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, 5)'
   
-  getConnection().query(queryString, [name, age, location, gender, email, pnum], (err, results, fields) => {
+  getConnection().query(queryString, [name, age, location, gender, email, pnum, password], (err, results, fields) => {
       if (err) {
           console.log("Failed to insert new user: " + err)
           res.sendStatus(500)

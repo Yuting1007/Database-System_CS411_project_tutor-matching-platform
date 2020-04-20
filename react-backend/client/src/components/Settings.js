@@ -40,6 +40,7 @@ class Settings extends Component {
             isEditEmailModalOpen: false,
             isEditPnumModalOpen: false,
             isDeleteConfirmModalOpen: false,
+            isLogoutConfirmModalOpen: false,
 
             //student info
             s_id: sessionStorage.getItem('s_id'),
@@ -71,6 +72,13 @@ class Settings extends Component {
         this.toggleEditEmailModal = this.toggleEditEmailModal.bind();
         this.toggleEditPnumModal = this.toggleEditPnumModal.bind();
         this.toggleDeleteConfirmModal = this.toggleDeleteConfirmModal.bind();
+        this.toggleLogoutConfirmModal = this.toggleLogoutConfirmModal.bind();
+    }
+
+    toggleLogoutConfirmModal = () => {
+        this.setState({
+            isLogoutConfirmModalOpen : !this.state.isLogoutConfirmModalOpen
+           })
     }
 
     toggleEditPnumModal = () => {
@@ -297,6 +305,16 @@ class Settings extends Component {
         }
     }
 
+    logout = () => {
+        sessionStorage.clear();
+
+        this.state.redirect_start = true;
+
+        if (this.state.isLogoutConfirmModalOpen === true) {
+            this.toggleLogoutConfirmModal();
+        }
+    }
+
     render() {
 
         if (this.state.redirect_start) {
@@ -397,9 +415,21 @@ class Settings extends Component {
                                     </Col>                               
                                 </Row>
 
+                                <Button color="primary" size="sm" onClick={this.toggleLogoutConfirmModal}>
+                                    Logout
+                                </Button>{'   '}
+
                                 <Button color="primary" size="sm" onClick={this.toggleDeleteConfirmModal}>
                                     Delete Account
                                 </Button>
+
+                                <Modal isOpen={this.state.isLogoutConfirmModalOpen} toggle={this.toggleLogoutConfirmModal} >
+                                  <ModalHeader toggle={this.toggleLogoutConfirmModal}>Confirm Logout</ModalHeader>
+                                  <ModalBody>
+                                      <Button color="primary" onClick={this.logout} type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleLogoutConfirmModal}>Cancel</Button>
+                                  </ModalBody>
+                                </Modal>
 
                                 <Modal isOpen={this.state.isDeleteConfirmModalOpen} toggle={this.toggleDeleteConfirmModal} >
                                   <ModalHeader toggle={this.toggleDeleteConfirmModal}>Confirm Delete</ModalHeader>
