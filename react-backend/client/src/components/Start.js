@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from './NavBar';
+//import NavBar from './NavBar';
 import Settings from './Settings';
 import Student_Home from './Home'
 import {
@@ -74,7 +74,11 @@ class Start extends Component {
 
             //form filling errors
             error_message:'',
-            isRegiErrorModalOpen:false
+            isRegiErrorModalOpen:false,
+
+            //acknowledgement
+            isSuccessfulRegiModalOpen: false,
+            newID:''
         };
 
         this.toggleStudentRegiModal = this.toggleStudentRegiModal.bind();
@@ -90,8 +94,15 @@ class Start extends Component {
         this.toggleTutorLoginRejectModal = this.toggleTutorLoginRejectModal.bind();
 
         this.toggleRegiErrorModal = this.toggleRegiErrorModal.bind();
+        this.toggleSuccessfulRegiModal = this.toggleSuccessfulRegiModal.bind();
         
 
+    }
+
+    toggleSuccessfulRegiModal = () => {
+      this.setState({
+        isSuccessfulRegiModalOpen: !this.state.isSuccessfulRegiModalOpen
+      })
     }
 
     toggleRegiErrorModal = () => {
@@ -200,9 +211,23 @@ class Start extends Component {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({formResults})
       };
+      this.state.userPassword = formResults.rawPassowrd
       fetch('/start/student-create', requestOptions)
-        
-       this.setState({
+      .then(res => {
+        console.log(res);
+        return res.json()
+      })
+      .then(results => {
+        console.log(results.insertId);
+
+        console.log("call login with param " + results.insertId)
+        this.state.newID = results.insertId
+        this.login(results.insertId)
+
+        this.toggleSuccessfulRegiModal()
+      });
+
+      this.setState({
         name: '',
         age: 0,
         location: ''
@@ -269,8 +294,22 @@ class Start extends Component {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({formResults})
         };
+        this.state.userPassword = formResults.rawPassowrd;
         fetch('/start/tutor-create', requestOptions)
-          
+        .then(res => {
+          console.log(res);
+          return res.json()
+        })
+        .then(results => {
+          console.log(results.insertId);
+  
+          console.log("call login with param " + results.insertId)
+          this.state.newID = results.insertId
+          this.tutorLogin(results.insertId)
+  
+          this.toggleSuccessfulRegiModal()
+        });
+        
         this.setState({
           name: '',
           age: 0,
@@ -339,7 +378,10 @@ class Start extends Component {
           sessionStorage.setItem('s_email', data[0].s_email);
           sessionStorage.setItem('s_password', data[0].s_password);
 
+          sessionStorage.setItem('account_type', 'student');    
 
+          //store tutor info
+          //this.getMatches();
 
           console.log(sessionStorage.getItem('s_name'));
 
@@ -402,8 +444,9 @@ class Start extends Component {
           sessionStorage.setItem('t_grade', data[0].t_grade);
           sessionStorage.setItem('t_email', data[0].t_email);
           sessionStorage.setItem('t_pnum', data[0].t_pnum);
-          sessionStorage.setItem('t_password', data[0].t_password);
-          
+          sessionStorage.setItem('t_password', data[0].t_password);    
+               
+          sessionStorage.setItem('account_type', "tutor");    
 
 
           console.log(sessionStorage.getItem('t_name'));
@@ -419,6 +462,38 @@ class Start extends Component {
         }
       });
     }
+
+
+    // function to get student's current matches
+  //   getMatches = () => {
+  //     let tutorIds = [];
+  //     console.log("getting matches");
+  //     let url = '/matches/show-tutor-matches/' + this.state.userID
+  //   fetch(url)
+  //   .then(res => res.json())
+  //   .then(matches => {
+      
+  //     for (let x of matches) {
+  //         tutorIds.push(x['t_id'])
+  //     }
+  //     //console.log('tutor ids: ' + tutorIds);
+  //     let myTutorMatches = []
+  //     for (let id of tutorIds)  {
+  //         for (let x of this.state.tutors) {
+  //             if (x['t_id'] == id) {
+  //                 myTutorMatches.push(x);
+  //                 break;
+  //             }
+  //         }
+  //     }
+  //     //console.log('tutor matches here: ' + myTutorMatches)
+  //     //now remove duplicates
+  //     let uniqueTutors = new Set(myTutorMatches);
+  //     let uniqueTutorMatches = [...uniqueTutors];
+  //     //console.log('unique tutors: ' + uniqueTutorMatches)
+  //     sessionStorage.setItem('current_matches', JSON.stringify(uniqueTutorMatches))
+  //   })
+  // }
 
 
   
@@ -668,6 +743,23 @@ class Start extends Component {
                                         color="primary" 
                                         onClick={this.toggleRegiErrorModal}
                                         >Fix It
+                                      </Button>
+                                  </ModalFooter>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isSuccessfulRegiModalOpen} toggle={this.toggleSuccessfulRegiModal}>
+                                  <ModalHeader toggle={this.toggleSuccessfulRegiModal}>Your account has been created!</ModalHeader>
+                                  <ModalBody>
+                                    Your ID is {this.state.newID}  {'. '}
+                                    Please record it as you will need it to login in the future.
+                                    You will be redirected to your account homepage.  
+                                  </ModalBody>
+
+                                  <ModalFooter>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.toggleSuccessfulRegiModal}
+                                        >Let's go!
                                       </Button>
                                   </ModalFooter>
                                 </Modal>

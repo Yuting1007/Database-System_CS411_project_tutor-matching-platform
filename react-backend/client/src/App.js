@@ -13,19 +13,20 @@ class App extends Component {
   render() {
     return (  
       <div>
+        
         <BrowserRouter>
-        <div>
-          <Navbar />
+          <div>
+            {/* <Navbar /> */}
             <Switch>
-             <Route path="/" component={Start} exact/>
-             <Route path="/settings" component={Settings}/>
-             <Route path="/users" component={Users}/>
-             <Route path="/student/home" component={Student_Home}/>
-             <Route path="/tutor/home" component={TutorHome}/>
-             <Route path="/matches" component={Matches}/>
-             <Route path='/tutor-settings' component={TutorSetting}/>
-           </Switch>
-        </div> 
+              <Route path="/" component={Start} exact/>
+              <Route path="/settings" component={Settings}/>
+              <Route path="/users" component={Users}/>
+              <Route path="/student/home" component={Student_Home}/>
+              <Route path="/tutor/home" component={TutorHome}/>
+              <Route path="/matches" component={Matches}/>
+              <Route path='/tutor-settings' component={TutorSetting}/>
+            </Switch>
+          </div> 
       </BrowserRouter>
       </div>    
        

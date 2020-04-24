@@ -13,8 +13,9 @@ import {
     Col,
     Jumbotron,
     Button,
-    Table
+    Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
+
 import '../css/Matches.css'
 
 class Matches extends Component {
@@ -25,12 +26,19 @@ class Matches extends Component {
             students: [],
             tutors: [],
             tutorMatches: [],
-            userID: null
+            //tutorMatches: JSON.parse(sessionStorage.getItem('current_matches')),
+            userID: null,
+
+            //confirmations
+            isDeleteMatchAcknowedgeModalOpen: false
+
+           
         };
 
         this.onStudentToTutorMatchClick = this.onStudentToTutorMatchClick.bind();
         this.getMatches = this.getMatches.bind();
         this.deleteMatches = this.deleteMatches.bind();
+        this.toggleDeleteMatchAcknowedgeModal = this.toggleDeleteMatchAcknowedgeModal.bind();
     }
 
     
@@ -64,10 +72,18 @@ class Matches extends Component {
         this.getMatches();
     }
 
+    toggleDeleteMatchAcknowedgeModal = () => {
+        this.setState({
+            isDeleteMatchAcknowedgeModalOpen: !this.state.isDeleteMatchAcknowedgeModalOpen
+        })
+    }
+
     deleteMatches = (e) => {
         let deleteTarget = e.target.id;
         let url = '/matches/delete/' + this.state.userID + '/' + deleteTarget;
         fetch(url);
+        
+        this.toggleDeleteMatchAcknowedgeModal();
     }
 
     getMatches = () => {
@@ -100,7 +116,10 @@ class Matches extends Component {
             tutorMatches: uniqueTutorMatches
         })
       })
-      
+
+      if (this.state.isDeleteMatchAcknowedgeModalOpen === true) {
+        this.toggleDeleteMatchAcknowedgeModal()
+      }
     }
 
     onStudentToTutorMatchClick = (e) => {
@@ -148,6 +167,18 @@ class Matches extends Component {
     render() {
         return (
             <div>
+                <p>eduFY</p>
+                    <Nav tabs>
+                        <NavItem>
+                        <NavLink href="/student/home">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/matches">Matches</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/settings">Settings</NavLink>
+                        </NavItem>
+                    </Nav>
                 <Jumbotron>
                     <Container>
                         <Row>
@@ -172,6 +203,7 @@ class Matches extends Component {
                             <th>Name</th>
                             <th>Age</th>
                             <th>Location</th>
+                            <th>Major</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -181,6 +213,7 @@ class Matches extends Component {
                             <td>{tutor.t_name}</td>
                             <td>{tutor.t_age}</td>
                             <td>{tutor.t_location}</td>
+                            <td>{tutor.t_major}</td>
                             <td><Button id={tutor.t_id} onClick={this.deleteMatches}>Unmatch!</Button></td>
                         </tr>
                     )}
@@ -208,6 +241,13 @@ class Matches extends Component {
                     )}
                     </tbody>
                 </Table>
+
+                <Modal isOpen={this.state.isDeleteMatchAcknowedgeModalOpen} toggle={this.toggleDeleteMatchAcknowedgeModal} >
+                    <ModalHeader toggle={this.toggleDeleteMatchAcknowedgeModal}>Match with the selected tutor has been deleted!</ModalHeader>
+                    <ModalBody>
+                        <Button color="primary" onClick={this.getMatches} type="submit">Got It</Button> {' '}
+                    </ModalBody>
+                </Modal>
 
                 
                 

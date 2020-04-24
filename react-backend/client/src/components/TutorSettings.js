@@ -440,12 +440,23 @@ class TutorSetting extends Component {
 
             <React.Fragment>
                 <div>
+                    <p>eduFY</p>
+                    <Nav tabs>
+                        <NavItem>
+                        <NavLink href="/tutor/home">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/tutor-matches">Matches</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/tutor-settings">Settings</NavLink>
+                        </NavItem>
+                    </Nav>
                     <Jumbotron>
                         <Container>
                             <Row>
                                 <Col>
                                     <h1>Settings</h1>
-                                    
                                 </Col>
                             </Row>
                         </Container>

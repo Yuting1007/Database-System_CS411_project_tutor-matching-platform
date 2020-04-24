@@ -29,8 +29,7 @@ class TutorHome extends Component {
 
         this.state = {
             t_name: sessionStorage.getItem('t_name') + '!',
-            redirect_settings: false,
-            redirect_settings_link: '/tutor-settings'
+            t_id: sessionStorage.getItem('t_id')
         };
     }
 
@@ -38,29 +37,30 @@ class TutorHome extends Component {
         this.state.t_name = sessionStorage.getItem('t_name')
     }
 
-    redirectToSetting = () => {
-        this.setState({
-            redirect_settings: !this.state.redirect_settings
-        })
-    }
-
     render() {
-        if (this.state.redirect_settings) {
-            return <Redirect to={this.state.redirect_settings_link} />
-        }
         return (
             <div>
+                <p>eduFY</p>
+                <Nav tabs>
+                    <NavItem>
+                    <NavLink href="/tutor/home">Home</NavLink>
+                    </NavItem>
+                    <NavItem>
+                    <NavLink href="/tutor-matches">Matches</NavLink>
+                    </NavItem>
+                    <NavItem>
+                    <NavLink href="/tutor-settings">Settings</NavLink>
+                    </NavItem>
+                </Nav>
                 <Jumbotron>
                     <Container>
                         <Row>
                             <Col>
                                 <h1>Welcome, {this.state.t_name}</h1>
-                            </Col>
+                                <p>
+                                    Your tutor ID is {this.state.t_id}
+                                </p>
 
-                            <Col>
-                                <Button color="primary" size="sm" onClick={this.redirectToSetting}>
-                                    Settings
-                                </Button>                                 
                             </Col>
                         </Row>
                     </Container>
