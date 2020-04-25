@@ -319,12 +319,24 @@ class Settings extends Component {
 
         if (this.state.redirect_start) {
             return <Redirect to={this.state.redirect_start_link} />
-          }
+        }
 
         return (
 
             <React.Fragment>
                 <div>
+                    <p>  eduFY</p>
+                    <Nav tabs>
+                        <NavItem>
+                        <NavLink href="/student/home">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/matches">Matches</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/settings">Settings</NavLink>
+                        </NavItem>
+                    </Nav>
                     <Jumbotron>
                         <Container>
                             <Row>

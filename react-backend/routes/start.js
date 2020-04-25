@@ -92,15 +92,15 @@ router.post('/tutor-create', (req, res) => {
             res.sendStatus(500)
             return
         }
+      console.log('Inserted a new tutor with id: '+ results.insertId)
 
-        console.log('Inserted a new tutor with id: ')
-        res.end()
+      res.json(results)
     })
 })
 
 
 router.post('/student-create', (req, res) => {
-  console.log("Trying to create a new tutor...")
+  console.log("Trying to create a new student...")
   console.log(typeof req.body.formResults.name)
   console.log(req.body)
   const name = req.body.formResults.name;
@@ -120,9 +120,9 @@ router.post('/student-create', (req, res) => {
           res.sendStatus(500)
           return
       }
+      console.log('Inserted a new student with id: '+ results.insertId)
 
-      console.log('Inserted a new student with id: ')
-      res.end()
+      res.json(results)
   })
 })
 
