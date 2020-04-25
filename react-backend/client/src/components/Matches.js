@@ -283,7 +283,6 @@ class Matches extends Component {
                             <td>{tutor.t_edu_level}</td>
                             <td>{tutor.t_major}</td>
                             <td>{tutor.t_location}</td>
-                            <TutorRating tutorId={tutor.t_id} currentRating={tutor.t_rating}/>
                             <td><Button id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
                         </tr>
                     )}
