@@ -251,7 +251,7 @@ class Matches extends Component {
                             <td>{tutor.t_location}</td>
                             <td>{tutor.t_email}</td>
                             <td>{tutor.t_pnum}</td>
-                            <TutorRating tutorId={tutor.t_id} currentRating={tutor.t_rating}/>
+                            <TutorRating tutorId={tutor.t_id} currentRating={tutor.t_ratings}/>
                             <td><Button id={tutor.t_id} onClick={this.deleteMatches}>Unmatch!</Button></td>
                         </tr>
                     )}
@@ -277,7 +277,7 @@ class Matches extends Component {
                         <tr key={tutor.t_id}>
                             <td className="id-col">{tutor.t_id}</td>
                             <td>{tutor.t_name}</td>
-                            <td>{tutor.t_rating}</td>
+                            <td>{tutor.t_ratings}</td>
                             <td>{tutor.t_age}</td>
                             <td>{tutor.t_gender}</td>
                             <td>{tutor.t_edu_level}</td>

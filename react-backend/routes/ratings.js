@@ -30,7 +30,7 @@ router.post('/update-tutor-rating/:t_id/:amount', (req, res) => {
     console.log('id: ' + id)
     console.log('amount: ' +amount)
 
-    const queryString = 'UPDATE tutors SET t_rating = ? WHERE t_id = ?'
+    const queryString = 'UPDATE tutors SET t_ratings = ? WHERE t_id = ?'
 
     
     getConnection().query(queryString, [amount, id], (err, results, fields) => {
