@@ -11,6 +11,7 @@ var usersRouter = require('./routes/users');
 var matchesRouter = require('./routes/matches');
 var startRouter = require('./routes/start');
 var settingsRouter = require('./routes/settings');
+var ratingsRouter = require('./routes/ratings');
 
 //not sure if we need a router for home page
 //var homeRouter = require('./routes/home');
@@ -40,6 +41,7 @@ app.use('/', indexRouter);
 app.use('/start', startRouter);
 app.use('/matches', matchesRouter);
 app.use('/settings', settingsRouter);
+app.use('/ratings', ratingsRouter);
 
 //not sure if we need a router for home page
 //app.use('/home', homeRouter);
