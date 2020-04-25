@@ -44,10 +44,8 @@ class Matches extends Component {
             students: [],
             tutors: [],
             tutorMatches: [],
-<<<<<<< HEAD
             userID: null,
-            matchesToDisplay: false
-=======
+            matchesToDisplay: false,
             //tutorMatches: JSON.parse(sessionStorage.getItem('current_matches')),
             userID: null,
 
@@ -55,7 +53,6 @@ class Matches extends Component {
             isDeleteMatchAcknowedgeModalOpen: false
 
            
->>>>>>> 2be5580001c00279e6677f6adc4c7ef711ca2fd4
         };
 
         this.onStudentToTutorMatchClick = this.onStudentToTutorMatchClick.bind();
@@ -239,13 +236,9 @@ class Matches extends Component {
                             <th>Education Level</th>
                             <th>Major</th>
                             <th>Location</th>
-<<<<<<< HEAD
                             <th>Email</th>
                             <th>Phone Number</th>
                             <th>Rating</th>
-=======
-                            <th>Major</th>
->>>>>>> 2be5580001c00279e6677f6adc4c7ef711ca2fd4
                         </tr>
                     </thead>
                     <tbody>
@@ -256,13 +249,9 @@ class Matches extends Component {
                             <td>{tutor.t_edu_level}</td>
                             <td>{tutor.t_major}</td>
                             <td>{tutor.t_location}</td>
-<<<<<<< HEAD
                             <td>{tutor.t_email}</td>
                             <td>{tutor.t_pnum}</td>
                             <TutorRating tutorId={tutor.t_id} currentRating={tutor.t_rating}/>
-=======
-                            <td>{tutor.t_major}</td>
->>>>>>> 2be5580001c00279e6677f6adc4c7ef711ca2fd4
                             <td><Button id={tutor.t_id} onClick={this.deleteMatches}>Unmatch!</Button></td>
                         </tr>
                     )}
