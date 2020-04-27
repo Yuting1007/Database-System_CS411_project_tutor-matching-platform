@@ -50,7 +50,9 @@ class Matches extends Component {
             userID: null,
 
             //confirmations
-            isDeleteMatchAcknowedgeModalOpen: false
+            isDeleteMatchAcknowedgeModalOpen: false,
+            isMatchAckModalOpen: false,
+            isMatchExistAckModalOpen: false
 
            
         };
@@ -59,6 +61,8 @@ class Matches extends Component {
         this.getMatches = this.getMatches.bind();
         this.deleteMatches = this.deleteMatches.bind();
         this.toggleDeleteMatchAcknowedgeModal = this.toggleDeleteMatchAcknowedgeModal.bind();
+        this.toggleMatchExistAckModal = this.toggleMatchExistAckModal.bind();
+        this.toggleMatchAckModal = this.toggleMatchAckModal.bind();
     }
 
     
@@ -92,6 +96,18 @@ class Matches extends Component {
         this.getMatches();
     }
 
+    toggleMatchAckModal = () => {
+        this.setState({
+            isMatchAckModalOpen: !this.state.isMatchAckModalOpen
+        })
+    }
+
+    toggleMatchExistAckModal = () => {
+        this.setState({
+            isMatchExistAckModalOpen: !this.state.isMatchExistAckModalOpen
+        })
+    }
+
     toggleDeleteMatchAcknowedgeModal = () => {
         this.setState({
             isDeleteMatchAcknowedgeModalOpen: !this.state.isDeleteMatchAcknowedgeModalOpen
@@ -99,11 +115,54 @@ class Matches extends Component {
     }
 
     deleteMatches = (e) => {
+        
+        //First, GET THE TARGET MATCH FROM matches TABLE
+        let newMatch = {
+            t_id: e.target.id,
+            s_id: this.state.userID,
+            m_s_like: '',
+            m_t_like: '',
+            m_id: '',
+            m_mutual: ''
+           }
+        console.log(newMatch)
+           
+        //POST req here
+        const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({newMatch})
+        };
+
+        //get the target matche
+        fetch('/matches/match-check', requestOptions)
+        .then(res => res.json())      
+        .then(data => {
+            console.log("reach this point")
+            console.log(data)
+            if (data.length === 0) {
+                
+            } else {
+                newMatch.m_s_like = data[0].m_s_like;
+                newMatch.m_id = data[0].m_id;
+                newMatch.m_mutual = data[0].m_mutual;
+                newMatch.m_t_like = data[0].m_t_like;
+                //Second, INSERT THE DATA INTO HISTORY TABLE
+                //POST req here
+                const insertContent = {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({newMatch})
+                    };
+                fetch('/matches/match-insertHistory', insertContent);
+            }
+        });
+
+        //Third, delete from matches table
         let deleteTarget = e.target.id;
         let url = '/matches/delete/' + this.state.userID + '/' + deleteTarget;
         fetch(url);
-        
-        this.toggleDeleteMatchAcknowedgeModal();
+        this.toggleDeleteMatchAcknowedgeModal();        
     }
 
     getMatches = () => {
@@ -168,13 +227,36 @@ class Matches extends Component {
            }
         console.log(newMatch)
            
-          //POST req here
-          const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({newMatch})
-          };
-        fetch('/matches/match-create', requestOptions);
+        //POST req here
+        const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({newMatch})
+        };
+
+        //check for existing matches
+        fetch('/matches/match-check', requestOptions)
+        .then(res => res.json())      
+        .then(data => {
+            console.log("reach this point")
+            console.log(data)
+            if (data.length === 0) {
+                this.toggleMatchAckModal();
+                //this.matchStudentToTutor(requestOptions)
+                fetch('/matches/match-create', requestOptions);
+            } else {
+                console.log("already exists")
+                this.toggleMatchExistAckModal();
+            }
+        });
+
+    // matchStudentToTutor = (e) => {
+    //     this.toggleMatchAckModal();
+    //     fetch('/matches/match-create', e);
+    // }
+
+
+        //fetch('/matches/match-create', requestOptions);
 
         // let targetTutor = e.target.id;
         // console.log("tutors: " + this.state.tutors);
@@ -293,6 +375,20 @@ class Matches extends Component {
                     <ModalHeader toggle={this.toggleDeleteMatchAcknowedgeModal}>Match with the selected tutor has been deleted!</ModalHeader>
                     <ModalBody>
                         <Button color="primary" onClick={this.getMatches} type="submit">Got It</Button> {' '}
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.isMatchExistAckModalOpen} toggle={this.toggleMatchExistAckModal} >
+                    <ModalHeader toggle={this.toggleMatchExistAckModal}>You are already matched with this tutor!</ModalHeader>
+                    <ModalBody>
+                        <Button color="primary" onClick={this.toggleMatchExistAckModal} type="submit">Got It</Button> {' '}
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.isMatchAckModalOpen} toggle={this.toggleMatchAckModal} >
+                    <ModalHeader toggle={this.toggleMatchAckModal}>You are matched with the tutor! Press thr refresh button to see match result.</ModalHeader>
+                    <ModalBody>
+                        <Button color="primary" onClick={this.toggleMatchAckModal} type="submit">Got It</Button> {' '}
                     </ModalBody>
                 </Modal>
 

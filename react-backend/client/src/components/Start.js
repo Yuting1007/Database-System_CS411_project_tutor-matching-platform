@@ -135,10 +135,6 @@ class Start extends Component {
       })
     }
 
-    //// EXAMPLE for how to switch pages programatically (as opposed to nav bar way)
-    // handleClick = () => {
-    //   this.props.history.push('/settings')
-    // }
     
     // function that toggles the status of the modal for registration
     toggleStudentRegiModal = () => {
