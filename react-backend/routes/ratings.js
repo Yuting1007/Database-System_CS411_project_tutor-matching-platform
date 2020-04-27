@@ -9,8 +9,8 @@ function getConnection() {
         user: 'root',
         password: 'password', // PUT your own password here whatever it is locally
         database: '411project',
-        // port: 3307
-        port: 3306
+        port: 3307
+        //port: 3306
         //insecureAuth : true
       })
 }
@@ -30,7 +30,7 @@ router.post('/update-tutor-rating/:t_id/:amount', (req, res) => {
     console.log('id: ' + id)
     console.log('amount: ' +amount)
 
-    const queryString = 'UPDATE tutors SET t_rating = ? WHERE t_id = ?'
+    const queryString = 'UPDATE tutors SET t_ratings = ? WHERE t_id = ?'
 
     
     getConnection().query(queryString, [amount, id], (err, results, fields) => {
