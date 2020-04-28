@@ -12,7 +12,7 @@ import {
     Row,
     Col,
     Jumbotron,
-    Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText
+    Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormText, Table
 } from 'reactstrap';
 import {
     BrowserRouter as Router,
@@ -35,20 +35,31 @@ class StudentHome extends Component {
             isPreferenceModalOpen: false,
 
             //preference info
-            preference_major: 'none',
-            preference_edu_level: 'none',
-            preference_gender: 'none',
-            preference_pastEx: 'none',
-            preference_rating: 'none'
+            preference_major: 'None',
+            preference_edu_level: 'None',
+            preference_gender: 'None',
+            preference_pastEx: 'None',
+            preference_rating: 'None',
+
+            //recommendation
+            rec_tutors: [],
+            isRecommendListModalOpen: false
         };
         this.onMatchButtonClick = this.onMatchButtonClick.bind();
         this.togglePreferenceModal = this.togglePreferenceModal.bind();
+        this.toggleRecommendListModal = this.toggleRecommendListModal.bind();
     }
 
     //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
+    }
+
+    toggleRecommendListModal = () => {
+        this.setState({
+            isRecommendListModalOpen: !this.state.isRecommendListModalOpen
+        })
     }
 
     togglePreferenceModal = () => {
@@ -83,10 +94,10 @@ class StudentHome extends Component {
             preference_rating: this.state.preference_rating
         }
         if (formResults.preference_major === '') {
-            formResults.preference_major = 'none'
+            formResults.preference_major = 'None'
         }
         if (formResults.preference_rating === '') {
-            formResults.preference_rating = 'none'
+            formResults.preference_rating = 'None'
         }
         console.log(formResults)
 
@@ -99,8 +110,10 @@ class StudentHome extends Component {
 
         fetch('/matches/recommend', requestOptions)
         .then(res => res.json())
-        .then(data => {
-            console.log(data)
+        .then(rec_tutors => {
+            console.log(rec_tutors)
+            this.setState({ rec_tutors })
+            this.toggleRecommendListModal();
         });
     }
 
@@ -160,7 +173,7 @@ class StudentHome extends Component {
                         </Row>
 
                         <Modal isOpen={this.state.isPreferenceModalOpen} toggle={this.togglePreferenceModal} >
-                            <ModalHeader toggle={this.togglePreferenceModal}>Fill out your user preference and click recommend!</ModalHeader>
+                            <ModalHeader toggle={this.togglePreferenceModal}>Fill out this preference list and click recommend!</ModalHeader>
                             <ModalBody>
                             <Form onSubmit={this.recommend}>
                                 <FormGroup>
@@ -170,7 +183,7 @@ class StudentHome extends Component {
                                 <FormGroup>
                                     <Label for="preference_edu_level">Your preference on education level</Label>
                                     <Input type="select" name="preference_edu_level" id="preference_edu_level" onChange={e => this.handlePreferenceChange(e)}>
-                                        <option>none</option>
+                                        <option>None</option>
                                         <option>Elementary School</option>
                                         <option>Middle School</option>
                                         <option>High School</option>
@@ -206,6 +219,47 @@ class StudentHome extends Component {
 
                             
                         </Modal>
+
+                        <Modal size='lg' isOpen={this.state.isRecommendListModalOpen} toggle={this.toggleRecommendListModal}>
+                                  <ModalHeader toggle={this.toggleRecommendListModal}>Here are our recommended tutors for you!</ModalHeader>
+                                  <ModalBody>
+                                    <Table striped className="tutors-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Rating</th>
+                                                <th>Education</th>
+                                                <th>Major</th>
+                                                <th>Phone Number</th>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {this.state.rec_tutors.map(tutor => 
+                                            <tr key={tutor.t_id}>
+                                                <td className="id-col">{tutor.t_id}</td>
+                                                <td>{tutor.t_name}</td>
+                                                <td>{tutor.t_ratings}</td>
+                                                <td>{tutor.t_edu_level}</td>
+                                                <td>{tutor.t_major}</td>
+                                                <td>{tutor.t_pnum}</td>
+                                                <td>{tutor.t_email}</td>
+                                                <td><Button id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
+                                            </tr>
+                                        )}
+                                        </tbody>
+                                    </Table>
+                                  </ModalBody>
+
+                                  <ModalFooter>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.toggleRecommendListModal}
+                                        >Done
+                                      </Button>
+                                  </ModalFooter>
+                                </Modal>
                     </Container>
                 </Jumbotron>
                 </div>

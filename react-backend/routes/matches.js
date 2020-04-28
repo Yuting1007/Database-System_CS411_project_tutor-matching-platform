@@ -151,52 +151,94 @@ router.post('/recommend', (req, res) => {
 
 
   console.log("form result major is: " + preference_major)
-  console.log("form result edu_level variable is: " + preference_edu_level)
-  console.log("form result gender variable is: " + preference_gender)
+  console.log("form result edu_level is: " + preference_edu_level)
+  console.log("form result gender is: " + preference_gender)
 
-  let major = '';
-  let edu_level = '';
-  let gender = '';
-  let rating = '';
-  let pastEx = ''
+  let condition_major = '';
+  let condition_edu_level = '';
+  let condition_gender = '';
+  let condition_rating = '';
 
-  if (preference_major != 'none') {
-    major = ' WHERE t_major = ' + "'" + preference_major + "'" ;
-  }
+  if (preference_pastEx === 'No') {
 
-  if (preference_edu_level != 'none') {
-    edu_level = ' AND t_edu_level = ' + "'" + preference_edu_level + "'";
-  }
-
-  if (preference_gender != 'none') {
-    gender = ' AND t_gender = ' + "'" + preference_gender + "'";
-  }
-
-  if (preference_rating != 'none') {
-    rating = ' AND t_ratings >= ' + preference_rating;
-  }
-
-  // if (preference_pastEx === 'yes') {
-
-  // }
-  console.log("major variable is: " + major)
-  console.log("edu_level variable is: " + edu_level)
-  console.log("gender variable is: " + gender)
+    // Fill in select conditions without JOIN
+    if (preference_major != 'None') {
+      condition_major = ' WHERE t_major = ' + "'" + preference_major + "'" ;
+    }
   
-  const queryString = 'SELECT * FROM tutors' + major + edu_level + gender + rating
-  console.log("sql query is: " + queryString)
+    if (preference_edu_level != 'None') {
+      condition_edu_level = ' AND t_edu_level = ' + "'" + preference_edu_level + "'";
+    }
+  
+    if (preference_gender != 'None') {
+      condition_gender = ' AND t_gender = ' + "'" + preference_gender + "'";
+    }
+  
+    if (preference_rating != 'None') {
+      condition_rating = ' AND t_ratings >= ' + preference_rating;
+    }
 
-  getConnection().query(queryString, (err, results, fields) => {
-      if (err) {
-          console.log("Failed to get recommendation: " + err)
-          res.sendStatus(500)
-          return
-      }
+    const queryString = 'SELECT * FROM tutors' + condition_major + condition_edu_level + condition_gender + condition_rating
+    console.log("sql query is: " + queryString)
 
-      console.log('trying to get recommendations')
-      console.log(results)
-      res.json(results)
-  })
+    getConnection().query(queryString, (err, results, fields) => {
+        if (err) {
+            console.log("Failed to get recommendation: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('trying to get recommendations')
+        console.log(results)
+        res.json(results)
+    })
+  } else {
+
+    // fill in select condition with JOIN
+    if (preference_major != 'None') {
+      condition_major = ' AND t.t_major = ' + "'" + preference_major + "'" ;
+    }
+  
+    if (preference_edu_level != 'None') {
+      condition_edu_level = ' AND t.t_edu_level = ' + "'" + preference_edu_level + "'";
+    }
+  
+    if (preference_gender != 'None') {
+      condition_gender = ' AND t.t_gender = ' + "'" + preference_gender + "'";
+    }
+  
+    if (preference_rating != 'None') {
+      condition_rating = ' AND t.t_ratings >= ' + preference_rating;
+    }
+
+    /* When we consider student's match history in the recommendation, we only consider the tutors 
+      that have been matched with the student more than once, under the assumption that a repeated
+      match implies that previous matches are enjoyable. */
+    const queryString = 'SELECT t.t_id, t.t_name, t.t_major, t.t_email, t.t_pnum, t.t_edu_level, t.t_ratings ' +  
+                        'FROM tutors t JOIN (SELECT t_id, COUNT(m_id) AS count_mID ' + 
+                                            'FROM student_history ' + 
+                                            'GROUP BY t_id ' + 
+                                            'HAVING COUNT(m_id) > 1) ' + 
+                                            'AS candidates ON t.t_id = candidates.t_id ' + 
+                                            condition_major + condition_edu_level + condition_gender + condition_rating + 
+                        ' ORDER BY candidates.count_mID DESC, t.t_ratings DESC'
+
+
+
+    console.log("query is: " + queryString)
+
+    getConnection().query(queryString, (err, results, fields) => {
+        if (err) {
+            console.log("Failed to get recommendation: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('trying to get recommendations')
+        console.log(results)
+        res.json(results)
+    })
+  }
 })
 
 router.post('/match-insertHistory', (req, res) => {
