@@ -52,6 +52,12 @@ class Settings extends Component {
             s_email: sessionStorage.getItem('s_email'),
             s_pnum: sessionStorage.getItem('s_pnum'),
 
+            // //student preference into
+            // preference_major: sessionStorage.getItem('preference_major'),
+            // preference_age: sessionStorage.getItem('preference_age'),
+            // preference_edu_level: sessionStorage.getItem('preference_edu_level'),
+            // preference_pastEx: sessionStorage.getItem('preference_pastEx'),
+
             //updated info
             updated_name:'',
             updated_age:'',
