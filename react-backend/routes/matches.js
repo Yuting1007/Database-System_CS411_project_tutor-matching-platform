@@ -163,7 +163,7 @@ router.post('/recommend', (req, res) => {
 
     // Fill in select conditions without JOIN
     if (preference_major != 'None') {
-      condition_major = ' WHERE t_major = ' + "'" + preference_major + "'" ;
+      condition_major = ' AND t_major = ' + "'" + preference_major + "'" ;
     }
   
     if (preference_edu_level != 'None') {
@@ -175,10 +175,12 @@ router.post('/recommend', (req, res) => {
     }
   
     if (preference_rating != 'None') {
-      condition_rating = ' AND t_ratings >= ' + preference_rating;
+      condition_rating = ' WHERE t_ratings >= ' + preference_rating;
+    } else {
+      condition_rating = ' WHERE t_ratings >= -999999';
     }
 
-    const queryString = 'SELECT * FROM tutors' + condition_major + condition_edu_level + condition_gender + condition_rating
+    const queryString = 'SELECT * FROM tutors' + condition_rating + condition_edu_level + condition_gender + condition_major
     console.log("sql query is: " + queryString)
 
     getConnection().query(queryString, (err, results, fields) => {
