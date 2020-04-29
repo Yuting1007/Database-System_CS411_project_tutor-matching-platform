@@ -13,9 +13,28 @@ import {
     Col,
     Jumbotron,
     Button,
-    Table
+    Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
+
 import '../css/Matches.css'
+import TutorRating from './TutorRating';
+
+function EmptyMatches(props) {
+    return <h3>No matches! Click refresh or find a tutor below!</h3>
+}
+function MatchesPresent(props) {
+    return (null)
+}
+function MatchesPlaceholder(props) {
+    const matchesToDisplay = props.matchesToDisplay;
+    console.log('start')
+    if (matchesToDisplay) {
+        console.log('matches present')
+        return <MatchesPresent />;
+    }
+    console.log('matches not present')
+    return <EmptyMatches />;
+}
 
 class Matches extends Component {
     constructor(props) {
@@ -25,12 +44,25 @@ class Matches extends Component {
             students: [],
             tutors: [],
             tutorMatches: [],
-            userID: null
+            userID: null,
+            matchesToDisplay: false,
+            //tutorMatches: JSON.parse(sessionStorage.getItem('current_matches')),
+            userID: null,
+
+            //confirmations
+            isDeleteMatchAcknowedgeModalOpen: false,
+            isMatchAckModalOpen: false,
+            isMatchExistAckModalOpen: false
+
+           
         };
 
         this.onStudentToTutorMatchClick = this.onStudentToTutorMatchClick.bind();
         this.getMatches = this.getMatches.bind();
         this.deleteMatches = this.deleteMatches.bind();
+        this.toggleDeleteMatchAcknowedgeModal = this.toggleDeleteMatchAcknowedgeModal.bind();
+        this.toggleMatchExistAckModal = this.toggleMatchExistAckModal.bind();
+        this.toggleMatchAckModal = this.toggleMatchAckModal.bind();
     }
 
     
@@ -64,10 +96,73 @@ class Matches extends Component {
         this.getMatches();
     }
 
+    toggleMatchAckModal = () => {
+        this.setState({
+            isMatchAckModalOpen: !this.state.isMatchAckModalOpen
+        })
+    }
+
+    toggleMatchExistAckModal = () => {
+        this.setState({
+            isMatchExistAckModalOpen: !this.state.isMatchExistAckModalOpen
+        })
+    }
+
+    toggleDeleteMatchAcknowedgeModal = () => {
+        this.setState({
+            isDeleteMatchAcknowedgeModalOpen: !this.state.isDeleteMatchAcknowedgeModalOpen
+        })
+    }
+
     deleteMatches = (e) => {
+        
+        //First, GET THE TARGET MATCH FROM matches TABLE
+        let newMatch = {
+            t_id: e.target.id,
+            s_id: this.state.userID,
+            m_s_like: '',
+            m_t_like: '',
+            m_id: '',
+            m_mutual: ''
+           }
+        console.log(newMatch)
+           
+        //POST req here
+        const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({newMatch})
+        };
+
+        //get the target matche
+        fetch('/matches/match-check', requestOptions)
+        .then(res => res.json())      
+        .then(data => {
+            console.log("reach this point")
+            console.log(data)
+            if (data.length === 0) {
+                
+            } else {
+                newMatch.m_s_like = data[0].m_s_like;
+                newMatch.m_id = data[0].m_id;
+                newMatch.m_mutual = data[0].m_mutual;
+                newMatch.m_t_like = data[0].m_t_like;
+                //Second, INSERT THE DATA INTO HISTORY TABLE
+                //POST req here
+                const insertContent = {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({newMatch})
+                    };
+                fetch('/matches/match-insertHistory', insertContent);
+            }
+        });
+
+        //Third, delete from matches table
         let deleteTarget = e.target.id;
         let url = '/matches/delete/' + this.state.userID + '/' + deleteTarget;
         fetch(url);
+        this.toggleDeleteMatchAcknowedgeModal();        
     }
 
     getMatches = () => {
@@ -95,12 +190,26 @@ class Matches extends Component {
         //now remove duplicates
         let uniqueTutors = new Set(myTutorMatches);
         let uniqueTutorMatches = [...uniqueTutors];
+        if (uniqueTutorMatches == undefined || uniqueTutorMatches.length == 0) {
+            this.setState({
+                matchesToDisplay: false
+            })
+            console.log("NO MATCHES HAHA")
+        } else {
+            this.setState({
+                matchesToDisplay: true
+            })
+            console.log("MATCHES< RENDER NOW")
+        }
         //console.log('unique tutors: ' + uniqueTutorMatches)
         this.setState({
             tutorMatches: uniqueTutorMatches
         })
       })
-      
+
+      if (this.state.isDeleteMatchAcknowedgeModalOpen === true) {
+        this.toggleDeleteMatchAcknowedgeModal()
+      }
     }
 
     onStudentToTutorMatchClick = (e) => {
@@ -118,13 +227,36 @@ class Matches extends Component {
            }
         console.log(newMatch)
            
-          //POST req here
-          const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({newMatch})
-          };
-        fetch('/matches/match-create', requestOptions);
+        //POST req here
+        const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({newMatch})
+        };
+
+        //check for existing matches
+        fetch('/matches/match-check', requestOptions)
+        .then(res => res.json())      
+        .then(data => {
+            console.log("reach this point")
+            console.log(data)
+            if (data.length === 0) {
+                this.toggleMatchAckModal();
+                //this.matchStudentToTutor(requestOptions)
+                fetch('/matches/match-create', requestOptions);
+            } else {
+                console.log("already exists")
+                this.toggleMatchExistAckModal();
+            }
+        });
+
+    // matchStudentToTutor = (e) => {
+    //     this.toggleMatchAckModal();
+    //     fetch('/matches/match-create', e);
+    // }
+
+
+        //fetch('/matches/match-create', requestOptions);
 
         // let targetTutor = e.target.id;
         // console.log("tutors: " + this.state.tutors);
@@ -148,6 +280,18 @@ class Matches extends Component {
     render() {
         return (
             <div>
+                <p>eduFY</p>
+                    <Nav tabs>
+                        <NavItem>
+                        <NavLink href="/student/home">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/matches">Matches</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/settings">Settings</NavLink>
+                        </NavItem>
+                    </Nav>
                 <Jumbotron>
                     <Container>
                         <Row>
@@ -165,13 +309,18 @@ class Matches extends Component {
                     <Button onClick={this.getMatches}>Show/Refresh Matches!</Button>
                     
                 </Row>
+                
                 <Table striped className="matches-table">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Age</th>
+                            <th>Education Level</th>
+                            <th>Major</th>
                             <th>Location</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Rating</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -179,20 +328,29 @@ class Matches extends Component {
                         <tr key={tutor.t_id}>
                             <td className="id-col">{tutor.t_id}</td>
                             <td>{tutor.t_name}</td>
-                            <td>{tutor.t_age}</td>
+                            <td>{tutor.t_edu_level}</td>
+                            <td>{tutor.t_major}</td>
                             <td>{tutor.t_location}</td>
+                            <td>{tutor.t_email}</td>
+                            <td>{tutor.t_pnum}</td>
+                            <TutorRating tutorId={tutor.t_id} currentRating={tutor.t_ratings}/>
                             <td><Button id={tutor.t_id} onClick={this.deleteMatches}>Unmatch!</Button></td>
                         </tr>
                     )}
                     </tbody>
                 </Table>
+                <MatchesPlaceholder matchesToDisplay={this.state.matchesToDisplay}/>
                 <div className='matches-text'>All Tutors</div>
                 <Table striped className="tutors-table">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Rating</th>
                             <th>Age</th>
+                            <th>Gender</th>
+                            <th>Education Level</th>
+                            <th>Major</th>
                             <th>Location</th>
                         </tr>
                     </thead>
@@ -201,13 +359,38 @@ class Matches extends Component {
                         <tr key={tutor.t_id}>
                             <td className="id-col">{tutor.t_id}</td>
                             <td>{tutor.t_name}</td>
+                            <td>{tutor.t_ratings}</td>
                             <td>{tutor.t_age}</td>
+                            <td>{tutor.t_gender}</td>
+                            <td>{tutor.t_edu_level}</td>
+                            <td>{tutor.t_major}</td>
                             <td>{tutor.t_location}</td>
                             <td><Button id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
                         </tr>
                     )}
                     </tbody>
                 </Table>
+
+                <Modal isOpen={this.state.isDeleteMatchAcknowedgeModalOpen} toggle={this.toggleDeleteMatchAcknowedgeModal} >
+                    <ModalHeader toggle={this.toggleDeleteMatchAcknowedgeModal}>Match with the selected tutor has been deleted!</ModalHeader>
+                    <ModalBody>
+                        <Button color="primary" onClick={this.getMatches} type="submit">Got It</Button> {' '}
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.isMatchExistAckModalOpen} toggle={this.toggleMatchExistAckModal} >
+                    <ModalHeader toggle={this.toggleMatchExistAckModal}>You are already matched with this tutor!</ModalHeader>
+                    <ModalBody>
+                        <Button color="primary" onClick={this.toggleMatchExistAckModal} type="submit">Got It</Button> {' '}
+                    </ModalBody>
+                </Modal>
+
+                <Modal isOpen={this.state.isMatchAckModalOpen} toggle={this.toggleMatchAckModal} >
+                    <ModalHeader toggle={this.toggleMatchAckModal}>You are matched with the tutor! Press thr refresh button to see match result.</ModalHeader>
+                    <ModalBody>
+                        <Button color="primary" onClick={this.toggleMatchAckModal} type="submit">Got It</Button> {' '}
+                    </ModalBody>
+                </Modal>
 
                 
                 

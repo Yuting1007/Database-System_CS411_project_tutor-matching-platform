@@ -121,6 +121,51 @@ router.get('/delete/:s_id/:t_id', (req, res) => {
     })
 })
 
+router.post('/match-check', (req, res) => {
+  console.log("Trying to fetch a match...")
+  const s_id = parseInt(req.body.newMatch.s_id);
+  const t_id = parseInt(req.body.newMatch.t_id);
+  
+  const queryString = 'SELECT * FROM matches WHERE s_id = ? AND t_id = ?'
+  
+  getConnection().query(queryString, [s_id, t_id], (err, results, fields) => {
+      if (err) {
+          console.log("Failed to insert new student-to-tutor match: " + err)
+          res.sendStatus(500)
+          return
+      }
+
+      console.log('checking existance of a match')
+      console.log(results)
+      res.json(results)
+  })
+})
+
+router.post('/match-insertHistory', (req, res) => {
+  console.log("Trying to insert a match into history...")
+  const s_id = parseInt(req.body.newMatch.s_id);
+  const t_id = parseInt(req.body.newMatch.t_id);
+  const m_id = parseInt(req.body.newMatch.m_id);
+  const m_s_like = parseInt(req.body.newMatch.m_s_like);
+  const m_t_like = parseInt(req.body.newMatch.m_t_like);
+  const m_mutual = parseInt(req.body.newMatch.m_mutual);
+  
+  
+  const queryString = 'INSERT INTO student_history (s_id, t_id, m_id, m_s_like, m_t_like, m_mutual) VALUES (?, ?, ?, ?, ?, ?)'
+  
+  getConnection().query(queryString, [s_id, t_id, m_id, m_s_like, m_t_like, m_mutual], (err, results, fields) => {
+      if (err) {
+          console.log("Failed to insert new student-to-tutor match: " + err)
+          res.sendStatus(500)
+          return
+      }
+
+      console.log('checking existance of a match')
+      console.log(results)
+      res.json(results)
+  })
+})
+
 
 
 module.exports = router;

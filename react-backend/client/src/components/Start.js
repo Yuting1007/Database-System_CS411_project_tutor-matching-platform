@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from './NavBar';
+//import NavBar from './NavBar';
 import Settings from './Settings';
 import Student_Home from './Home'
 import {
@@ -20,6 +20,8 @@ import {
 import '../css/Start.css'
 import Users from './Users';
 //import { response } from 'express';
+var passwordHash = require('password-hash');
+
 
 class Start extends Component {
     constructor(props) {
@@ -44,6 +46,7 @@ class Start extends Component {
             student_regi_gender:'',
             student_regi_pnum:'',
             student_regi_email:'',
+            student_regi_password:'',
 
             //tutor register info
             tutor_regi_name:'',
@@ -55,10 +58,12 @@ class Start extends Component {
             tutor_regi_major:'',
             tutor_regi_pnum:'',
             tutor_regi_email:'',
+            tutor_regi_password:'',
 
 
             userID:'',
             s_name:'',
+            userPassword:'',
 
             //redirect states
             redirect_home_link: "/student/home",
@@ -69,7 +74,11 @@ class Start extends Component {
 
             //form filling errors
             error_message:'',
-            isRegiErrorModalOpen:false
+            isRegiErrorModalOpen:false,
+
+            //acknowledgement
+            isSuccessfulRegiModalOpen: false,
+            newID:''
         };
 
         this.toggleStudentRegiModal = this.toggleStudentRegiModal.bind();
@@ -85,8 +94,15 @@ class Start extends Component {
         this.toggleTutorLoginRejectModal = this.toggleTutorLoginRejectModal.bind();
 
         this.toggleRegiErrorModal = this.toggleRegiErrorModal.bind();
+        this.toggleSuccessfulRegiModal = this.toggleSuccessfulRegiModal.bind();
         
 
+    }
+
+    toggleSuccessfulRegiModal = () => {
+      this.setState({
+        isSuccessfulRegiModalOpen: !this.state.isSuccessfulRegiModalOpen
+      })
     }
 
     toggleRegiErrorModal = () => {
@@ -119,10 +135,6 @@ class Start extends Component {
       })
     }
 
-    //// EXAMPLE for how to switch pages programatically (as opposed to nav bar way)
-    // handleClick = () => {
-    //   this.props.history.push('/settings')
-    // }
     
     // function that toggles the status of the modal for registration
     toggleStudentRegiModal = () => {
@@ -159,7 +171,10 @@ class Start extends Component {
         location: this.state.student_regi_location,
         gender: this.state.student_regi_gender,
         email: this.state.student_regi_email,
-        pnum: this.state.student_regi_pnum
+        pnum: this.state.student_regi_pnum,
+
+        rawPassowrd: this.state.student_regi_password,
+        hashedPassword: passwordHash.generate(this.state.student_regi_password)
        }
       console.log(formResults)
 
@@ -182,6 +197,9 @@ class Start extends Component {
       } else if (formResults.pnum === '') {
         this.state.error_message = 'Phone Number field cannot be empty!'
         this.toggleRegiErrorModal()
+      } else if (formResults.rawPassowrd === '') {
+        this.state.error_message = 'Password field cannot be empty!'
+        this.toggleRegiErrorModal()
       } else {
       //POST req here
       const requestOptions = {
@@ -189,9 +207,23 @@ class Start extends Component {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({formResults})
       };
+      this.state.userPassword = formResults.rawPassowrd
       fetch('/start/student-create', requestOptions)
-        
-       this.setState({
+      .then(res => {
+        console.log(res);
+        return res.json()
+      })
+      .then(results => {
+        console.log(results.insertId);
+
+        console.log("call login with param " + results.insertId)
+        this.state.newID = results.insertId
+        this.login(results.insertId)
+
+        this.toggleSuccessfulRegiModal()
+      });
+
+      this.setState({
         name: '',
         age: 0,
         location: ''
@@ -212,7 +244,11 @@ class Start extends Component {
         edu_level: this.state.tutor_regi_edu_level,
         major: this.state.tutor_regi_major,
         email: this.state.tutor_regi_email,
-        pnum: this.state.tutor_regi_pnum
+        pnum: this.state.tutor_regi_pnum,
+
+        //password after hashing
+        rawPassowrd: this.state.tutor_regi_password,
+        hashedPassword: passwordHash.generate(this.state.tutor_regi_password)
        }
       console.log(formResults)
 
@@ -244,6 +280,9 @@ class Start extends Component {
       } else if (formResults.email === '') {
         this.state.error_message = 'Education Level field cannot be empty!'
         this.toggleRegiErrorModal()
+      } else if (formResults.rawPassowrd === '') {
+        this.state.error_message = 'Password field cannot be empty!'
+        this.toggleRegiErrorModal()
       } else {
         //POST req here
         const requestOptions = {
@@ -251,8 +290,22 @@ class Start extends Component {
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({formResults})
         };
+        this.state.userPassword = formResults.rawPassowrd;
         fetch('/start/tutor-create', requestOptions)
-          
+        .then(res => {
+          console.log(res);
+          return res.json()
+        })
+        .then(results => {
+          console.log(results.insertId);
+  
+          console.log("call login with param " + results.insertId)
+          this.state.newID = results.insertId
+          this.tutorLogin(results.insertId)
+  
+          this.toggleSuccessfulRegiModal()
+        });
+        
         this.setState({
           name: '',
           age: 0,
@@ -301,7 +354,14 @@ class Start extends Component {
             this.toogleLoginRejectModal()
           }
           this.toggleLoginModal()
-        } else {
+        } else if (!passwordHash.verify(this.state.userPassword, data[0].s_password)) {
+          console.log("wrong student pass")
+          if (this.state.isLoginRejectOpen === false) {
+            this.toogleLoginRejectModal()
+          }
+          this.toggleLoginModal()
+        }
+         else {
 
           //store studenet info into session storage
           sessionStorage.setItem('s_id', data[0].s_id);
@@ -312,7 +372,12 @@ class Start extends Component {
           sessionStorage.setItem('s_ratings', data[0].s_ratings);
           sessionStorage.setItem('s_pnum', data[0].s_pnum);
           sessionStorage.setItem('s_email', data[0].s_email);
+          sessionStorage.setItem('s_password', data[0].s_password);
 
+          sessionStorage.setItem('account_type', 'student');    
+
+          //store tutor info
+          //this.getMatches();
 
           console.log(sessionStorage.getItem('s_name'));
 
@@ -332,6 +397,10 @@ class Start extends Component {
 
     onTutorLoginFormSubmit = (e) => {
       e.preventDefault();
+      let formResults = {
+        id: this.state.userID,
+        password: this.state.userPassword
+      }
       let id = this.state.userID
       this.tutorLogin(id)
     };
@@ -347,13 +416,19 @@ class Start extends Component {
         console.log("reach this point")
         console.log(data)
         if (data.length === 0) {
-          if (this.state.isLoginRejectOpen === false) {
-            this.toogleLoginRejectModal()
+          if (this.state.isTutorLoginRejectOpen === false) {
+            this.toggleTutorLoginRejectModal()
           }
-          this.toggleLoginModal()
+          this.toggleTutorLoginModal()
+        } else if (!passwordHash.verify(this.state.userPassword, data[0].t_password)) {
+          console.log("wrong pass");
+          if (this.state.isTutorLoginRejectOpen === false) {
+            this.toggleTutorLoginRejectModal()
+          }
+          this.toggleTutorLoginModal()
         } else {
 
-          //store studenet info into local storage
+          //store tutor info into session storage
           sessionStorage.setItem('t_id', data[0].t_id);
           sessionStorage.setItem('t_name', data[0].t_name);
           sessionStorage.setItem('t_age', data[0].t_age);
@@ -365,7 +440,9 @@ class Start extends Component {
           sessionStorage.setItem('t_grade', data[0].t_grade);
           sessionStorage.setItem('t_email', data[0].t_email);
           sessionStorage.setItem('t_pnum', data[0].t_pnum);
-          
+          sessionStorage.setItem('t_password', data[0].t_password);    
+               
+          sessionStorage.setItem('account_type', "tutor");    
 
 
           console.log(sessionStorage.getItem('t_name'));
@@ -381,6 +458,38 @@ class Start extends Component {
         }
       });
     }
+
+
+    // function to get student's current matches
+  //   getMatches = () => {
+  //     let tutorIds = [];
+  //     console.log("getting matches");
+  //     let url = '/matches/show-tutor-matches/' + this.state.userID
+  //   fetch(url)
+  //   .then(res => res.json())
+  //   .then(matches => {
+      
+  //     for (let x of matches) {
+  //         tutorIds.push(x['t_id'])
+  //     }
+  //     //console.log('tutor ids: ' + tutorIds);
+  //     let myTutorMatches = []
+  //     for (let id of tutorIds)  {
+  //         for (let x of this.state.tutors) {
+  //             if (x['t_id'] == id) {
+  //                 myTutorMatches.push(x);
+  //                 break;
+  //             }
+  //         }
+  //     }
+  //     //console.log('tutor matches here: ' + myTutorMatches)
+  //     //now remove duplicates
+  //     let uniqueTutors = new Set(myTutorMatches);
+  //     let uniqueTutorMatches = [...uniqueTutors];
+  //     //console.log('unique tutors: ' + uniqueTutorMatches)
+  //     sessionStorage.setItem('current_matches', JSON.stringify(uniqueTutorMatches))
+  //   })
+  // }
 
 
   
@@ -455,6 +564,10 @@ class Start extends Component {
                                           <Label for="student_regi-email">Email</Label>
                                           <Input type="text" name="student_regi_email" id="student_regi-email"  onChange={e => this.handleRegiChange(e)} />
                                         </FormGroup>
+                                        <FormGroup>
+                                          <Label for="student_regi-password">Password</Label>
+                                          <Input type="text" name="student_regi_password" id="student_regi-password"  onChange={e => this.handleRegiChange(e)} />
+                                        </FormGroup>
                                         <Button type="submit">Submit</Button>
                                       </Form>
                                   </ModalBody>
@@ -505,6 +618,10 @@ class Start extends Component {
                                           <Label for="tutor_regi-email">Email</Label>
                                           <Input type="text" name="tutor_regi_email" id="tutor_regi-email"  onChange={e => this.handleRegiChange(e)} />
                                         </FormGroup>
+                                        <FormGroup>
+                                          <Label for="tutor_regi-password">Password</Label>
+                                          <Input type="text" name="tutor_regi_password" id="tutor_regi-password"  onChange={e => this.handleRegiChange(e)} />
+                                        </FormGroup>
                                         <Button type="submit">Submit</Button>
                                       </Form>
                                   </ModalBody>
@@ -535,6 +652,10 @@ class Start extends Component {
                                         <Label for="userID">Please enter your student ID</Label>
                                         <Input type="text" name="userID" id="userID" onChange={e => this.handleLoginChange(e)} />
                                       </FormGroup>
+                                      <FormGroup>
+                                        <Label for="userPassword">Please enter your password</Label>
+                                        <Input type="text" name="userPassword" id="userPassword" onChange={e => this.handleLoginChange(e)} />
+                                      </FormGroup>
                                       <Button color="primary" type="submit">Login</Button> {' '}
                                       <Button color="secondary" onClick={this.toggleLoginModal}>Cancel</Button>
                                     </Form>
@@ -555,6 +676,10 @@ class Start extends Component {
                                         <Label for="userID">Please enter your tutor ID</Label>
                                         <Input type="text" name="userID" id="userID" onChange={e => this.handleLoginChange(e)} />
                                       </FormGroup>
+                                      <FormGroup>
+                                        <Label for="userPassword">Please enter your password</Label>
+                                        <Input type="text" name="userPassword" id="userPassword" onChange={e => this.handleLoginChange(e)} />
+                                      </FormGroup>
                                       <Button color="primary" type="submit">Login</Button> {' '}
                                       <Button color="secondary" onClick={this.toggleTutorLoginModal}>Cancel</Button>
                                     </Form>
@@ -570,7 +695,7 @@ class Start extends Component {
                                 <Modal isOpen={this.state.isLoginRejectOpen} toggle={this.toogleLoginRejectModal}>
                                   <ModalHeader toggle={this.toogleLoginRejectModal}>Login Fail</ModalHeader>
                                   <ModalBody>
-                                    Sorry, the userID you entered is not valid. Please try again!
+                                    Sorry, the ID and password you entered do not match. Please try again!
                                   </ModalBody>
 
                                   <ModalFooter>
@@ -588,7 +713,7 @@ class Start extends Component {
                                 <Modal isOpen={this.state.isTutorLoginRejectOpen} toggle={this.toggleTutorLoginRejectModal}>
                                   <ModalHeader toggle={this.toggleTutorLoginRejectModal}>Login Fail</ModalHeader>
                                   <ModalBody>
-                                    Sorry, the tutor ID you entered is not valid. Please try again!
+                                    Sorry, the ID and password you entered do not match. Please try again!
                                   </ModalBody>
 
                                   <ModalFooter>
@@ -614,6 +739,23 @@ class Start extends Component {
                                         color="primary" 
                                         onClick={this.toggleRegiErrorModal}
                                         >Fix It
+                                      </Button>
+                                  </ModalFooter>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isSuccessfulRegiModalOpen} toggle={this.toggleSuccessfulRegiModal}>
+                                  <ModalHeader toggle={this.toggleSuccessfulRegiModal}>Your account has been created!</ModalHeader>
+                                  <ModalBody>
+                                    Your ID is {this.state.newID}  {'. '}
+                                    Please record it as you will need it to login in the future.
+                                    You will be redirected to your account homepage.  
+                                  </ModalBody>
+
+                                  <ModalFooter>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.toggleSuccessfulRegiModal}
+                                        >Let's go!
                                       </Button>
                                   </ModalFooter>
                                 </Modal>

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 //create new db schema
-var testSchema = new mongoose.Schema({
+var additionSchema = new mongoose.Schema({
     link: String,
     major: String,
     level: String,
@@ -9,4 +9,4 @@ var testSchema = new mongoose.Schema({
 });
 
 //export model
-module.exports = mongoose.model("Test", testSchema);
+module.exports = mongoose.model("Addition", additionSchema);

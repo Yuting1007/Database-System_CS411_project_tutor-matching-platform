@@ -29,6 +29,7 @@ class StudentHome extends Component {
 
         this.state = {
             s_name: sessionStorage.getItem('s_name') + '!',
+            s_id: sessionStorage.getItem('s_id'),
             redirect_settings: false,
             redirect_settings_link: '/settings'
         };
@@ -57,28 +58,50 @@ class StudentHome extends Component {
         }
         
         return (
-            <div>
+            <React.Fragment>
+            
+                <div>
+                    <p>  eduFY</p>
+                    <Nav tabs>
+                        <NavItem>
+                        <NavLink href="/student/home">Home</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/matches">Matches</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink href="/settings">Settings</NavLink>
+                        </NavItem>
+                    </Nav>
+                    <Jumbotron>
+                        <Container>
+                            <Row>
+                                <Col>
+                                    <h1>Welcome, {this.state.s_name}</h1>
+                                    <p>
+                                        Your student ID is {this.state.s_id}
+                                    </p>
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Jumbotron>
+                </div>
+
+                <div>
                 <Jumbotron>
                     <Container>
                         <Row>
                             <Col>
-                                <h1>Welcome, {this.state.s_name}</h1>
-                                <p>
-                                    <Button onClick={this.onMatchButtonClick}>Matches</Button>
-
-                                </p>
-                            </Col>
-
-                            
-                            <Col>
-                                <Button color="primary" size="sm" onClick={this.redirectToSetting}>
-                                    Settings
-                                </Button>                                 
+                            <p>
+                                <Button color="primary" size="lg" onClick={this.onMatchButtonClick} block>Matches</Button>
+                            </p>
+                                
                             </Col>
                         </Row>
                     </Container>
                 </Jumbotron>
-            </div>
+                </div>
+            </React.Fragment>
         );
     }
 }
