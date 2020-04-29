@@ -141,6 +141,108 @@ router.post('/match-check', (req, res) => {
   })
 })
 
+router.post('/recommend', (req, res) => {
+  console.log("Trying to fetch recommendations...")
+  const preference_major = req.body.formResults.preference_major;
+  const preference_edu_level = req.body.formResults.preference_edu_level;
+  const preference_gender = req.body.formResults.preference_gender;
+  const preference_rating = req.body.formResults.preference_rating
+  const preference_pastEx = req.body.formResults.preference_pastEx;
+
+
+  console.log("form result major is: " + preference_major)
+  console.log("form result edu_level is: " + preference_edu_level)
+  console.log("form result gender is: " + preference_gender)
+
+  let condition_major = '';
+  let condition_edu_level = '';
+  let condition_gender = '';
+  let condition_rating = '';
+
+  if (preference_pastEx === 'No') {
+
+    // Fill in select conditions without JOIN
+    if (preference_major != 'None') {
+      condition_major = ' AND t_major = ' + "'" + preference_major + "'" ;
+    }
+  
+    if (preference_edu_level != 'None') {
+      condition_edu_level = ' AND t_edu_level = ' + "'" + preference_edu_level + "'";
+    }
+  
+    if (preference_gender != 'None') {
+      condition_gender = ' AND t_gender = ' + "'" + preference_gender + "'";
+    }
+  
+    if (preference_rating != 'None') {
+      condition_rating = ' WHERE t_ratings >= ' + preference_rating;
+    } else {
+      condition_rating = ' WHERE t_ratings >= -999999';
+    }
+
+    const queryString = 'SELECT * FROM tutors' + condition_rating + condition_edu_level + condition_gender + condition_major
+    console.log("sql query is: " + queryString)
+
+    getConnection().query(queryString, (err, results, fields) => {
+        if (err) {
+            console.log("Failed to get recommendation: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('trying to get recommendations')
+        console.log(results)
+        res.json(results)
+    })
+  } else {
+
+    // fill in select condition with JOIN
+    if (preference_major != 'None') {
+      condition_major = ' AND t.t_major = ' + "'" + preference_major + "'" ;
+    }
+  
+    if (preference_edu_level != 'None') {
+      condition_edu_level = ' AND t.t_edu_level = ' + "'" + preference_edu_level + "'";
+    }
+  
+    if (preference_gender != 'None') {
+      condition_gender = ' AND t.t_gender = ' + "'" + preference_gender + "'";
+    }
+  
+    if (preference_rating != 'None') {
+      condition_rating = ' AND t.t_ratings >= ' + preference_rating;
+    }
+
+    /* When we consider student's match history in the recommendation, we only consider the tutors 
+      that have been matched with the student more than once, under the assumption that a repeated
+      match implies that previous matches are enjoyable. */
+    const queryString = 'SELECT t.t_id, t.t_name, t.t_major, t.t_email, t.t_pnum, t.t_edu_level, t.t_ratings ' +  
+                        'FROM tutors t JOIN (SELECT t_id, COUNT(m_id) AS count_mID ' + 
+                                            'FROM student_history ' + 
+                                            'GROUP BY t_id ' + 
+                                            'HAVING COUNT(m_id) > 1) ' + 
+                                            'AS candidates ON t.t_id = candidates.t_id ' + 
+                                            condition_major + condition_edu_level + condition_gender + condition_rating + 
+                        ' ORDER BY candidates.count_mID DESC, t.t_ratings DESC'
+
+
+
+    console.log("query is: " + queryString)
+
+    getConnection().query(queryString, (err, results, fields) => {
+        if (err) {
+            console.log("Failed to get recommendation: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('trying to get recommendations')
+        console.log(results)
+        res.json(results)
+    })
+  }
+})
+
 router.post('/match-insertHistory', (req, res) => {
   console.log("Trying to insert a match into history...")
   const s_id = parseInt(req.body.newMatch.s_id);

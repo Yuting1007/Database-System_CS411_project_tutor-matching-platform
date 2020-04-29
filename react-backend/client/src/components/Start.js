@@ -376,8 +376,11 @@ class Start extends Component {
 
           sessionStorage.setItem('account_type', 'student');    
 
-          //store tutor info
-          //this.getMatches();
+          //user preference (students to tutors)
+          sessionStorage.setItem('preference_gender', data[0].preference_gender);  
+          sessionStorage.setItem('preference_major', data[0].preference_major);  
+          sessionStorage.setItem('preference_edu_level', data[0].preference_edu_level);  
+          sessionStorage.setItem('preference_pastEx', data[0].preference_pastEx);  
 
           console.log(sessionStorage.getItem('s_name'));
 

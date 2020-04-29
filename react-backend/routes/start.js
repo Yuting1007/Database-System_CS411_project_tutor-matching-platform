@@ -83,7 +83,7 @@ router.post('/tutor-create', (req, res) => {
     const password = req.body.formResults.hashedPassword;
 
     
-    const queryString = 'INSERT INTO tutors (t_name, t_age, t_location, t_gender, t_edu_level, t_grade, t_major, t_email, t_pnum, t_password, t_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 5)'
+    const queryString = 'INSERT INTO tutors (t_name, t_age, t_location, t_gender, t_edu_level, t_grade, t_major, t_email, t_pnum, t_password, t_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)'
     
     getConnection().query(queryString, [name, age, location, gender, edu_level, grade, major, email, pnum, password], (err, results, fields) => {
         
@@ -112,7 +112,7 @@ router.post('/student-create', (req, res) => {
   const password = req.body.formResults.hashedPassword;
 
   
-  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum, s_password,  s_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, 5)'
+  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum, s_password,  s_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, 0)'
   
   getConnection().query(queryString, [name, age, location, gender, email, pnum, password], (err, results, fields) => {
       if (err) {
