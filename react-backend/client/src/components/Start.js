@@ -242,7 +242,7 @@ class Start extends Component {
         gender: this.state.tutor_regi_gender,
         grade: this.state.tutor_regi_grade,
         edu_level: this.state.tutor_regi_edu_level,
-        major: this.state.tutor_regi_major,
+        major: this.state.tutor_regi_major.toLowerCase(),
         email: this.state.tutor_regi_email,
         pnum: this.state.tutor_regi_pnum,
 
@@ -259,20 +259,11 @@ class Start extends Component {
       } else if (formResults.age === '' || parseInt(formResults.age) <= 0) {
         this.state.error_message = 'Invalid Age!'
         this.toggleRegiErrorModal()
-      } else if (formResults.gender === '') {
-        this.state.error_message = 'Gender field cannot be empty!'
-        this.toggleRegiErrorModal()
-      } else if (formResults.location === '') {
+      }  else if (formResults.location === '') {
         this.state.error_message = 'Location field cannot be empty!'
         this.toggleRegiErrorModal()
-      } else if (formResults.grade === '') {
-        this.state.error_message = 'Grade field cannot be empty!'
-        this.toggleRegiErrorModal()
-      } else if (formResults.major === '') {
+      }  else if (formResults.major === '') {
         this.state.error_message = 'Major field cannot be empty!'
-        this.toggleRegiErrorModal()
-      } else if (formResults.edu_level === '') {
-        this.state.error_message = 'Education Level field cannot be empty!'
         this.toggleRegiErrorModal()
       } else if (formResults.pnum === '') {
         this.state.error_message = 'Education Level field cannot be empty!'
@@ -438,7 +429,7 @@ class Start extends Component {
           sessionStorage.setItem('t_location', data[0].t_location);
           sessionStorage.setItem('t_gender', data[0].t_gender);
           sessionStorage.setItem('t_ratings', data[0].t_ratings);
-          sessionStorage.setItem('t_major', data[0].t_major);
+          sessionStorage.setItem('t_major', data[0].t_major.toLowerCase());
           sessionStorage.setItem('t_edu_level', data[0].t_edu_level);
           sessionStorage.setItem('t_grade', data[0].t_grade);
           sessionStorage.setItem('t_email', data[0].t_email);
@@ -557,7 +548,12 @@ class Start extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="student_regi-gender">Gender</Label>
-                                          <Input type="text" name="student_regi_gender" id="student_regi-gender"  onChange={e => this.handleRegiChange(e)} />
+                                          <select value = {this.state.value} onChange = {e=> this.handleRegiChange(e)}>
+                                          <option value="N">None</option>
+                                          <option value="Male">Male</option>
+                                          <option value="Female">Female</option>
+                                          <option value="Other">Other</option>
+                                          </select>
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="student_regi-pnum">Phone Number</Label>
@@ -599,15 +595,35 @@ class Start extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="tutor_regi-gender">Gender</Label>
-                                          <Input type="text" name="tutor_regi_gender" id="tutor_regi-gender"  onChange={e => this.handleRegiChange(e)} />
+                                          <select value = {this.state.value} onChange = {e=> this.handleRegiChange(e)}>
+                                          <option value="None">None</option>
+                                          <option value="Male">Male</option>
+                                          <option value="Female">Female</option>
+                                          <option value="Other">Other</option>
+                                          
+                                          </select>
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="tutor_regi-edu_level">Education Level</Label>
-                                          <Input type="text" name="tutor_regi_edu_level" id="tutor_regi-edu_level"  onChange={e => this.handleRegiChange(e)} />
+                                          <select value = {this.state.value} onChange = {e=> this.handleRegiChange(e)}>
+                                          <option value="Elem">Elementary School</option>
+                                          <option value="Mid">Middle School</option>
+                                          <option value="HS">High School</option>
+                                          <option value="College">College</option>
+                                          <option value="Master">Master</option>
+                                          <option value="PHD">PHD</option>
+                                          </select>
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="tutor_regi-grade">Your average grade</Label>
-                                          <Input type="text" name="tutor_regi_grade" id="tutor_regi-grade"  onChange={e => this.handleRegiChange(e)} />
+                                          <select value = {this.state.value} onChange = {e=> this.handleRegiChange(e)}>
+                                          <option value="0">0-2 </option>
+                                          <option value="1">2.5-3</option>
+                                          <option value="2">3-3.3</option>
+                                          <option value="3">3.3-3.6</option>
+                                          <option value="4">3.6-3.9</option>
+                                          <option value="5">3.9-4</option>
+                                          </select>
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="tutor_regi-major">Major/Profession</Label>
