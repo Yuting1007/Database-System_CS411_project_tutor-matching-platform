@@ -8,7 +8,7 @@ router.get("/", function(req, res){
        if(err){
            console.log(err);
        } else {
-          res.render("addition/index",{infos:allInfos});
+          res.render('addition',{title:'Aditional Information', infos:allInfos});
        }
     });
 });
