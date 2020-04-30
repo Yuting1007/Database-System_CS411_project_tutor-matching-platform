@@ -53,22 +53,22 @@ app.use('/addition', additionRouter);
 //app.use('/home', homeRouter);
 
 //code for testing wether we connecting to MongoDB
-Addition.create(
-     {
-         link: "https://www.reddit.com/r/UIUC/comments/9iha41/cs_411_with_abdu_alawini/", 
-         major: "Computer Science",
-         level: "400", 
-         course: "411"
+// Addition.create(
+//      {
+//          link: "https://www.reddit.com/r/UIUC/comments/9iha41/cs_411_with_abdu_alawini/", 
+//          major: "Computer Science",
+//          level: "400", 
+//          course: "411"
          
-     },
-     function(err, info){
-      if(err){
-          console.log(err);
-      } else {
-          console.log("NEWLY CREATED info: ");
-          console.log(info);
-      }
-    });
+//      },
+//      function(err, info){
+//       if(err){
+//           console.log(err);
+//       } else {
+//           console.log("NEWLY CREATED info: ");
+//           console.log(info);
+//       }
+//     });
 
 // Addition.find({}, function(err, info){
 //     if(err){
