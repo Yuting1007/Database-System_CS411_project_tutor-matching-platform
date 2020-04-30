@@ -43,17 +43,36 @@ class StudentHome extends Component {
 
             //recommendation
             rec_tutors: [],
-            isRecommendListModalOpen: false
+            isRecommendListModalOpen: false,
+            userID: sessionStorage.getItem("s_id"),
+
+            //confirmation
+            isMatchAckModalOpen: false,
+            isMatchExistAckModalOpen: false
         };
         this.onMatchButtonClick = this.onMatchButtonClick.bind();
         this.togglePreferenceModal = this.togglePreferenceModal.bind();
         this.toggleRecommendListModal = this.toggleRecommendListModal.bind();
+        this.toggleMatchExistAckModal = this.toggleMatchExistAckModal.bind();
+        this.toggleMatchAckModal = this.toggleMatchAckModal.bind();
     }
 
     //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
+    }
+
+    toggleMatchAckModal = () => {
+        this.setState({
+            isMatchAckModalOpen: !this.state.isMatchAckModalOpen
+        })
+    }
+
+    toggleMatchExistAckModal = () => {
+        this.setState({
+            isMatchExistAckModalOpen: !this.state.isMatchExistAckModalOpen
+        })
     }
 
     toggleRecommendListModal = () => {
@@ -116,6 +135,60 @@ class StudentHome extends Component {
             this.toggleRecommendListModal();
         });
     }
+
+    onStudentToTutorMatchClick = (e) => {
+        // console.log("click");
+        console.log(e.target.id);
+        console.log(this.state.userID)
+        // should first check if match exists !!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+
+        let newMatch = {
+            t_id: e.target.id,
+            s_id: this.state.userID,
+            m_s_like: 1,
+            m_t_like: 0
+           }
+        console.log(newMatch)
+           
+        //POST req here
+        const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({newMatch})
+        };
+
+        //check for existing matches
+        fetch('/matches/match-check', requestOptions)
+        .then(res => res.json())      
+        .then(data => {
+            console.log("reach this point")
+            console.log(data)
+            if (data.length === 0) {
+                this.toggleMatchAckModal();
+                //this.matchStudentToTutor(requestOptions)
+                fetch('/matches/match-create', requestOptions);
+            } else {
+                console.log("already exists")
+                this.toggleMatchExistAckModal();
+            }
+        });
+        console.log("tutorMatches: " +this.state.tutorMatches)
+    };
+
+    doneRecommendation = () => {
+        if (this.state.isRecommendListModalOpen === true) {
+            this.toggleRecommendListModal()
+        }
+        if (this.state.isPreferenceModalOpen === true) {
+            this.togglePreferenceModal()
+        }
+    }
+
+    searchAdditionalResource = () => {
+
+    }
+
 
     render() {
         if (this.state.redirect_settings) {
@@ -253,12 +326,32 @@ class StudentHome extends Component {
                                   </ModalBody>
 
                                   <ModalFooter>
+                                      Not satisfied with you what see? Try additional resources -->
                                       <Button 
                                         color="primary" 
-                                        onClick={this.toggleRecommendListModal}
+                                        onClick={this.searchAdditionalResource}
+                                        >Additional Resources
+                                      </Button>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.doneRecommendation}
                                         >Done
                                       </Button>
                                   </ModalFooter>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isMatchExistAckModalOpen} toggle={this.toggleMatchExistAckModal} >
+                                    <ModalHeader toggle={this.toggleMatchExistAckModal}>You are already matched with this tutor! See your matched tutors in the match page</ModalHeader>
+                                    <ModalBody>
+                                        <Button color="primary" onClick={this.toggleMatchExistAckModal} type="submit">Got It</Button> {' '}
+                                    </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isMatchAckModalOpen} toggle={this.toggleMatchAckModal} >
+                                    <ModalHeader toggle={this.toggleMatchAckModal}>You are matched with the tutor! Go to the match page to see all your tutors.</ModalHeader>
+                                    <ModalBody>
+                                        <Button color="primary" onClick={this.toggleMatchAckModal} type="submit">Got It</Button> {' '}
+                                    </ModalBody>
                                 </Modal>
                     </Container>
                 </Jumbotron>
