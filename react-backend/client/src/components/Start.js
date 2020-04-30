@@ -185,10 +185,7 @@ class Start extends Component {
       } else if (formResults.age === '' || parseInt(formResults.age) <= 0) {
         this.state.error_message = 'Invalid Age!'
         this.toggleRegiErrorModal()
-      } else if (formResults.gender === '') {
-        this.state.error_message = 'Gender field cannot be empty!'
-        this.toggleRegiErrorModal()
-      } else if (formResults.location === '') {
+      }  else if (formResults.location === '') {
         this.state.error_message = 'Location field cannot be empty!'
         this.toggleRegiErrorModal()
       } else if (formResults.email === '') {
@@ -548,12 +545,12 @@ class Start extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="student_regi-gender">Gender</Label>
-                                          <select value = {this.state.value} onChange = {e=> this.handleRegiChange(e)}>
-                                          <option value="N">None</option>
-                                          <option value="Male">Male</option>
-                                          <option value="Female">Female</option>
-                                          <option value="Other">Other</option>
-                                          </select>
+                                          <Input type="select" name="student_regi-gender" id="student_regi-gender" onChange={e => this.handleRegiChange(e)}>
+                                        <option>None</option>
+                                        <option>Female</option>
+                                        <option>Male</option>
+                                        <option>Other</option>
+                                    </Input>
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="student_regi-pnum">Phone Number</Label>
@@ -595,35 +592,34 @@ class Start extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="tutor_regi-gender">Gender</Label>
-                                          <select value = {this.state.value} onChange = {e=> this.handleRegiChange(e)}>
-                                          <option value="None">None</option>
-                                          <option value="Male">Male</option>
-                                          <option value="Female">Female</option>
-                                          <option value="Other">Other</option>
-                                          
-                                          </select>
+                                          <Input type="select" name="tutor_regi_gender" id="tutor_regi_gender" onChange={e => this.handleRegiChange(e)}>
+                                        <option>None</option>
+                                        <option>Female</option>
+                                        <option>Male</option>
+                                        <option>Other</option>
+                                    </Input>
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="tutor_regi-edu_level">Education Level</Label>
-                                          <select value = {this.state.value} onChange = {e=> this.handleRegiChange(e)}>
-                                          <option value="Elem">Elementary School</option>
-                                          <option value="Mid">Middle School</option>
-                                          <option value="HS">High School</option>
+                                          <Input type="select" name="tutor_regi_edu_level" id="tutor_regi_edu_level" onChange={e => this.handleRegiChange(e)}>
+                                          <option value="Elementary School">Elementary School</option>
+                                          <option value="Middle School">Middle School</option>
+                                          <option value="High School">High School</option>
                                           <option value="College">College</option>
                                           <option value="Master">Master</option>
                                           <option value="PHD">PHD</option>
-                                          </select>
+                                          </Input>
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="tutor_regi-grade">Your average grade</Label>
-                                          <select value = {this.state.value} onChange = {e=> this.handleRegiChange(e)}>
-                                          <option value="0">0-2 </option>
-                                          <option value="1">2.5-3</option>
-                                          <option value="2">3-3.3</option>
-                                          <option value="3">3.3-3.6</option>
-                                          <option value="4">3.6-3.9</option>
-                                          <option value="5">3.9-4</option>
-                                          </select>
+                                          <Input type="select" name="tutor_regi_grade" id="tutor_regi_grade" onChange={e => this.handleRegiChange(e)}>
+                                          <option value="0-2">0-2 </option>
+                                          <option value="2.5-3">2.5-3</option>
+                                          <option value="3-3.3">3-3.3</option>
+                                          <option value="3.3-3.6">3.3-3.6</option>
+                                          <option value="3.6-3.9">3.6-3.9</option>
+                                          <option value="3.9-4">3.9-4</option>
+                                          </Input>
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="tutor_regi-major">Major/Profession</Label>
