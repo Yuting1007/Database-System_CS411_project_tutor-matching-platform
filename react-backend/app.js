@@ -35,17 +35,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//app.use(express.static(path.join(__dirname, 'public')));  THIS IS THE ORIGINAL
+app.use(express.static(path.join(__dirname, 'public')));  //THIS IS THE ORIGINAL
 
-// ================================= ADDITIONAL PORTION BEGIN =====================================
-// Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, '../client/build')))
+// // ================================= ADDITIONAL PORTION BEGIN =====================================
+// // Serve static files from the React frontend app
+// app.use(express.static(path.join(__dirname, '../client/build')))
 
-// AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../client/build/index.html'))
-})
-// ======================================== ADDITIONAL PORTION END =====================================
+// // AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname + '/../client/build/index.html'))
+// })
+// // ======================================== ADDITIONAL PORTION END =====================================
 
 
 
