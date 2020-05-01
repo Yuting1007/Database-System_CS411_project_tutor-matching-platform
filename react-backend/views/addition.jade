@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h1= title
+    #infos
+    - each info in infos
+      div.info
+        div.link= info.link
+        div.major= info.major
+        div.level= info.level
+        div.course= info.course
+    
+      
+
+     
+
