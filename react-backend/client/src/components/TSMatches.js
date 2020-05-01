@@ -159,7 +159,7 @@ class TSMatches extends Component {
 
         //Third, delete from matches table
         let deleteTarget = e.target.id;
-        let url = '/matches/delete/' + this.state.userID + '/' + deleteTarget;
+        let url = '/matches/delete/' + deleteTarget + '/' + this.state.userID;
         fetch(url);
         this.toggleDeleteMatchAcknowedgeModal();        
     }
@@ -282,13 +282,13 @@ class TSMatches extends Component {
                 <p>eduFY</p>
                     <Nav tabs>
                         <NavItem>
-                        <NavLink href="/student/home">Home</NavLink>
+                        <NavLink href="/tutor/home">Home</NavLink>
                         </NavItem>
                         <NavItem>
-                        <NavLink href="/matches">Matches</NavLink>
+                        <NavLink href="/tsmatches">Matches</NavLink>
                         </NavItem>
                         <NavItem>
-                        <NavLink href="/settings">Settings</NavLink>
+                        <NavLink href="/tutor-settings">Settings</NavLink>
                         </NavItem>
                     </Nav>
                 <Jumbotron>
