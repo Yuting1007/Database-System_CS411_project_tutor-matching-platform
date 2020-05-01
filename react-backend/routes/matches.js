@@ -9,7 +9,7 @@ function getConnection() {
         user: 'root',
         password: 'password', // PUT your own password here whatever it is locally
         database: '411project',
-       // port: 3307
+        //port: 3307
         port: 3306
         //insecureAuth : true
       })
@@ -75,6 +75,32 @@ router.get('/show-tutor-matches/:id', (req, res) => {
   
     //res.end()
   })
+
+
+    ////
+// GET request that returns s_id of all students a tutor has liked
+////
+router.get('/show-student-matches/:id', (req, res) => {
+  console.log("Fetching student with id: " + req.params.id)
+
+  const connection = getConnection();
+
+  const userId = req.params.id;
+  const queryString = "SELECT s_id FROM matches WHERE t_id = ?";
+  connection.query(queryString, [userId], (err, rows, fields) => {
+    if (err) {
+      console.log("Failed to query for student: " + err);
+      res.sendStatus(500);
+      return;
+    }
+
+    console.log("Fetched student matches successfully")
+    console.log(rows)
+    res.json(rows)
+  })
+
+  //res.end()
+})
 
   //delete match
 router.get('/delete/:s_id/:t_id', (req, res) => {
