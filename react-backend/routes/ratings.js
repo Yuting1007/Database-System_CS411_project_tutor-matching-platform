@@ -40,11 +40,40 @@ router.post('/update-tutor-rating/:t_id/:amount', (req, res) => {
             return
         }
 
-        console.log('Update a tutors age')
+        console.log('Updated a tutor rating')
         res.end()
     })
 });
 
+
+// STUDENT SECTION  (TUTOR votes on STUDENT)======================================================
+//==============================================================================================
+
+
+//update score ==========================================================
+router.post('/update-student-rating/:s_id/:amount', (req, res) => {
+    console.log("Trying to update a student's rating...")
+    
+    const amount = parseInt(req.params.amount);
+    const id = parseInt(req.params.s_id);
+    //const age = parseInt(req.body.formResults.age);
+    console.log('id: ' + id)
+    console.log('amount: ' +amount)
+
+    const queryString = 'UPDATE students SET s_ratings = ? WHERE s_id = ?'
+
+    
+    getConnection().query(queryString, [amount, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Updated a student rating')
+        res.end()
+    })
+});
 
 
 
