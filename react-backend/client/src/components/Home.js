@@ -22,6 +22,8 @@ import {
     useHistory,
     Redirect
   } from "react-router-dom";
+  var passwordHash = require('password-hash');
+
 
 class StudentHome extends Component {
     constructor(props) {
@@ -35,6 +37,7 @@ class StudentHome extends Component {
             redirect_settings_link: '/settings', 
             isPreferenceModalOpen: false,
             isEditPasswordOpen: false,
+            isEditPasswordFailureOpen: false,
 
             //preference info
             preference_major: 'None',
@@ -51,7 +54,7 @@ class StudentHome extends Component {
         this.togglePreferenceModal = this.togglePreferenceModal.bind();
         this.toggleRecommendListModal = this.toggleRecommendListModal.bind();
         this.toggleEditPassword = this.toggleEditPassword.bind();
-        this.EditPasswordFailure = this.EditPasswordFailure();
+        this.EditPasswordFailure = this.EditPasswordFailure.bind();
 
         
     }
@@ -60,6 +63,7 @@ class StudentHome extends Component {
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
+        this.state.s_password = sessionStorage.getItem('s_password')
     }
 
     toggleRecommendListModal = () => {
@@ -86,7 +90,7 @@ class StudentHome extends Component {
     
     EditPasswordFailure = () => {
         this.setState({
-            EditPasswordFailure: !this.state.EditPasswordFailure
+            isEditPasswordFailureOpen: !this.state.isEditPasswordFailureOpen
         })
       }
   
@@ -108,20 +112,26 @@ class StudentHome extends Component {
         e.preventDefault();
         let formResults = {
             old_password: this.state.old_password,
-            new_password: this.state.new_password
-
+            new_password: this.state.new_password,
+           
         }
-        console.log(formResults)
-        if(formResults.old_password === "k"){
-            this.state.error_message = 'Old passwords do not match!'
+        
+       // console.log(formResults)
+       if (!passwordHash.verify(formResults.old_password, this.state.s_password)){
+        this.state.error_message = 'Old passwords do not match!'    
+        this.EditPasswordFailure()
+       }
+       else{
+
+       }
+       // if(formResults.old_password != this.state.oldPassHash){
+         //   this.state.error_message = 'Old passwords do not match!'
+            
+           // this.EditPasswordFailure()
            
                 
-        }
-        if(formResults.new_password === "k"){
-            this.state.error_message = 'New passwords do not match!'
-            this.toggleEditPassword()
-                
-        }
+        //}
+       
 
     };
 
@@ -236,6 +246,20 @@ class StudentHome extends Component {
                                     <Button color="primary" type="submit">Submit password change</Button> {' '}
                                 </Form>
                             </ModalBody>
+                        </Modal>
+
+                        <Modal isOpen = {this.state.isEditPasswordFailureOpen} toggle = {this.EditPasswordFailure}>
+                            <ModalHeader> toggle = {this.EditPasswordFailure} >Password match failure</ModalHeader>
+                            <ModalBody>
+                                {this.state.old_password}
+                            </ModalBody>
+                            <ModalFooter>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.EditPasswordFailure}
+                                        >
+                                      </Button>
+                                  </ModalFooter>
                         </Modal>
 
                         <Modal isOpen={this.state.isPreferenceModalOpen} toggle={this.togglePreferenceModal} >
