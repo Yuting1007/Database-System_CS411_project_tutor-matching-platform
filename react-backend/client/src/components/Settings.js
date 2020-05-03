@@ -110,6 +110,9 @@ EditPasswordFailure = () => {
   EditPasswordSuccess = () => {
       this.setState({
           isEditPassWordSuccessOpen: !this.state.isEditPassWordSuccessOpen
+
+
+          
       })
   }
   editPassWordButton = (e) => {
