@@ -146,18 +146,19 @@ router.post('/update-email', (req, res) => {
 });
 
 //update Phone Number ==============================================================
-router.post('/update-pnum', (req, res) => {
+
+router.post('', (req, res) => {
+    
     console.log("Trying to update a pnum...")
     console.log(typeof req.body.formResults.pnum)
     console.log(req.body)
     const pnum = req.body.formResults.pnum;
     const id = req.body.formResults.id;
-    //const age = parseInt(req.body.formResults.age);
-    //const location = req.body.formResults.location;
+  
 
     const queryString = 'UPDATE students SET s_pnum = ? WHERE s_id = ?'
 
-    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
     
     getConnection().query(queryString, [pnum, id], (err, results, fields) => {
         if (err) {
@@ -171,27 +172,32 @@ router.post('/update-pnum', (req, res) => {
     })
 });
 
+//update password 
 
-//delete account
-router.get('/delete/:id', (req, res) => {
-    console.log("Deleting user with id: " + req.params.id)
-  
-    const connection = getConnection();
-  
-    const userId = req.params.id;
-    const queryString = "DELETE FROM students WHERE s_id = ?";
-    connection.query(queryString, [userId], (err, rows, fields) => {
-      if (err) {
-        console.log("Failed to query for student: " + err);
-        res.sendStatus(500);
-        return;
-      }
-  
-      console.log("I think we fetched users successfully")
-      console.log(rows)
-      res.json(rows)
+router.post('/update-password', (req, res) => {
+    console.log("Trying to update a password!...")
+    console.log(typeof req.body.formResults.HashedPassword)
+    console.log(req.body)
+    const Hash = req.body.formResults.Hash;
+    const id = req.body.formResults.id;
+
+    const queryString = 'UPDATE students SET s_password = ? WHERE s_id = ?'
+
+ 
+    
+    getConnection().query(queryString, [Hash, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student password')
+       
+        res.end()
+        
     })
-})
+});
 
 
 // TUTOR SECTION =============================================================================
@@ -370,6 +376,30 @@ router.post('/tutor-update-major', (req, res) => {
         }
 
         console.log('Update a tutor major')
+        res.end()
+    })
+});
+
+router.post('/tutor-update-password', (req, res) => {
+    console.log("Trying to update password")
+    console.log(typeof req.body.formResults.HashedPassword)
+    console.log(req.body)
+    const Hash = req.body.formResults.Hash;
+    const id = req.body.formResults.id;
+    
+
+    const queryString = 'UPDATE tutors SET t_password = ? WHERE t_id = ?'
+
+    
+    
+    getConnection().query(queryString, [Hash, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update tutor password')
         res.end()
     })
 });
