@@ -226,7 +226,7 @@ class StudentHome extends Component {
             addi_pre_level: this.state.addi_pre_level,
             addi_pre_major: this.state.addi_pre_major,
         }
-
+        
         if (formResults.addi_pre_major === '') {
             this.state.error_message = 'Major field cannot be empty!'
             this.toggleAddiFormErrorModal()
