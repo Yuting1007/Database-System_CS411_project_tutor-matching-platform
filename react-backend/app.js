@@ -35,7 +35,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));  //THIS IS THE ORIGINAL
+//app.use(express.static(path.join(__dirname, 'public')));  //THIS IS THE ORIGINAL
+app.use('/', express.static(path.join(__dirname, '/client/build')));
 
 // // ================================= ADDITIONAL PORTION BEGIN =====================================
 // // Serve static files from the React frontend app
