@@ -49,6 +49,10 @@ class StudentHome extends Component {
             resources:[],
             isResourceListModalOpen: false,
 
+            //additional resource form error
+            error_message:'',
+            isAddiFormErrorModalOpen:false,
+
             //recommendation
             rec_tutors: [],
             isRecommendListModalOpen: false,
@@ -65,12 +69,19 @@ class StudentHome extends Component {
         this.toggleMatchAckModal = this.toggleMatchAckModal.bind();
         this.toggleAddiPrefModal = this.toggleAddiPrefModal.bind();
         this.toggleResourceListModal = this.toggleResourceListModal.bind();
+        this.toggleAddiFormErrorModal = this.toggleAddiFormErrorModal.bind();
     }
 
     //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
+    }
+
+    toggleAddiFormErrorModal = () => {
+        this.setState({
+            isAddiFormErrorModalOpen: !this.state.isAddiFormErrorModalOpen
+        })
     }
 
     toggleResourceListModal = () => {
@@ -216,22 +227,30 @@ class StudentHome extends Component {
             addi_pre_major: this.state.addi_pre_major,
         }
 
-        //POST req here
-        const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({formResults})
-        };
+        if (formResults.addi_pre_major === '') {
+            this.state.error_message = 'Major field cannot be empty!'
+            this.toggleAddiFormErrorModal()
+        } else if (formResults.addi_pre_course === '') {
+            this.state.error_message = 'Course field cannot be empty!'
+            this.toggleAddiFormErrorModal()
+        } else {
+            //POST req here
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({formResults})
+            };
 
-        fetch("/addition/get-resources", requestOptions)
-        .then(res => res.json())
-            //need to catch error somehow
-      
-        .then(resources => {
-            console.log(resources)
-            this.setState({ resources })
-            this.toggleResourceListModal();
-        });
+            fetch("/addition/get-resources", requestOptions)
+            .then(res => res.json())
+                //need to catch error somehow
+        
+            .then(resources => {
+                console.log(resources)
+                this.setState({ resources })
+                this.toggleResourceListModal();
+            });
+        }
     }
 
     clickLink = (e) => {
@@ -460,6 +479,21 @@ class StudentHome extends Component {
                                         color="primary" 
                                         onClick={this.toggleResourceListModal}
                                         >Done
+                                      </Button>
+                                  </ModalFooter>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isAddiFormErrorModalOpen} toggle={this.toggleAddiFormErrorModal}>
+                                  <ModalHeader toggle={this.toggleAddiFormErrorModal}>Invalid Information</ModalHeader>
+                                  <ModalBody>
+                                    {this.state.error_message}
+                                  </ModalBody>
+
+                                  <ModalFooter>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.toggleAddiFormErrorModal}
+                                        >Fix It
                                       </Button>
                                   </ModalFooter>
                                 </Modal>
