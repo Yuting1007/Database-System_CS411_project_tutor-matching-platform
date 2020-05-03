@@ -35,11 +35,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'public')));  //THIS IS THE ORIGINAL
+//app.use(express.static(path.join(__dirname, 'public')));  //THIS IS THE ORIGINAL
+
+//app.use('/', express.static(path.join(__dirname, '/client/build')));
 
 // // ================================= ADDITIONAL PORTION BEGIN =====================================
 // // Serve static files from the React frontend app
-// app.use(express.static(path.join(__dirname, '../client/build')))
+ app.use(express.static(path.join(__dirname, '../client/build')))
 
 // // AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
 // app.get('*', (req, res) => {
@@ -106,8 +108,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
-app.listen(3001, () => {
+const port = process.env.PORT || 3001
+app.listen(port, () => {
   console.log("Server is up and listening on 3001...")
 })
 
