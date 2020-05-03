@@ -79,7 +79,6 @@ router.post('/tutor-create', (req, res) => {
     const major = req.body.formResults.major;
     const email = req.body.formResults.email;
     const pnum = req.body.formResults.pnum;
-
     const password = req.body.formResults.hashedPassword;
 
     

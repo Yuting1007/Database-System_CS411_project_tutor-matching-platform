@@ -36,15 +36,14 @@ class StudentHome extends Component {
             redirect_settings: false,
             redirect_settings_link: '/settings', 
             isPreferenceModalOpen: false,
-            isEditPasswordOpen: false,
-            isEditPasswordFailureOpen: false,
-
+            
             //preference info
             preference_major: 'None',
             preference_edu_level: 'None',
             preference_gender: 'None',
             preference_pastEx: 'None',
             preference_rating: 'None',
+          
 
             //recommendation
             rec_tutors: [],
@@ -53,9 +52,7 @@ class StudentHome extends Component {
         this.onMatchButtonClick = this.onMatchButtonClick.bind();
         this.togglePreferenceModal = this.togglePreferenceModal.bind();
         this.toggleRecommendListModal = this.toggleRecommendListModal.bind();
-        this.toggleEditPassword = this.toggleEditPassword.bind();
-        this.EditPasswordFailure = this.EditPasswordFailure.bind();
-
+      
         
     }
 
@@ -63,7 +60,6 @@ class StudentHome extends Component {
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
-        this.state.s_password = sessionStorage.getItem('s_password')
     }
 
     toggleRecommendListModal = () => {
@@ -82,18 +78,13 @@ class StudentHome extends Component {
         this.props.history.push('/matches')
     }
 
-    toggleEditPassword = () => {
-            this.setState({
-                isEditPasswordOpen: !this.state.isEditPasswordOpen
-            })
-    }
-    
-    EditPasswordFailure = () => {
-        this.setState({
-            isEditPasswordFailureOpen: !this.state.isEditPasswordFailureOpen
-        })
-      }
+   
   
+      EditPasswordSuccess = () => {
+          this.setState({
+              isEditPassWordSuccessOpen: !this.state.isEditPassWordSuccessOpen
+          })
+      }
 
     redirectToSetting = () => {
         this.setState({
@@ -107,33 +98,7 @@ class StudentHome extends Component {
         })
     }
 
-    editPassWordButton = (e) => {
-        
-        e.preventDefault();
-        let formResults = {
-            old_password: this.state.old_password,
-            new_password: this.state.new_password,
-           
-        }
-        
-       // console.log(formResults)
-       if (!passwordHash.verify(formResults.old_password, this.state.s_password)){
-        this.state.error_message = 'Old passwords do not match!'    
-        this.EditPasswordFailure()
-       }
-       else{
-
-       }
-       // if(formResults.old_password != this.state.oldPassHash){
-         //   this.state.error_message = 'Old passwords do not match!'
-            
-           // this.EditPasswordFailure()
-           
-                
-        //}
        
-
-    };
 
     recommend = (e) => {
         e.preventDefault();
@@ -222,7 +187,6 @@ class StudentHome extends Component {
                             </p>
                             </Col>
                         </Row>
-                                <Button color="primary" size="lg" onClick={this.toggleEditPassword} block>Change password</Button>
                         <Row>
                             <Col>
                             <p>
@@ -231,36 +195,9 @@ class StudentHome extends Component {
                             </Col>
                         </Row>
 
-                        <Modal isOpen = {this.state.isEditPasswordOpen} toggle = {this.toggleEditPassword} >
-                            <ModalHeader toggle = {this.toggleEditPassword}>Change your password here.</ModalHeader>
-                            <ModalBody>
-                                <Form onSubmit = {this.editPassWordButton}>
-                                    <FormGroup>
-                                        <Label for="old_password">Enter current password</Label>
-                                        <Input type = "text" name ="old_password" id="old_password" onChange={e => this.handlePreferenceChange(e)}/>
-                                    </FormGroup>
-                                    <FormGroup>
-                                    <Label for="new_password">Enter new password: </Label>
-                                    <Input type="text" name="new_password" id="new_password" onChange={e => this.handlePreferenceChange(e)}/>
-                                    </FormGroup>
-                                    <Button color="primary" type="submit">Submit password change</Button> {' '}
-                                </Form>
-                            </ModalBody>
-                        </Modal>
+                        
 
-                        <Modal isOpen = {this.state.isEditPasswordFailureOpen} toggle = {this.EditPasswordFailure}>
-                            <ModalHeader> toggle = {this.EditPasswordFailure} >Password match failure</ModalHeader>
-                            <ModalBody>
-                                {this.state.old_password}
-                            </ModalBody>
-                            <ModalFooter>
-                                      <Button 
-                                        color="primary" 
-                                        onClick={this.EditPasswordFailure}
-                                        >
-                                      </Button>
-                                  </ModalFooter>
-                        </Modal>
+                        
 
                         <Modal isOpen={this.state.isPreferenceModalOpen} toggle={this.togglePreferenceModal} >
                             <ModalHeader toggle={this.togglePreferenceModal}>Fill out this preference list and click recommend!</ModalHeader>

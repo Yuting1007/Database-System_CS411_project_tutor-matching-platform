@@ -26,6 +26,7 @@ import {
   } from "react-router-dom";
 import '../css/Start.css'
 import Users from './Users';
+var passwordHash = require('password-hash');
 
 
 class TutorSetting extends Component {
@@ -44,6 +45,12 @@ class TutorSetting extends Component {
             isEditPnumModalOpen: false,
             isDeleteConfirmModalOpen: false,
             isLogoutConfirmModalOpen: false,
+            isEditPasswordOpen: false,
+            isEditPasswordFailureOpen: false,
+            isEditPassWordSuccessOpen: false,
+            old_password: ' ',
+            new_password: ' ',
+            Hash: ' ',
             
 
             //tutor info
@@ -58,6 +65,8 @@ class TutorSetting extends Component {
             t_edu_level: sessionStorage.getItem('t_edu_level'),
             t_email: sessionStorage.getItem('t_email'),
             t_pnum: sessionStorage.getItem('t_pnum'),
+            t_password: sessionStorage.getItem('t_password'),
+            
             
 
             //updated info
@@ -90,6 +99,10 @@ class TutorSetting extends Component {
         this.toggleEditMajorModal = this.toggleEditMajorModal.bind();
         this.toggleEditEmailModal = this.toggleEditEmailModal.bind();
         this.toggleEditPnumModal = this.toggleEditPnumModal.bind();
+        this.toggleEditPassword = this.toggleEditPassword.bind();
+        this.EditPasswordFailure = this.EditPasswordFailure.bind();
+        this.EditPasswordSuccess = this.EditPasswordSuccess.bind();
+       
     }
 
     toggleLogoutConfirmModal = () => {
@@ -157,6 +170,72 @@ class TutorSetting extends Component {
             isEditGenderModalOpen: !this.state.isEditGenderModalOpen
           })
     };
+
+    toggleEditPassword = () => {
+        this.setState({
+            isEditPasswordOpen: !this.state.isEditPasswordOpen
+        })
+}
+handleEditPasswordChange = (e) => {
+    this.setState({
+        [e.target.name]: e.target.value
+    })
+}
+
+EditPasswordFailure = () => {
+    this.setState({
+        isEditPasswordFailureOpen: !this.state.isEditPasswordFailureOpen
+    })
+  }
+
+  EditPasswordSuccess = () => {
+      this.setState({
+          isEditPassWordSuccessOpen: !this.state.isEditPassWordSuccessOpen
+      })
+  }
+  editPassWordButton = (e) => {
+        
+    e.preventDefault();
+    let formResults = {
+        id: this.state.t_id,
+        old_password: this.state.old_password,
+        new_password: this.state.new_password,
+        Hash: passwordHash.generate(this.state.new_password)
+       
+    }
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({formResults})
+    };
+    fetch('/settings/tutor-update-password', requestOptions)
+    
+    
+   if(formResults.new_password == ''){
+    this.state.error_message = 'New password can not be blank'
+    this.EditPasswordFailure()
+}
+   else if (!passwordHash.verify(formResults.old_password, this.state.t_password)){
+    this.state.error_message = 'Old passwords do not match!'    
+    this.EditPasswordFailure()
+   }
+   
+  
+   else{
+    
+    this.state.t_password = formResults.Hash
+    sessionStorage.setItem('t_password', formResults.Hash)
+
+    this.EditPasswordSuccess()
+
+    
+   }
+   if (this.state.isEditPasswordOpen === true) {
+    this.toggleEditPassword()
+}
+  };
+ 
 
 
     //update name =============================================
@@ -577,6 +656,18 @@ class TutorSetting extends Component {
                                     </Col>                                  
                                 </Row>
 
+                                <Row>
+                                    <Col>
+                                        Password:
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditPassword}>
+                                            Edit
+                                        </Button>
+                                    </Col>                                  
+                                </Row>
+
                                 <Button color="primary" size="sm" onClick={this.toggleLogoutConfirmModal}>
                                     Logout
                                 </Button>{'   '}
@@ -629,6 +720,48 @@ class TutorSetting extends Component {
                                     </Form>
                                   </ModalBody>
                                 </Modal>
+
+
+
+
+
+
+
+                                <Modal isOpen = {this.state.isEditPasswordOpen} toggle = {this.toggleEditPassword} >
+                            <ModalHeader toggle = {this.toggleEditPassword}>Change your password here.</ModalHeader>
+                            <ModalBody>
+                                <Form onSubmit = {this.editPassWordButton}>
+                                    <FormGroup>
+                                        <Label for="old_password">Enter current password</Label>
+                                        <Input type = "text" name ="old_password" id="old_password" onChange={e => this.handleEditPasswordChange(e)}/>
+                                    </FormGroup>
+                                    <FormGroup>
+                                    <Label for="new_password">Enter new password: </Label>
+                                    <Input type="text" name="new_password" id="new_password" onChange={e => this.handleEditPasswordChange(e)}/>
+                                    </FormGroup>
+                                    <Button color="primary" type="submit">Submit password change</Button> {' '}
+                                    <Button color="secondary" onClick={this.toggleEditPassword}>Close</Button>
+                                </Form>
+                            </ModalBody>
+                        </Modal>
+                        <Modal isOpen = {this.state.isEditPassWordSuccessOpen} toggle = {this.EditPasswordSuccess}>
+                            <ModalHeader toggle = {this.EditPasswordSuccess} >Success!</ModalHeader>
+                            <ModalBody>
+                                You have successfully changed your password.
+                            </ModalBody>
+                        </Modal>
+
+                        <Modal isOpen = {this.state.isEditPasswordFailureOpen} toggle = {this.EditPasswordFailure}>
+                            <ModalHeader toggle = {this.EditPasswordFailure} >Invalid</ModalHeader>
+                            <ModalBody>
+                                {this.state.error_message}
+                            </ModalBody>
+                            <ModalFooter>
+                                     
+                                  </ModalFooter>
+                        </Modal>
+
+                                
 
                                 <Modal isOpen={this.state.isEditLocationModalOpen} toggle={this.toggleEditLocationModal} >
                                   <ModalHeader toggle={this.toggleEditLocationModal}>Edit Location</ModalHeader>
