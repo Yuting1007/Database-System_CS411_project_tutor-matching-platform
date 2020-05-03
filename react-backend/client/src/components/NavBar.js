@@ -16,8 +16,23 @@ class NavBar extends Component {
 
         this.toggle = this.toggle.bind(this);
         this.state = {
-            isOpen: false
+            type: sessionStorage.getItem('account_type'),
+            isOpen: false, 
+
+            //nav links
+            settings:'',
+            homepage:''
         };
+    }
+
+    updateLinks = () => {
+        if (this.state.type === 'student') {
+            this.state.settings = "/settings";
+            this.state.homepage = "/student/home";
+        } else if (this.state.type === "tutor") {
+            this.state.settings = "/tutor-settings";
+            this.state.homepage = "/tutor/home";
+        }
     }
     toggle() {
         this.setState({
@@ -25,18 +40,19 @@ class NavBar extends Component {
         });
     }
     render() {
+        this.updateLinks();
         return (
             <div>
                 <Navbar color="inverse" light expand="md">
-                    <NavbarBrand href="/">eduFY</NavbarBrand>
+                    <NavbarBrand href={this.state.homepage}>eduFY</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/settings">Settings</NavLink>
+                                <NavLink href = {this.state.settings} >Settings</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/users">Users (dev)</NavLink>
+                                <NavLink href={"/users"}>Users (dev)</NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>
