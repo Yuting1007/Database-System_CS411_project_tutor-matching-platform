@@ -141,6 +141,7 @@ class Start extends Component {
       this.setState({
         isStudentRegiModalOpen: !this.state.isStudentRegiModalOpen
       })
+  
     };
 
     toggleTutorRegiModal = () => {
@@ -500,7 +501,7 @@ class Start extends Component {
                     <Container>
                         <Row>
                             <Col>
-                                <h1>Welcome to eduFY {this.state.s_name} </h1>
+                                <h1 className='welcome-text'>Welcome to eduFY {this.state.s_name} </h1>
                                 <p>
 
                                 <Button
