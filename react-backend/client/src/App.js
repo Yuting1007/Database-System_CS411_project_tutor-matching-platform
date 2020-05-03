@@ -7,6 +7,7 @@ import Users from './components/Users';
 import Student_Home from './components/Home';
 import TutorHome from './components/TutorHome';
 import Matches from './components/Matches';
+import TSMatches from './components/TSMatches';
 import TutorSetting from './components/TutorSettings';
  
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
               <Route path="/student/home" component={Student_Home}/>
               <Route path="/tutor/home" component={TutorHome}/>
               <Route path="/matches" component={Matches}/>
+              <Route path="/tsmatches" component={TSMatches}/>
               <Route path='/tutor-settings' component={TutorSetting}/>
             </Switch>
           </div> 

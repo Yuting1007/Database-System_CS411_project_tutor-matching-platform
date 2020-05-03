@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h1= title
+    form(method="post", action='/addition')
+        div.form-group
+            label(for='major') major:
+            input#major.form-control(type='text', placeholder='major' name='major')
+        div.form-group
+            label(for='level') level:
+            input#level.form-control(type='text', placeholder='level' name='level')
+        div.form-group
+            label(for='course') course:
+            input#course.form-control(type='text', placeholder='course' name='course')
+        button.btn.btn-primary(type='submit') Search
+
+
+    
+      
+
+     
+
