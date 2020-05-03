@@ -22,7 +22,7 @@ var additionRouter = require('./routes/addition');
 mongoose.connect("mongodb://localhost:27017/addition",  {useNewUrlParser: true, useUnifiedTopology: true});
 
 var app = express();
-
+app.use(express.static(path.join(__dirname, '/client/build')))
 
 
 // view engine setup
@@ -41,7 +41,7 @@ app.use(cookieParser());
 
 // // ================================= ADDITIONAL PORTION BEGIN =====================================
 // // Serve static files from the React frontend app
- app.use(express.static(path.join(__dirname, '../client/build')))
+//  app.use(express.static(path.join(__dirname, '../client/build')))
 
 // // AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
 // app.get('*', (req, res) => {
