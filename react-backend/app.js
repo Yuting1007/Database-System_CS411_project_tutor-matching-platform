@@ -29,7 +29,6 @@ app.use(express.static(path.join(__dirname, '/client/build')))
 //     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 //   });
 
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -55,7 +54,9 @@ app.use(cookieParser());
 // // ======================================== ADDITIONAL PORTION END =====================================
 
 
-
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 ////
 // Our routes: the url does /___/get request url within the routes folder
 // ex. to find all users we will now do
@@ -114,9 +115,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {
