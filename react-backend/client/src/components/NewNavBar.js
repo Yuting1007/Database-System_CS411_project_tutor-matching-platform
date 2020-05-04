@@ -25,41 +25,62 @@ class NewNavBar extends Component {
             homepage:''
         };
 
-        this.toStudentMatches = this.toStudentMatches.bind();
+        this.toMatches = this.toMatches.bind();
+        this.toHome = this.toHome.bind();
+        this.toSettings = this.toSettings.bind();
     }
 
-    toStudentMatches = () => {
-        this.props.history.push('/matches');
-    }
-
-    updateLinks = () => {
+    toHome = () => {
         if (this.state.type === 'student') {
-            this.state.settings = "/settings";
-            this.state.homepage = "/student/home";
-        } else if (this.state.type === "tutor") {
-            this.state.settings = "/tutor-settings";
-            this.state.homepage = "/tutor/home";
+            this.props.history.push('/student/home');
+        } else {
+            this.props.history.push('/tutor/home');
         }
     }
+
+    toMatches = () => {
+        if (this.state.type === 'student') {
+            this.props.history.push('/matches');
+        } else {
+            this.props.history.push('/tsmatches');
+        }
+    }
+
+    toSettings = () => {
+        if (this.state.type === 'student') {
+            this.props.history.push('/settings');
+        } else {
+            this.props.history.push('/tutor-settings');
+        }
+    }
+
+    
+
+    // updateLinks = () => {
+    //     if (this.state.type === 'student') {
+    //         this.state.settings = "/settings";
+    //         this.state.homepage = "/student/home";
+    //     } else if (this.state.type === "tutor") {
+    //         this.state.settings = "/tutor-settings";
+    //         this.state.homepage = "/tutor/home";
+    //     }
+    // }
 
     render() {
         this.updateLinks();
         return (
             <div>
-                <Navbar color="inverse" light expand="md">
-                    <NavbarBrand href={this.state.homepage}>eduFY</NavbarBrand>
-                    <NavbarToggler onClick={this.toggle} />
-                    <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <NavLink href = {this.state.settings} >Settings</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href={"/users"}>Users (dev)</NavLink>
-                            </NavItem>
-                        </Nav>
-                    </Collapse>
-                </Navbar>
+                <Nav tabs>
+                    <NavItem>
+                    <NavLink onClick={this.toHome}>Home</NavLink>
+                    </NavItem>
+                    <NavItem>
+                    <NavLink onClick={this.toMatches}>Matches</NavLink>
+                    </NavItem>
+                    <NavItem>
+                    <NavLink onClick={this.toSettings}>Settings</NavLink>
+                    </NavItem>
+                </Nav>
             </div>
         );
     }
