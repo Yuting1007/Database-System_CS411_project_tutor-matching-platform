@@ -157,6 +157,9 @@ router.post('/match-check', (req, res) => {
   console.log("Trying to fetch a match...")
   const s_id = parseInt(req.body.newMatch.s_id);
   const t_id = parseInt(req.body.newMatch.t_id);
+
+  console.log("s_id: " + s_id)
+  console.log("t_id: " + t_id)
   
   const queryString = 'SELECT * FROM matches WHERE s_id = ? AND t_id = ?'
   
@@ -256,6 +259,97 @@ router.post('/recommend', (req, res) => {
                                             'AS candidates ON t.t_id = candidates.t_id ' + 
                                             condition_major + condition_edu_level + condition_gender + condition_rating + 
                         ' ORDER BY candidates.count_mID DESC, t.t_ratings DESC'
+
+
+
+    console.log("query is: " + queryString)
+
+    getConnection().query(queryString, (err, results, fields) => {
+        if (err) {
+            console.log("Failed to get recommendation: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('trying to get recommendations')
+        console.log(results)
+        res.json(results)
+    })
+  }
+})
+
+router.post('/recommend-tutorEnd', (req, res) => {
+  console.log("Trying to fetch recommendations...")
+  const preference_location = req.body.formResults.preference_location;
+  const preference_gender = req.body.formResults.preference_gender;
+  const preference_rating = req.body.formResults.preference_rating
+  const preference_pastEx = req.body.formResults.preference_pastEx;
+
+
+  console.log("form result location is: " + preference_location)
+  console.log("form result gender is: " + preference_gender)
+
+  let condition_location = '';
+  let condition_gender = '';
+  let condition_rating = '';
+
+  if (preference_pastEx === 'No') {
+
+    // Fill in select conditions without JOIN
+    if (preference_location != 'None') {
+      condition_location = ' AND s_location = ' + "'" + preference_location + "'" ;
+    }
+  
+    if (preference_gender != 'None') {
+      condition_gender = ' AND s_gender = ' + "'" + preference_gender + "'";
+    }
+  
+    if (preference_rating != 'None') {
+      condition_rating = ' WHERE s_ratings >= ' + preference_rating;
+    } else {
+      condition_rating = ' WHERE s_ratings >= -999999';
+    }
+
+    const queryString = 'SELECT * FROM students' + condition_rating + condition_gender + condition_location
+    console.log("sql query is: " + queryString)
+
+    getConnection().query(queryString, (err, results, fields) => {
+        if (err) {
+            console.log("Failed to get recommendation: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('trying to get recommendations')
+        console.log(results)
+        res.json(results)
+    })
+  } else {
+
+    // fill in select condition with JOIN
+    if (preference_location != 'None') {
+      condition_location = ' AND s.s_location = ' + "'" + preference_location + "'" ;
+    }
+  
+    if (preference_gender != 'None') {
+      condition_gender = ' AND s.s_gender = ' + "'" + preference_gender + "'";
+    }
+  
+    if (preference_rating != 'None') {
+      condition_rating = ' AND s.s_ratings >= ' + preference_rating;
+    }
+
+    /* When we consider student's match history in the recommendation, we only consider the tutors 
+      that have been matched with the student more than once, under the assumption that a repeated
+      match implies that previous matches are enjoyable. */
+    const queryString = 'SELECT s.s_id, s.s_name, s.s_location, s.s_email, s.s_pnum, s.s_ratings ' +  
+                        'FROM students s JOIN (SELECT s_id, COUNT(m_id) AS count_mID ' + 
+                                            'FROM student_history ' + 
+                                            'GROUP BY s_id ' + 
+                                            'HAVING COUNT(m_id) > 1) ' + 
+                                            'AS candidates ON s.s_id = candidates.s_id ' + 
+                                            condition_location + condition_gender + condition_rating + 
+                        ' ORDER BY candidates.count_mID DESC, s.s_ratings DESC'
 
 
 

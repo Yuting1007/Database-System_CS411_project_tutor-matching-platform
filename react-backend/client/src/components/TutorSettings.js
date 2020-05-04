@@ -26,6 +26,8 @@ import {
   } from "react-router-dom";
 import '../css/Start.css'
 import Users from './Users';
+import NewNavBar from './NewNavBar';
+import '../css/Logo.css';
 var passwordHash = require('password-hash');
 
 
@@ -519,8 +521,9 @@ EditPasswordFailure = () => {
 
             <React.Fragment>
                 <div>
-                    <p>eduFY</p>
-                    <Nav tabs>
+                <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
+                    <NewNavBar/>
+                    {/* <Nav tabs>
                         <NavItem>
                         <NavLink href="/tutor/home">Home</NavLink>
                         </NavItem>
@@ -530,7 +533,7 @@ EditPasswordFailure = () => {
                         <NavItem>
                         <NavLink href="/tutor-settings">Settings</NavLink>
                         </NavItem>
-                    </Nav>
+                    </Nav> */}
                     <Jumbotron>
                         <Container>
                             <Row>

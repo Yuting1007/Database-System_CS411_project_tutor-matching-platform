@@ -22,6 +22,10 @@ import {
     useHistory,
     Redirect
   } from "react-router-dom";
+import NewNavBar from './NewNavBar';
+import '../css/Logo.css';
+import '../css/Home.css';
+
   var passwordHash = require('password-hash');
 
 
@@ -81,6 +85,7 @@ class StudentHome extends Component {
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
     }
+
 
     toggleAddiFormErrorModal = () => {
         this.setState({
@@ -233,7 +238,7 @@ class StudentHome extends Component {
     }
 
     searchAdditionalResource = (e) => {
-
+        console.log("searchAdditionalResource called")
         e.preventDefault();
         let formResults = {
             addi_pre_course: this.state.addi_pre_course,
@@ -241,30 +246,30 @@ class StudentHome extends Component {
             addi_pre_major: this.state.addi_pre_major,
         }
 
-        if (formResults.addi_pre_major === '') {
-            this.state.error_message = 'Major field cannot be empty!'
-            this.toggleAddiFormErrorModal()
-        } else if (formResults.addi_pre_course === '') {
-            this.state.error_message = 'Course field cannot be empty!'
-            this.toggleAddiFormErrorModal()
-        } else {
-            //POST req here
-            const requestOptions = {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({formResults})
-            };
+        // if (formResults.addi_pre_major === '') {
+        //     this.state.error_message = 'Major field cannot be empty!'
+        //     this.toggleAddiFormErrorModal()
+        // } else if (formResults.addi_pre_course === '') {
+        //     this.state.error_message = 'Course field cannot be empty!'
+        //     this.toggleAddiFormErrorModal()
+        // } else {
+        //     //POST req here
+        //     const requestOptions = {
+        //         method: 'POST',
+        //         headers: {'Content-Type': 'application/json'},
+        //         body: JSON.stringify({formResults})
+        //     };
 
-            fetch("/addition/get-resources", requestOptions)
-            .then(res => res.json())
-                //need to catch error somehow
+        //     fetch("/addition/get-resources", requestOptions)
+        //     .then(res => res.json())
+        //         //need to catch error somehow
         
-            .then(resources => {
-                console.log(resources)
-                this.setState({ resources })
-                this.toggleResourceListModal();
-            });
-        }
+        //     .then(resources => {
+        //         console.log(resources)
+        //         this.setState({ resources })
+        //         this.toggleResourceListModal();
+        //     });
+        // }
 
                 //POST req here
         const requestOptions = {
@@ -298,8 +303,9 @@ class StudentHome extends Component {
             <React.Fragment>
             
                 <div>
-                    <p>  eduFY</p>
-                    <Nav tabs>
+                <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
+                    <NewNavBar/>
+                    {/* <Nav tabs>
                         <NavItem>
                         <NavLink href="/student/home">Home</NavLink>
                         </NavItem>
@@ -309,7 +315,7 @@ class StudentHome extends Component {
                         <NavItem>
                         <NavLink href="/settings">Settings</NavLink>
                         </NavItem>
-                    </Nav>
+                    </Nav> */}
                     <Jumbotron>
                         <Container>
                             <Row>
@@ -325,24 +331,29 @@ class StudentHome extends Component {
                 </div>
 
                 <div>
-                <Jumbotron>
+                {/* <Jumbotron> */}
                     <Container>
                         <Row>
                             <Col>
                             <p>
-                                <Button color="primary" size="lg" onClick={this.onMatchButtonClick} block>Matches</Button>
+                                <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
                             </p>
                                 
                             </Col>
-                        </Row>
-
-                        <Row>
                             <Col>
                             <p>
-                                <Button color="primary" size="lg" onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
+                                <Button className='recommend-button' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
                             </p>
                             </Col>
                         </Row>
+
+                        {/* <Row>
+                            <Col>
+                            <p>
+                                <Button className='recommend-button' size="lg" onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
+                            </p>
+                            </Col>
+                        </Row> */}
                         <Row>
                             <Col>
                             <p>
@@ -395,8 +406,8 @@ class StudentHome extends Component {
                                           <Label for="preference_rating">Minimum Rating (Blank if you have no preference on rating)</Label>
                                           <Input type="number" name="preference_rating" id="tutor_regi-preference_rating" onChange={e => this.handlePreferenceChange(e)} />
                                         </FormGroup>
-                                <Button color="primary" type="submit">Give me recommendations!</Button> {' '}
-                                <Button color="secondary" onClick={this.togglePreferenceModal}>Cancel</Button>
+                                <Button className='give-recommendation-button' type="submit">Give me recommendations!</Button> {' '}
+                                <Button className='cancel-button' onClick={this.togglePreferenceModal}>Cancel</Button>
                             </Form>
                             </ModalBody>
 
@@ -415,7 +426,7 @@ class StudentHome extends Component {
                                                 <th>Education</th>
                                                 <th>Major</th>
                                                 <th>Phone Number</th>
-                                                <th>Email</th>
+                                                {/* <th>Email</th> */}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -427,8 +438,8 @@ class StudentHome extends Component {
                                                 <td>{tutor.t_edu_level}</td>
                                                 <td>{tutor.t_major}</td>
                                                 <td>{tutor.t_pnum}</td>
-                                                <td>{tutor.t_email}</td>
-                                                <td><Button id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
+                                                {/* <td>{tutor.t_email}</td> */}
+                                                <td><Button className='home-match-button' id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
                                             </tr>
                                         )}
                                         </tbody>
@@ -438,11 +449,13 @@ class StudentHome extends Component {
                                   <ModalFooter>
                                       Not satisfied with you what see? Try additional resources -->
                                       <Button 
+                                        className='home-match-button'
                                         color="primary" 
                                         onClick={this.toggleAddiPrefModal}
                                         >Additional Resources
                                       </Button>
                                       <Button 
+                                        // className='cancel-button'
                                         color="primary" 
                                         onClick={this.doneRecommendation}
                                         >Done
@@ -544,7 +557,7 @@ class StudentHome extends Component {
 
                                 
                     </Container>
-                </Jumbotron>
+                {/* </Jumbotron> */}
                 </div>
             </React.Fragment>
         );

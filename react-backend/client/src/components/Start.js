@@ -17,7 +17,8 @@ import {
     useHistory,
     Redirect
   } from "react-router-dom";
-import '../css/Start.css'
+import '../css/Start.css';
+import '../css/Logo.css';
 import Users from './Users';
 //import { response } from 'express';
 var passwordHash = require('password-hash');
@@ -249,6 +250,8 @@ class Start extends Component {
         hashedPassword: passwordHash.generate(this.state.tutor_regi_password)
        }
       console.log(formResults)
+
+      
 
        //check for error in the form
        if (formResults.name === '') {

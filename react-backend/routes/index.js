@@ -27,6 +27,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Expresssssssss' });
 });
 
+// router.get('/*', function (req, res) {
+//     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+//   });
+
 // router.get("/users", (req, res) => {
 //   const queryString = "SELECT * FROM students";
 //   connection.query(queryString, (err, rows, fields) => {

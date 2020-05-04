@@ -13,11 +13,13 @@ import {
     Col,
     Jumbotron,
     Button,
-    Table, Modal, ModalHeader, ModalBody
+    Table, Modal, ModalHeader, ModalBody, Card, CardTitle, CardText, CardSubtitle, CardDeck, CardBody, CardHeader, CardFooter
 } from 'reactstrap';
 
-import '../css/Matches.css'
+import '../css/Matches.css';
+import '../css/Logo.css';
 import TutorRating from './TutorRating';
+import NewNavBar from './NewNavBar';
 
 function EmptyMatches(props) {
     return <h3>No matches! Click refresh or find a tutor below!</h3>
@@ -279,9 +281,10 @@ class Matches extends Component {
 
     render() {
         return (
-            <div>
-                <p>eduFY</p>
-                    <Nav tabs>
+            <div >
+                <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
+                <NewNavBar/>
+                    {/* <Nav tabs>
                         <NavItem>
                         <NavLink href="/student/home">Home</NavLink>
                         </NavItem>
@@ -291,7 +294,7 @@ class Matches extends Component {
                         <NavItem>
                         <NavLink href="/settings">Settings</NavLink>
                         </NavItem>
-                    </Nav>
+                    </Nav> */}
                 <Jumbotron>
                     <Container>
                         <Row>
@@ -305,42 +308,120 @@ class Matches extends Component {
                     </Container>
                 </Jumbotron>
                 <Row>
-                    <div className='matches-text'>Current Matches</div>
-                    <Button onClick={this.getMatches}>Show/Refresh Matches!</Button>
+                    <div tag='h1' className='match-tutor-label'>Current Matches</div>
+                    <Button className='refresh-button' onClick={this.getMatches}>Show/Refresh Matches!</Button>
                     
                 </Row>
                 
-                <Table striped className="matches-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Education Level</th>
-                            <th>Major</th>
-                            <th>Location</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Rating</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.tutorMatches.map(tutor => 
-                        <tr key={tutor.t_id}>
-                            <td className="id-col">{tutor.t_id}</td>
-                            <td>{tutor.t_name}</td>
-                            <td>{tutor.t_edu_level}</td>
-                            <td>{tutor.t_major}</td>
-                            <td>{tutor.t_location}</td>
-                            <td>{tutor.t_email}</td>
-                            <td>{tutor.t_pnum}</td>
-                            <TutorRating tutorId={tutor.t_id} currentRating={tutor.t_ratings}/>
-                            <td><Button id={tutor.t_id} onClick={this.deleteMatches}>Unmatch!</Button></td>
-                        </tr>
-                    )}
-                    </tbody>
-                </Table>
+                
+                
+                
+                
+                
+                <table class="simple_tabs">
+                    <tr>
+                        <td class="contentCell">
+                            <div class="contentWrapper">
+                            {this.state.tutorMatches.map(tutor => 
+                                <div class="content">
+                                    <Card className='match-card' style={{flex: 1, width:"300px"}}>
+                                        <CardHeader tag="h3" style={{ fontWeight: 'bold' }}>{tutor.t_name}</CardHeader>
+                                        <CardBody>
+                                        
+                                        <CardText tag="h5" className='edu-label' style={{ fontWeight: 'bold' }}>{tutor.t_edu_level}</CardText>
+                                        <Row>
+                                            <CardText className='major-label'>{tutor.t_major} Major</CardText>
+                                        </Row>
+                                        <Row className='location-group'>
+                                            <img className='location-icon' src={'/images/locationnewblackcrop.png'} className='attribute-label'/>
+                                            <CardText className='location-text'>{tutor.t_location}</CardText>
+                                        </Row>
+                                        
+                                        
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Email: </CardText>
+                                            <CardText className='attribute-text'>{tutor.t_email}</CardText>
+                                        </Row>
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Age: </CardText>
+                                            <CardText className='attribute-text'>{tutor.t_pnum}</CardText>
+                                        </Row>
+                                        
+                                        <Row>
+                                        <Button className='unmatch-button' id={tutor.t_id} onClick={this.deleteMatches}>Unmatch!</Button>
+                                        <TutorRating tutorId={tutor.t_id} currentRating={tutor.t_ratings}/>
+                                        </Row>
+                                        
+                                        </CardBody>
+                                        <CardFooter className="text-muted">ID: {tutor.t_id}</CardFooter>
+                                    </Card>
+                                </div>
+                                
+                            )}
+                            
+                            
+                                    
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div className='matches-placeholder'>
                 <MatchesPlaceholder matchesToDisplay={this.state.matchesToDisplay}/>
-                <div className='matches-text'>All Tutors</div>
+                </div>
+
+
+
+                <hr className='line'/>
+                <div tag='h1' className='all-tutor-label'>All Tutors</div>
+                <table class="simple_tabs">
+                    <tr>
+                        <td class="contentCell">
+                            <div class="contentWrapper">
+                            {this.state.tutors.map(tutor => 
+                                <div class="content">
+                                    <Card className='all-card' style={{flex: 1, width:"300px"}}>
+                                        <CardHeader tag="h3" style={{ fontWeight: 'bold' }}>{tutor.t_name}</CardHeader>
+                                        <CardBody>
+                                        
+                                        <CardText tag="h5" className='edu-label' style={{ fontWeight: 'bold' }}>{tutor.t_edu_level}</CardText>
+                                        <Row>
+                                            <CardText className='major-label'>{tutor.t_major} Major</CardText>
+                                        </Row>
+                                        <Row className='location-group'>
+                                            <img className='location-icon' src={'/images/locationnewblackcrop.png'} className='attribute-label'/>
+                                            <CardText className='location-text'>{tutor.t_location}</CardText>
+                                        </Row>
+                                        
+                                        
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Rating: </CardText>
+                                            <CardText className='attribute-text'>{tutor.t_ratings}</CardText>
+                                        </Row>
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Age: </CardText>
+                                            <CardText className='attribute-text'>{tutor.t_age}</CardText>
+                                        </Row>
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Gender: </CardText>
+                                            <CardText className='attribute-text'>{tutor.t_gender}</CardText>
+                                        </Row>
+                    
+                                        <Button className='match-button' id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button>
+                                        </CardBody>
+                                        <CardFooter className="text-muted">ID: {tutor.t_id}</CardFooter>
+                                    </Card>
+                                </div>
+                                
+                            )}
+                            
+                            
+                                    
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+                {/* <div className='matches-text'>All Tutors</div>
                 <Table striped className="tutors-table">
                     <thead>
                         <tr>
@@ -369,7 +450,7 @@ class Matches extends Component {
                         </tr>
                     )}
                     </tbody>
-                </Table>
+                </Table> */}
 
                 <Modal isOpen={this.state.isDeleteMatchAcknowedgeModalOpen} toggle={this.toggleDeleteMatchAcknowedgeModal} >
                     <ModalHeader toggle={this.toggleDeleteMatchAcknowedgeModal}>Match with the selected tutor has been deleted!</ModalHeader>
