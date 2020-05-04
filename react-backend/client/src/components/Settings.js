@@ -89,6 +89,8 @@ class Settings extends Component {
         this.toggleEditPassword = this.toggleEditPassword.bind();
         this.EditPasswordFailure = this.EditPasswordFailure.bind();
         this.EditPasswordSuccess = this.EditPasswordSuccess.bind();
+
+        
     }
     toggleEditPassword = () => {
         this.setState({
