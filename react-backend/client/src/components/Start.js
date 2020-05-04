@@ -548,7 +548,7 @@ class Start extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="student_regi-gender">Gender</Label>
-                                          <Input type="select" name="student_regi-gender" id="student_regi-gender" onChange={e => this.handleRegiChange(e)}>
+                                          <Input type="select" name="student_regi_gender" id="student_regi_gender" onChange={e => this.handleRegiChange(e)}>
                                         <option>None</option>
                                         <option>Female</option>
                                         <option>Male</option>
