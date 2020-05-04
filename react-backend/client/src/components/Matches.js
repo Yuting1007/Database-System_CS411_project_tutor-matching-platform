@@ -16,7 +16,8 @@ import {
     Table, Modal, ModalHeader, ModalBody, Card, CardTitle, CardText, CardSubtitle, CardDeck, CardBody, CardHeader, CardFooter
 } from 'reactstrap';
 
-import '../css/Matches.css'
+import '../css/Matches.css';
+import '../css/Logo.css';
 import TutorRating from './TutorRating';
 import NewNavBar from './NewNavBar';
 
@@ -281,7 +282,7 @@ class Matches extends Component {
     render() {
         return (
             <div >
-                <p>eduFY</p>
+                <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
                 <NewNavBar/>
                     {/* <Nav tabs>
                         <NavItem>
