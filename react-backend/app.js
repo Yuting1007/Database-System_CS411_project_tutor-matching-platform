@@ -24,12 +24,7 @@ mongoose.connect("mongodb://localhost:27017/addition",  {useNewUrlParser: true, 
 var app = express();
 app.use(express.static(path.join(__dirname, '/client/build')))
 
-app.get('/*', (req, res) => {
-  let url = path.join(__dirname, '../client/build', 'index.html');
-  if (!url.startsWith('/app/')) // we're on local windows
-    url = url.substring(1);
-  res.sendFile(url);
-});
+
 
 
 // view engine setup
@@ -113,6 +108,13 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.get('/*', (req, res) => {
+  let url = path.join(__dirname, '../client/build', 'index.html');
+  if (!url.startsWith('/app/')) // we're on local windows
+    url = url.substring(1);
+  res.sendFile(url);
 });
 
 const port = process.env.PORT || 3001
