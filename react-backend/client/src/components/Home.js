@@ -282,7 +282,6 @@ class StudentHome extends Component {
             
                 <div>
                     <p>  eduFY</p>
-                    <NavBar/>
                     <Nav tabs>
                         <NavItem>
                         <NavLink href="/student/home">Home</NavLink>
