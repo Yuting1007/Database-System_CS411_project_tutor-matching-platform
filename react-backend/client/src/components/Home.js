@@ -301,8 +301,8 @@ class StudentHome extends Component {
             
                 <div>
                     <p>  eduFY</p>
-                    {/* <NewNavBar/> */}
-                    <Nav tabs>
+                    <NewNavBar/>
+                    {/* <Nav tabs>
                         <NavItem>
                         <NavLink href="/student/home">Home</NavLink>
                         </NavItem>
@@ -312,7 +312,7 @@ class StudentHome extends Component {
                         <NavItem>
                         <NavLink href="/settings">Settings</NavLink>
                         </NavItem>
-                    </Nav>
+                    </Nav> */}
                     <Jumbotron>
                         <Container>
                             <Row>

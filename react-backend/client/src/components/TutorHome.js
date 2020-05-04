@@ -22,6 +22,7 @@ import {
     useHistory,
     Redirect
   } from "react-router-dom";
+import NewNavBar from './NewNavBar';
 
 class TutorHome extends Component {
     constructor(props) {
@@ -46,7 +47,8 @@ class TutorHome extends Component {
         return (
             <div>
                 <p>eduFY</p>
-                <Nav tabs>
+                <NewNavBar/>
+                {/* <Nav tabs>
                     <NavItem>
                     <NavLink href="/tutor/home">Home</NavLink>
                     </NavItem>
@@ -56,7 +58,7 @@ class TutorHome extends Component {
                     <NavItem>
                     <NavLink href="/tutor-settings">Settings</NavLink>
                     </NavItem>
-                </Nav>
+                </Nav> */}
                 <Jumbotron>
                     <Container>
                         <Row>
