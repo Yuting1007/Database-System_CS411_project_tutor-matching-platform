@@ -13,7 +13,7 @@ import {
     Col,
     Jumbotron,
     Button,
-    Table, Modal, ModalHeader, ModalBody
+    Table, Modal, ModalHeader, ModalBody, Card, CardHeader, CardText, CardFooter, CardBody
 } from 'reactstrap';
 import '../css/Logo.css';
 import '../css/Matches.css';
@@ -305,7 +305,7 @@ class TSMatches extends Component {
                         </Row>
                     </Container>
                 </Jumbotron>
-                <Row>
+                {/* <Row>
                     <div className='matches-text'>Current Matches</div>
                     <Button onClick={this.getMatches}>Show/Refresh Matches!</Button>
                     
@@ -339,9 +339,120 @@ class TSMatches extends Component {
                         </tr>
                     )}
                     </tbody>
-                </Table>
+                </Table> */}
+
+
+                <Row>
+                    <div tag='h1' className='match-tutor-label'>Current Matches</div>
+                    <Button className='refresh-button' onClick={this.getMatches}>Show/Refresh Matches!</Button>
+                    
+                </Row>
+                
+                <table class="simple_tabs">
+                    <tr>
+                        <td class="contentCell">
+                            <div class="contentWrapper">
+                            {this.state.studentMatches.map(student => 
+                                <div class="content">
+                                    <Card className='match-card' style={{flex: 1, width:"300px"}}>
+                                        <CardHeader tag="h3" style={{ fontWeight: 'bold' }}>{student.s_name}</CardHeader>
+                                        <CardBody>
+                                        
+                                        <CardText tag="h5" className='edu-label' style={{ fontWeight: 'bold' }}>{student.s_edu_level}</CardText>
+                                        <Row>
+                                            <CardText className='major-label'>{student.s_major} Major</CardText>
+                                        </Row>
+                                        <Row className='location-group'>
+                                            <img className='location-icon' src={'/images/locationnewblackcrop.png'} className='attribute-label'/>
+                                            <CardText className='location-text'>{student.s_location}</CardText>
+                                        </Row>
+                                        
+                                        
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Email: </CardText>
+                                            <CardText className='attribute-text'>{student.s_email}</CardText>
+                                        </Row>
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Age: </CardText>
+                                            <CardText className='attribute-text'>{student.s_pnum}</CardText>
+                                        </Row>
+                                        
+                                        <Row>
+                                        <Button className='unmatch-button' id={student.s_id} onClick={this.deleteMatches}>Unmatch!</Button>
+                                        <StudentRating studentId={student.s_id} currentRating={student.s_ratings}/>
+                                        </Row>
+                                        
+                                        </CardBody>
+                                        <CardFooter className="text-muted">ID: {student.s_id}</CardFooter>
+                                    </Card>
+                                </div>
+                                
+                            )}
+                            
+                            
+                                    
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div className='matches-placeholder'>
                 <MatchesPlaceholder matchesToDisplay={this.state.matchesToDisplay}/>
-                <div className='matches-text'>All Students</div>
+                </div>
+
+                <hr className='line'/>
+
+                
+                <div tag='h1' className='all-tutor-label'>All Students</div>
+                <table class="simple_tabs">
+                    <tr>
+                        <td class="contentCell">
+                            <div class="contentWrapper">
+                            {this.state.students.map(student => 
+                                <div class="content">
+                                    <Card className='all-card' style={{flex: 1, width:"300px"}}>
+                                        <CardHeader tag="h3" style={{ fontWeight: 'bold' }}>{student.s_name}</CardHeader>
+                                        <CardBody>
+                                        
+                                        <CardText tag="h5" className='edu-label' style={{ fontWeight: 'bold' }}>{student.s_edu_level}</CardText>
+                                        <Row>
+                                            <CardText className='major-label'>{student.s_major} Major</CardText>
+                                        </Row>
+                                        <Row className='location-group'>
+                                            <img className='location-icon' src={'/images/locationnewblackcrop.png'} className='attribute-label'/>
+                                            <CardText className='location-text'>{student.s_location}</CardText>
+                                        </Row>
+                                        
+                                        
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Rating: </CardText>
+                                            <CardText className='attribute-text'>{student.s_ratings}</CardText>
+                                        </Row>
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Age: </CardText>
+                                            <CardText className='attribute-text'>{student.s_age}</CardText>
+                                        </Row>
+                                        <Row>
+                                            <CardText className='attribute-label' style={{ fontWeight: 'bold' }}>Gender: </CardText>
+                                            <CardText className='attribute-text'>{student.s_gender}</CardText>
+                                        </Row>
+                    
+                                        <Button className='match-button' id={student.s_id} onClick={this.onStudentToStudentMatchClick}>Match!</Button>
+                                        </CardBody>
+                                        <CardFooter className="text-muted">ID: {student.s_id}</CardFooter>
+                                    </Card>
+                                </div>
+                                
+                            )}
+                            
+                            
+                                    
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+
+                {/* <div className='matches-text'>All Students</div>
                 <Table striped className="students-table">
                     <thead>
                         <tr>
@@ -387,7 +498,7 @@ class TSMatches extends Component {
                     <ModalBody>
                         <Button color="primary" onClick={this.toggleMatchAckModal} type="submit">Got It</Button> {' '}
                     </ModalBody>
-                </Modal>
+                </Modal> */}
 
                 
                 
