@@ -22,6 +22,7 @@ import {
     useHistory,
     Redirect
   } from "react-router-dom";
+import NewNavBar from './NewNavBar';
   var passwordHash = require('password-hash');
 
 
@@ -300,6 +301,7 @@ class StudentHome extends Component {
             
                 <div>
                     <p>  eduFY</p>
+                    {/* <NewNavBar/> */}
                     <Nav tabs>
                         <NavItem>
                         <NavLink href="/student/home">Home</NavLink>

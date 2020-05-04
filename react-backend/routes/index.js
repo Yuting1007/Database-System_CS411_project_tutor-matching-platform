@@ -22,10 +22,14 @@ function getConnection() {
 }
 
 /* GET home page. (this is for the express page, idk if we need this) */
-router.get('/', function(req, res, next) {
-  console.log("at home page!");
-  res.render('index', { title: 'Expresssssssss' });
-});
+// router.get('/', function(req, res, next) {
+//   console.log("at home page!");
+//   res.render('index', { title: 'Expresssssssss' });
+// });
+
+router.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+  });
 
 // router.get("/users", (req, res) => {
 //   const queryString = "SELECT * FROM students";
