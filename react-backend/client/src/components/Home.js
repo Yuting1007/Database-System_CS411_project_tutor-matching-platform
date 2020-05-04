@@ -24,6 +24,8 @@ import {
   } from "react-router-dom";
 import NewNavBar from './NewNavBar';
 import '../css/Logo.css';
+import '../css/Home.css';
+
   var passwordHash = require('password-hash');
 
 
@@ -236,7 +238,7 @@ class StudentHome extends Component {
     }
 
     searchAdditionalResource = (e) => {
-
+        console.log("searchAdditionalResource called")
         e.preventDefault();
         let formResults = {
             addi_pre_course: this.state.addi_pre_course,
@@ -329,24 +331,29 @@ class StudentHome extends Component {
                 </div>
 
                 <div>
-                <Jumbotron>
+                {/* <Jumbotron> */}
                     <Container>
                         <Row>
                             <Col>
                             <p>
-                                <Button color="primary" size="lg" onClick={this.onMatchButtonClick} block>Matches</Button>
+                                <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
                             </p>
                                 
                             </Col>
-                        </Row>
-
-                        <Row>
                             <Col>
                             <p>
-                                <Button color="primary" size="lg" onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
+                                <Button className='recommend-button' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
                             </p>
                             </Col>
                         </Row>
+
+                        {/* <Row>
+                            <Col>
+                            <p>
+                                <Button className='recommend-button' size="lg" onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
+                            </p>
+                            </Col>
+                        </Row> */}
                         <Row>
                             <Col>
                             <p>
@@ -399,8 +406,8 @@ class StudentHome extends Component {
                                           <Label for="preference_rating">Minimum Rating (Blank if you have no preference on rating)</Label>
                                           <Input type="number" name="preference_rating" id="tutor_regi-preference_rating" onChange={e => this.handlePreferenceChange(e)} />
                                         </FormGroup>
-                                <Button color="primary" type="submit">Give me recommendations!</Button> {' '}
-                                <Button color="secondary" onClick={this.togglePreferenceModal}>Cancel</Button>
+                                <Button className='give-recommendation-button' type="submit">Give me recommendations!</Button> {' '}
+                                <Button className='cancel-button' onClick={this.togglePreferenceModal}>Cancel</Button>
                             </Form>
                             </ModalBody>
 
@@ -419,7 +426,7 @@ class StudentHome extends Component {
                                                 <th>Education</th>
                                                 <th>Major</th>
                                                 <th>Phone Number</th>
-                                                <th>Email</th>
+                                                {/* <th>Email</th> */}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -431,8 +438,8 @@ class StudentHome extends Component {
                                                 <td>{tutor.t_edu_level}</td>
                                                 <td>{tutor.t_major}</td>
                                                 <td>{tutor.t_pnum}</td>
-                                                <td>{tutor.t_email}</td>
-                                                <td><Button id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
+                                                {/* <td>{tutor.t_email}</td> */}
+                                                <td><Button className='home-match-button' id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
                                             </tr>
                                         )}
                                         </tbody>
@@ -442,11 +449,13 @@ class StudentHome extends Component {
                                   <ModalFooter>
                                       Not satisfied with you what see? Try additional resources -->
                                       <Button 
+                                        className='home-match-button'
                                         color="primary" 
                                         onClick={this.toggleAddiPrefModal}
                                         >Additional Resources
                                       </Button>
                                       <Button 
+                                        // className='cancel-button'
                                         color="primary" 
                                         onClick={this.doneRecommendation}
                                         >Done
@@ -548,7 +557,7 @@ class StudentHome extends Component {
 
                                 
                     </Container>
-                </Jumbotron>
+                {/* </Jumbotron> */}
                 </div>
             </React.Fragment>
         );
