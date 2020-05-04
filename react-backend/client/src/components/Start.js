@@ -250,6 +250,8 @@ class Start extends Component {
        }
       console.log(formResults)
 
+      
+
        //check for error in the form
        if (formResults.name === '') {
         this.state.error_message = 'Name field cannot be empty!'
