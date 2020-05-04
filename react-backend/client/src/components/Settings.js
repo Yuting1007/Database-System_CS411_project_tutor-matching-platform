@@ -44,9 +44,9 @@ class Settings extends Component {
             isEditPasswordOpen: false,
             isEditPasswordFailureOpen: false,
             isEditPassWordSuccessOpen: false,
-            old_password: ' ',
-            new_password: ' ',
-            Hash: ' ',
+            old_password: '',
+            new_password: '',
+            Hash: '',
 
             //student info
             s_id: sessionStorage.getItem('s_id'),
@@ -89,6 +89,8 @@ class Settings extends Component {
         this.toggleEditPassword = this.toggleEditPassword.bind();
         this.EditPasswordFailure = this.EditPasswordFailure.bind();
         this.EditPasswordSuccess = this.EditPasswordSuccess.bind();
+
+        
     }
     toggleEditPassword = () => {
         this.setState({
@@ -134,7 +136,7 @@ EditPasswordFailure = () => {
     fetch('/settings/update-password', requestOptions)
     
     
-   if(formResults.new_password == ''){
+   if(formResults.new_password === ''){
     this.state.error_message = 'New password can not be blank'
     this.EditPasswordFailure()
 }

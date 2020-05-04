@@ -24,6 +24,11 @@ mongoose.connect("mongodb://localhost:27017/addition",  {useNewUrlParser: true, 
 var app = express();
 app.use(express.static(path.join(__dirname, '/client/build')))
 
+-app.get('/', function (req, res) {})
++app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+  });
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -107,6 +112,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {
