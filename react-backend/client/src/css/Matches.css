@@ -10,3 +10,132 @@
     margin-right: 15px;
     margin-left: 30px;
 }
+
+.line {
+    margin-top: 50px;
+}
+
+
+.matches-placeholder {
+    margin-left: 15px;
+}
+
+.refresh-button {
+    width: 200px;
+    height:40px;
+    margin-left: 25px;
+    margin-top:47px;
+    vertical-align: bottom !important;
+    background-color: #fa744f !important;
+    border-color: #fa744f !important
+}
+.all-tutor-label {
+    font-size: 40px;
+    margin-left:15px;
+    margin-top:40px;
+    margin-bottom:20px;
+}
+.match-tutor-label {
+    font-size: 40px;
+    margin-left:28px;
+    margin-top:40px;
+    margin-bottom:20px;
+}
+.name-label {
+    font-size: 40px !important;
+}
+.edu-label {
+    font-size:23px;
+    font-weight: bold !important;
+    margin-bottom: 5px;
+}
+
+.major-label {
+    font-size:16px;
+    margin-bottom: 5px;
+    margin-left:15px;
+    font-weight: 500;
+}
+.location-group {
+
+    margin-top:20px;
+    margin-bottom:20px;
+    margin-left:0px;
+    
+}
+
+.location-text {
+    margin-left:1px;
+    font-size: 18px;
+    /* font-weight: 400 !important; */
+}
+
+.attribute-label {
+    margin-left:15px;
+    margin-bottom: 5px;
+}
+.attribute-text {
+    margin-left:5px;
+}
+.match-button {
+    margin-top:15px;
+    background-color: #16817a !important;
+    border-color: #16817a !important;
+    height:50px;
+}
+.unmatch-button {
+    margin-top:15px;
+    margin-left:15px;
+    background-color: #fa744f !important;
+    border-color: #fa744f !important;
+    height:50px;
+    margin-right:105px;
+}
+
+.all-card {
+    border-color:#16817a !important;
+    border-width:2px !important;
+    /* border-top-width:8px !important;
+    border-left-width:8px !important;
+    border-right-width: 0px !important;
+    border-bottom-width: 0px !important; */
+    margin-bottom: 15px;
+    margin-left: 10px;
+    
+}
+
+.match-card {
+    border-color:#fa744f !important;
+    border-width:2px !important;
+    /* border-top-width:8px !important;
+    border-left-width:8px !important;
+    border-right-width: 0px !important;
+    border-bottom-width: 0px !important; */
+    margin-bottom: 15px;
+    margin-left: 10px;
+}
+
+table{
+    width:100%;
+    table-layout:fixed;
+    /* background-color: #adadad; */
+    
+    }
+    .contentCell{
+        width:100%;
+        overflow:auto;
+    }
+    .contentWrapper{
+        width: 3250px;
+        /* width:2000px; */
+       /* overflow-x: auto; */
+/* height: 100%;
+overflow:scroll;
+overflow-y: hidden; */
+
+    }
+    
+    .content{
+        width:325px;
+        float:left;
+    }
