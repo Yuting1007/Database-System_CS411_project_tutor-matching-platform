@@ -9,13 +9,14 @@ import {
     NavLink,
     Row
 } from 'reactstrap';
-import {NavLink as routerNav} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
+import {NavLink as routerNav, useHistory} from 'react-router-dom'
 
 class NewNavBar extends Component {
     constructor(props) {
         super(props);
-
-        this.toggle = this.toggle.bind(this);
+        
+        
         this.state = {
             type: sessionStorage.getItem('account_type'),
             isOpen: false, 
@@ -67,7 +68,7 @@ class NewNavBar extends Component {
     // }
 
     render() {
-        this.updateLinks();
+        
         return (
             <div>
                 <Nav tabs>
@@ -86,4 +87,4 @@ class NewNavBar extends Component {
     }
 }
 
-export default NewNavBar;
+export default withRouter(NewNavBar);

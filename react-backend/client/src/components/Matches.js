@@ -18,6 +18,7 @@ import {
 
 import '../css/Matches.css'
 import TutorRating from './TutorRating';
+import NewNavBar from './NewNavBar';
 
 function EmptyMatches(props) {
     return <h3>No matches! Click refresh or find a tutor below!</h3>
@@ -281,7 +282,8 @@ class Matches extends Component {
         return (
             <div>
                 <p>eduFY</p>
-                    <Nav tabs>
+                <NewNavBar/>
+                    {/* <Nav tabs>
                         <NavItem>
                         <NavLink href="/student/home">Home</NavLink>
                         </NavItem>
@@ -291,7 +293,7 @@ class Matches extends Component {
                         <NavItem>
                         <NavLink href="/settings">Settings</NavLink>
                         </NavItem>
-                    </Nav>
+                    </Nav> */}
                 <Jumbotron>
                     <Container>
                         <Row>
