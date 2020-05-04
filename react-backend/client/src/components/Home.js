@@ -74,12 +74,17 @@ class StudentHome extends Component {
         this.toggleAddiPrefModal = this.toggleAddiPrefModal.bind();
         this.toggleResourceListModal = this.toggleResourceListModal.bind();
         this.toggleAddiFormErrorModal = this.toggleAddiFormErrorModal.bind();
+        this.toMatches = this.toMatches.bind();
     }
 
     //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
+    }
+
+    toMatches = () => {
+        this.props.history.push('/student/matches');
     }
 
     toggleAddiFormErrorModal = () => {
@@ -299,6 +304,7 @@ class StudentHome extends Component {
             
                 <div>
                     <p>  eduFY</p>
+                    <Button onClick={this.toMatches}>Matches</Button>
                     <Nav tabs>
                         <NavItem>
                         <NavLink href="/student/home">Home</NavLink>
