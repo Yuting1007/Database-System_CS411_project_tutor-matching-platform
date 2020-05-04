@@ -678,7 +678,9 @@ EditPasswordFailure = () => {
                                 {this.state.error_message}
                             </ModalBody>
                             <ModalFooter>
-                                     
+
+
+
                                   </ModalFooter>
                         </Modal>
 
