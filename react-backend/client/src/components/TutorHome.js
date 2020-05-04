@@ -43,6 +43,8 @@ class TutorHome extends Component {
             preference_gender: 'None',
             preference_pastEx: 'None',
             preference_rating: 'None',
+            preference_major: 'None',
+            // preference_edu_level: 'None',
 
             //recommendation
             rec_students: [],
@@ -100,13 +102,22 @@ class TutorHome extends Component {
             preference_location: this.state.preference_location,
             preference_gender: this.state.preference_gender,
             preference_pastEx: this.state.preference_pastEx,
-            preference_rating: this.state.preference_rating
+            preference_rating: this.state.preference_rating,
+            preference_major: this.state.preference_major
         }
         if (formResults.preference_location === '') {
             formResults.preference_location = 'None'
         }
         if (formResults.preference_rating === '') {
             formResults.preference_rating = 'None'
+        }
+
+        if (formResults.preference_major === '') {
+            formResults.preference_major = 'None'
+        }
+
+        if (formResults.preference_gender === '') {
+            formResults.preference_gender = 'None'
         }
         console.log(formResults)
 
@@ -175,6 +186,10 @@ class TutorHome extends Component {
     };
 
     doneRecommendation = () => {
+        this.state.preference_major = '';
+        this.state.preference_gender = '';
+        this.state.preference_rating = '';
+        this.state.preference_location = '';
         if (this.state.isRecommendListModalOpen === true) {
             this.toggleRecommendListModal()
         }
@@ -250,6 +265,10 @@ class TutorHome extends Component {
                                         </Input>
                                     </FormGroup>
                                     <FormGroup>
+                                        <Label for="preference_major">Your preference on student's major</Label>
+                                        <Input type="text" name="preference_major" id="preference_major" onChange={e => this.handlePreferenceChange(e)}/>
+                                    </FormGroup>
+                                    <FormGroup>
                                         <Label for="preference_pastEx">Do you want us to consider your past matching experience? </Label>
                                         <Input type="select" name="preference_pastEx" id="preference_pastEx" onChange={e => this.handlePreferenceChange(e)}>
                                             <option>Yes</option>
@@ -292,7 +311,7 @@ class TutorHome extends Component {
                                             <td>{student.s_location}</td>
                                             {/* <td>{student.s_email}</td> */}
                                             <td>{student.s_pnum}</td>
-                                            <td><Button id={student.s_id} onClick={this.onTutorToStudentMatchClick}>Match!</Button></td>
+                                            <td><Button className='home-match-button' id={student.s_id} onClick={this.onTutorToStudentMatchClick}>Match!</Button></td>
                                         </tr>
                                     )}
                                     </tbody>

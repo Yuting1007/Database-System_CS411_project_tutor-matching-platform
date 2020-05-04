@@ -284,7 +284,7 @@ router.post('/recommend-tutorEnd', (req, res) => {
   const preference_gender = req.body.formResults.preference_gender;
   const preference_rating = req.body.formResults.preference_rating
   const preference_pastEx = req.body.formResults.preference_pastEx;
-
+  const preference_major = req.body.formResults.preference_major;
 
   console.log("form result location is: " + preference_location)
   console.log("form result gender is: " + preference_gender)
@@ -292,6 +292,7 @@ router.post('/recommend-tutorEnd', (req, res) => {
   let condition_location = '';
   let condition_gender = '';
   let condition_rating = '';
+  let condition_major = '';
 
   if (preference_pastEx === 'No') {
 
@@ -303,6 +304,10 @@ router.post('/recommend-tutorEnd', (req, res) => {
     if (preference_gender != 'None') {
       condition_gender = ' AND s_gender = ' + "'" + preference_gender + "'";
     }
+
+    if (preference_major != 'None') {
+      condition_major = ' AND s_major = ' + "'" + preference_major + "'";
+    }
   
     if (preference_rating != 'None') {
       condition_rating = ' WHERE s_ratings >= ' + preference_rating;
@@ -310,7 +315,7 @@ router.post('/recommend-tutorEnd', (req, res) => {
       condition_rating = ' WHERE s_ratings >= -999999';
     }
 
-    const queryString = 'SELECT * FROM students' + condition_rating + condition_gender + condition_location
+    const queryString = 'SELECT * FROM students' + condition_rating + condition_gender + condition_location + condition_major
     console.log("sql query is: " + queryString)
 
     getConnection().query(queryString, (err, results, fields) => {
@@ -334,6 +339,10 @@ router.post('/recommend-tutorEnd', (req, res) => {
     if (preference_gender != 'None') {
       condition_gender = ' AND s.s_gender = ' + "'" + preference_gender + "'";
     }
+
+    if (preference_major != 'None') {
+      condition_major = ' AND s.s_major = ' + "'" + preference_major + "'";
+    }
   
     if (preference_rating != 'None') {
       condition_rating = ' AND s.s_ratings >= ' + preference_rating;
@@ -348,7 +357,7 @@ router.post('/recommend-tutorEnd', (req, res) => {
                                             'GROUP BY s_id ' + 
                                             'HAVING COUNT(m_id) > 1) ' + 
                                             'AS candidates ON s.s_id = candidates.s_id ' + 
-                                            condition_location + condition_gender + condition_rating + 
+                                            condition_location + condition_gender + condition_rating + condition_major + 
                         ' ORDER BY candidates.count_mID DESC, s.s_ratings DESC'
 
 
