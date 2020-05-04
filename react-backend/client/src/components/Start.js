@@ -498,24 +498,23 @@ class Start extends Component {
       }
       
         return (
-            <div>
-                <Jumbotron>
+            <div className='start-background'>
+                <Jumbotron className='logo-jumbo'>
                     <Container>
                         <Row>
                             <Col>
-                                <h1 className='welcome-text'>Welcome to eduFY {this.state.s_name} </h1>
+                                <h1 className='welcome-text'>eduFY {this.state.s_name} </h1>
                                 <p>
 
-                                <Button
+                                {/* <Button
                                   tag="a"
-                                  color="info"
                                   size="large"
                                   target="_blank"
-                                  className="start-buttons"
+                                  className="sign-up-button"
                                   onClick={this.toggleChoosingModal}
                                 >
                                   Sign up!
-                                </Button>
+                                </Button> */}
 
                                 <Modal isOpen={this.state.isChoosingLoginOpen} toggle={this.toggleChoosingLoginModal} >
                                 <ModalHeader toggle={this.toggleChoosingLoginModal}>Login as </ModalHeader>
@@ -654,16 +653,15 @@ class Start extends Component {
                                     
                                     
                                   
-                                <Button
+                                {/* <Button
                                     tag="a"
-                                    color="success"
                                     size="large"
                                     target="_blank"
                                     onClick={this.toggleChoosingLoginModal}
-                                    className="start-buttons"
+                                    className="login-button"
                                 >
                                     Login
-                                </Button>
+                                </Button> */}
 
                                 <Modal isOpen={this.state.isLoginModalOpen} toggle={this.toggleLoginModal} >
                                   <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
@@ -787,6 +785,39 @@ class Start extends Component {
                         </Row>
                     </Container>
                 </Jumbotron>
+                <div className='button-div'>
+                <Jumbotron>
+        <h4 className="display-3">Welcome to eduFY!</h4>
+        <p className="lead">Our goal is to provide students and tutors with a platform to match and find the best possible relationship. We help provide a way for students to browse and evaluate potential tutors based on their educational needs.</p>
+        <hr className="my-2" />
+        
+        <Row className='button-row'>
+                    <Button
+                      tag="a"
+                      size="large"
+                      target="_blank"
+                      className="sign-up-button"
+                      onClick={this.toggleChoosingModal}
+                    >
+                      Sign up!
+                    </Button>
+
+                    <Button
+                        tag="a"
+                        size="large"
+                        target="_blank"
+                        onClick={this.toggleChoosingLoginModal}
+                        className="login-button"
+                    >
+                        Login
+                    </Button>
+                  </Row>
+      </Jumbotron>
+                  
+                  
+                </div>
+
+
             </div>
         );
     }
