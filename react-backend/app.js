@@ -28,9 +28,7 @@ app.use(express.static(path.join(__dirname, '/client/build')))
 // +app.get('/*', function (req, res) {
 //     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 //   });
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -115,6 +113,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {
