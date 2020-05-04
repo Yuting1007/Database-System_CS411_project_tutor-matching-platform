@@ -260,6 +260,7 @@ class Start extends Component {
         this.state.error_message = 'Location field cannot be empty!'
         this.toggleRegiErrorModal()
       }  else if (formResults.major === '') {
+        
         this.state.error_message = 'Major field cannot be empty!'
         this.toggleRegiErrorModal()
       } else if (formResults.pnum === '') {
