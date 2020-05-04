@@ -22,6 +22,8 @@ import {
     useHistory,
     Redirect
   } from "react-router-dom";
+  var passwordHash = require('password-hash');
+
 
 class StudentHome extends Component {
     constructor(props) {
@@ -30,16 +32,18 @@ class StudentHome extends Component {
         this.state = {
             s_name: sessionStorage.getItem('s_name') + '!',
             s_id: sessionStorage.getItem('s_id'),
+            s_password: sessionStorage.getItem('s_password'),
             redirect_settings: false,
             redirect_settings_link: '/settings', 
             isPreferenceModalOpen: false,
-
+            
             //preference info
             preference_major: 'None',
             preference_edu_level: 'None',
             preference_gender: 'None',
             preference_pastEx: 'None',
             preference_rating: 'None',
+          
 
             //additional resource preference
             addi_pre_major:'',
@@ -124,6 +128,14 @@ class StudentHome extends Component {
         this.props.history.push('/matches')
     }
 
+   
+  
+      EditPasswordSuccess = () => {
+          this.setState({
+              isEditPassWordSuccessOpen: !this.state.isEditPassWordSuccessOpen
+          })
+      }
+
     redirectToSetting = () => {
         this.setState({
             redirect_settings: !this.state.redirect_settings
@@ -135,6 +147,8 @@ class StudentHome extends Component {
             [e.target.name]: e.target.value
         })
     }
+
+       
 
     recommend = (e) => {
         e.preventDefault();
@@ -312,6 +326,17 @@ class StudentHome extends Component {
                             </p>
                             </Col>
                         </Row>
+                        <Row>
+                            <Col>
+                            <p>
+
+                            </p>
+                            </Col>
+                        </Row>
+
+                        
+
+                        
 
                         <Modal isOpen={this.state.isPreferenceModalOpen} toggle={this.togglePreferenceModal} >
                             <ModalHeader toggle={this.togglePreferenceModal}>Fill out this preference list and click recommend!</ModalHeader>
