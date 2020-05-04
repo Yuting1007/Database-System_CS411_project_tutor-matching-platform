@@ -508,16 +508,6 @@ class Start extends Component {
                                 <h1 className='welcome-text'>eduFY {this.state.s_name} </h1>
                                 <p>
 
-                                {/* <Button
-                                  tag="a"
-                                  size="large"
-                                  target="_blank"
-                                  className="sign-up-button"
-                                  onClick={this.toggleChoosingModal}
-                                >
-                                  Sign up!
-                                </Button> */}
-
                                 <Modal isOpen={this.state.isChoosingLoginOpen} toggle={this.toggleChoosingLoginModal} >
                                 <ModalHeader toggle={this.toggleChoosingLoginModal}>Login as </ModalHeader>
                                   <ModalBody>

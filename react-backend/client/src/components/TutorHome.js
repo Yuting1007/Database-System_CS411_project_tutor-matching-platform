@@ -217,11 +217,11 @@ class TutorHome extends Component {
                         <NavLink href="/tutor-settings">Settings</NavLink>
                         </NavItem>
                     </Nav> */}
-                    <Jumbotron>
+                    <Jumbotron className='welcome-jumbo'>
                         <Container>
                             <Row>
                                 <Col>
-                                    <h1>Welcome, {this.state.t_name}</h1>
+                                    <h1 style={{fontSize: 45, fontWeight: 'bold'}}>Welcome, {this.state.t_name}</h1>
                                     <p>
                                         Your tutor ID is {this.state.t_id}
                                     </p>

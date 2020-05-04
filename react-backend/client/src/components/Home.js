@@ -316,11 +316,11 @@ class StudentHome extends Component {
                         <NavLink href="/settings">Settings</NavLink>
                         </NavItem>
                     </Nav> */}
-                    <Jumbotron>
+                    <Jumbotron className='welcome-jumbo'>
                         <Container>
                             <Row>
                                 <Col>
-                                    <h1>Welcome, {this.state.s_name}</h1>
+                                    <h1  style={{fontSize: 45, fontWeight: 'bold'}}>Welcome, {this.state.s_name}</h1>
                                     <p>
                                         Your student ID is {this.state.s_id}
                                     </p>
