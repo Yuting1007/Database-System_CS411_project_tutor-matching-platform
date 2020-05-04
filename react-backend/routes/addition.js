@@ -22,9 +22,9 @@ router.post("/", function(req, res){
         var level = req.body.level;
         var course = req.body.course;
         
-    console.log("major is: " + major)
-    console.log("level is: " + level)
-    console.log("course is: " + course)
+    // console.log("major is: " + major)
+    // console.log("level is: " + level)
+    // console.log("course is: " + course)
 
         // var item = function(major, level, course, next){
         //     Addition.find({major: major, level: level, course: course},{link: 1}, function(err, items){
@@ -83,9 +83,9 @@ function pagelist(items) {
     var addi_pre_level = req.body.formResults.addi_pre_level;
     var addi_pre_course = req.body.formResults.addi_pre_course;
 
-    console.log("front end major is: " + addi_pre_major)
-    console.log("front end level is: " + addi_pre_level)
-    console.log("front end course is: " + addi_pre_course)
+    // console.log("front end major is: " + addi_pre_major)
+    // console.log("front end level is: " + addi_pre_level)
+    // console.log("front end course is: " + addi_pre_course)
 
     //var major_condition = 'major: ' + "'" + addi_pre_major + "'";
     //var addi_pre_course = "{$ne: '411'}"
@@ -97,9 +97,9 @@ function pagelist(items) {
             //items.toObject();
             //res.json(pagelist(items));
             res.json(items);
-            console.log("reach this point 1")
-            console.log(items)
-            console.log("reach this point 2")
+            // console.log("reach this point 1")
+            // console.log(items)
+            // console.log("reach this point 2")
         }
     })
     
