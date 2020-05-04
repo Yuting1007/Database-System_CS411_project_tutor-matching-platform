@@ -579,6 +579,7 @@ class Start extends Component {
                                 </Modal>
 
 
+
                                 <Modal isOpen={this.state.isTutorRegiModalOpen} toggle={this.toggleTutorRegiModal} >
                                   <ModalHeader toggle={this.toggleTutorRegiModal}>Register for eduFY as a Tutor! </ModalHeader>
                                   <ModalBody>
