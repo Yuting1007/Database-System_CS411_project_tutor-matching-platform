@@ -23,6 +23,7 @@ import {
     Redirect
   } from "react-router-dom";
 import NewNavBar from './NewNavBar';
+import '../css/Logo.css';
 
 class TutorHome extends Component {
     constructor(props) {
@@ -46,7 +47,7 @@ class TutorHome extends Component {
     render() {
         return (
             <div>
-                <p>eduFY</p>
+                <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
                 <NewNavBar/>
                 {/* <Nav tabs>
                     <NavItem>

@@ -15,8 +15,8 @@ import {
     Button,
     Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
-
-import '../css/Matches.css'
+import '../css/Logo.css';
+import '../css/Matches.css';
 import StudentRating from './StudentRating';
 import NewNavBar from './NewNavBar';
 
@@ -280,7 +280,7 @@ class TSMatches extends Component {
     render() {
         return (
             <div>
-                <p>eduFY</p>
+                <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
                 <NewNavBar/>
                     {/* <Nav tabs>
                         <NavItem>

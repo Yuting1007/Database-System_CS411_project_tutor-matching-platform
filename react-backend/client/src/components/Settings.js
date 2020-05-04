@@ -27,6 +27,7 @@ import {
 import '../css/Start.css'
 import Users from './Users';
 import NewNavBar from './NewNavBar';
+import '../css/Logo.css';
 var passwordHash = require('password-hash');
 
 class Settings extends Component {
@@ -414,7 +415,7 @@ EditPasswordFailure = () => {
 
             <React.Fragment>
                 <div>
-                    <p>  eduFY</p>
+                <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
                     <NewNavBar/>
                     {/* <Nav tabs>
                         <NavItem>
