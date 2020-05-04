@@ -41,6 +41,8 @@ class Settings extends Component {
             isEditGenderModalOpen:false,
             isEditEmailModalOpen: false,
             isEditPnumModalOpen: false,
+            isEditMajorModalOpen: false,
+            isEditEduLevelModalOpen: false,
             isDeleteConfirmModalOpen: false,
             isLogoutConfirmModalOpen: false,
             isEditPasswordOpen: false,
@@ -60,6 +62,8 @@ class Settings extends Component {
             s_email: sessionStorage.getItem('s_email'),
             s_pnum: sessionStorage.getItem('s_pnum'),
             s_password: sessionStorage.getItem('s_password'),
+            s_major: sessionStorage.getItem('s_major'),
+            s_edu_level: sessionStorage.getItem('s_edu_level'),
 
             // //student preference into
             // preference_major: sessionStorage.getItem('preference_major'),
@@ -74,6 +78,8 @@ class Settings extends Component {
             updated_gender:'', 
             updated_pnum:'',
             updated_email:'',
+            updated_major:'',
+            updated_edu_level:'',
 
             //redirect states
             redirect_start_link: "/",
@@ -91,17 +97,30 @@ class Settings extends Component {
         this.toggleEditPassword = this.toggleEditPassword.bind();
         this.EditPasswordFailure = this.EditPasswordFailure.bind();
         this.EditPasswordSuccess = this.EditPasswordSuccess.bind();
-
+        this.toggleEditMajorModal = this.toggleEditMajorModal.bind();
+        this.toggleEditEduLevelModal = this.toggleEditEduLevelModal.bind();
         
     }
-    toggleEditPassword = () => {
-        this.setState({
-            isEditPasswordOpen: !this.state.isEditPasswordOpen
-        })
+toggleEditPassword = () => {
+    this.setState({
+        isEditPasswordOpen: !this.state.isEditPasswordOpen
+    })
 }
 handleEditPasswordChange = (e) => {
     this.setState({
         [e.target.name]: e.target.value
+    })
+}
+
+toggleEditMajorModal = () => {
+    this.setState({
+        isEditMajorModalOpen: !this.state.isEditMajorModalOpen
+    })
+}
+
+toggleEditEduLevelModal = () => {
+    this.setState({
+        isEditEduLevelModalOpen: !this.state.isEditEduLevelModalOpen
     })
 }
 
@@ -382,6 +401,63 @@ EditPasswordFailure = () => {
         })
     }
 
+    //update major =============================================
+    onEditMajorFormSubmit = (e) => {
+        e.preventDefault();
+
+        let formResults = {
+            major: this.state.updated_major,
+            id: this.state.s_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/update-major', requestOptions)
+
+        this.state.s_major = this.state.updated_major
+        if (this.state.isEditMajorModalOpen === true) {
+            this.toggleEditMajorModal()
+        }
+    };
+
+    handleEditMajorChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+    //update education level =============================================
+    onEditEduLevelFormSubmit = (e) => {
+        e.preventDefault();
+
+        let formResults = {
+            edu_level: this.state.updated_edu_level,
+            id: this.state.s_id
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch('/settings/update-edu-level', requestOptions)
+
+        this.state.s_edu_level = this.state.updated_edu_level
+        if (this.state.isEditEduLevelModalOpen === true) {
+            this.toggleEditEduLevelModal()
+        }
+    };
+
+    handleEditEduLevelChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+    }
+
+
     //delete account 
     deleteAccount = () => {
         let url = '/settings/delete/' + this.state.s_id
@@ -489,6 +565,30 @@ EditPasswordFailure = () => {
 
                                     <Col>
                                         <Button color="primary" size="sm" onClick={this.toggleEditLocationModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                                  
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        Major: {this.state.s_major}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditMajorModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>                                  
+                                </Row>
+
+                                <Row>
+                                    <Col>
+                                        Education Level: {this.state.s_edu_level}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" onClick={this.toggleEditEduLevelModal}>
                                             Edit
                                         </Button>
                                     </Col>                                  
@@ -616,6 +716,34 @@ EditPasswordFailure = () => {
                                       </FormGroup>
                                       <Button color="primary" type="submit">Confirm</Button> {' '}
                                       <Button color="secondary" onClick={this.toggleEditAgeModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isEditMajorModalOpen} toggle={this.toggleEditMajorModal} >
+                                  <ModalHeader toggle={this.toggleEditMajorModal}>Edit Major</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditMajorFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_major">Enter your updated major</Label>
+                                        <Input type="text" name="updated_major" id="updated_major" onChange={e => this.handleEditMajorChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditMajorModal}>Cancel</Button>
+                                    </Form>
+                                  </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isEditEduLevelModalOpen} toggle={this.toggleEditEduLevelModal} >
+                                  <ModalHeader toggle={this.toggleEditEduLevelModal}>Edit Education Level</ModalHeader>
+                                  <ModalBody>
+                                    <Form onSubmit={this.onEditEduLevelFormSubmit}>
+                                      <FormGroup>
+                                        <Label for="updated_edu_level">Enter your updated education level</Label>
+                                        <Input type="text" name="updated_edu_level" id="updated_edu_level" onChange={e => this.handleEditEduLevelChange(e)} />
+                                      </FormGroup>
+                                      <Button color="primary" type="submit">Confirm</Button> {' '}
+                                      <Button color="secondary" onClick={this.toggleEditEduLevelModal}>Cancel</Button>
                                     </Form>
                                   </ModalBody>
                                 </Modal>
