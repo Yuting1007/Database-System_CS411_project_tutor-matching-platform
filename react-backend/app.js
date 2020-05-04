@@ -24,11 +24,13 @@ mongoose.connect("mongodb://localhost:27017/addition",  {useNewUrlParser: true, 
 var app = express();
 app.use(express.static(path.join(__dirname, '/client/build')))
 
--app.get('/', function (req, res) {})
-+app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
-  });
-
+// -app.get('/', function (req, res) {})
+// +app.get('/*', function (req, res) {
+//     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+//   });
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
