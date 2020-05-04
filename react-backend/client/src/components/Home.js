@@ -241,30 +241,47 @@ class StudentHome extends Component {
             addi_pre_major: this.state.addi_pre_major,
         }
 
-        if (formResults.addi_pre_major === '') {
-            this.state.error_message = 'Major field cannot be empty!'
-            this.toggleAddiFormErrorModal()
-        } else if (formResults.addi_pre_course === '') {
-            this.state.error_message = 'Course field cannot be empty!'
-            this.toggleAddiFormErrorModal()
-        } else {
-            //POST req here
-            const requestOptions = {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({formResults})
-            };
+        // if (formResults.addi_pre_major === '') {
+        //     this.state.error_message = 'Major field cannot be empty!'
+        //     this.toggleAddiFormErrorModal()
+        // } else if (formResults.addi_pre_course === '') {
+        //     this.state.error_message = 'Course field cannot be empty!'
+        //     this.toggleAddiFormErrorModal()
+        // } else {
+        //     //POST req here
+        //     const requestOptions = {
+        //         method: 'POST',
+        //         headers: {'Content-Type': 'application/json'},
+        //         body: JSON.stringify({formResults})
+        //     };
 
-            fetch("/addition/get-resources", requestOptions)
-            .then(res => res.json())
-                //need to catch error somehow
+        //     fetch("/addition/get-resources", requestOptions)
+        //     .then(res => res.json())
+        //         //need to catch error somehow
         
-            .then(resources => {
-                console.log(resources)
-                this.setState({ resources })
-                this.toggleResourceListModal();
-            });
-        }
+        //     .then(resources => {
+        //         console.log(resources)
+        //         this.setState({ resources })
+        //         this.toggleResourceListModal();
+        //     });
+        // }
+
+                //POST req here
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch("/addition/get-resources", requestOptions)
+        .then(res => res.json())
+            //need to catch error somehow
+    
+        .then(resources => {
+            console.log(resources)
+            this.setState({ resources })
+            this.toggleResourceListModal();
+        });
     }
 
     clickLink = (e) => {

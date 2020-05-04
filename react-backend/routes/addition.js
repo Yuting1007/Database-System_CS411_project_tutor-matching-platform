@@ -77,11 +77,26 @@ function pagelist(items) {
     return result;
   }
 
-  router.post("/get-resources", (req, res) => {
+router.post("/get-resources", (req, res) => {
+    // if(req.body.formResults.addi_pre_major != NULL){
+    //     var addi_pre_major = req.body.formResults.addi_pre_major;    
+    // }
+    var obj = {}
+    if(req.body.formResults.addi_pre_major){
+        obj['major'] = req.body.formResults.addi_pre_major;
+    }
+    if(req.body.formResults.addi_pre_level){
+        obj['level'] = req.body.formResults.addi_pre_level;
+
+    }
+    if(req.body.formResults.addi_pre_course){
+        obj['course'] = req.body.formResults.addi_pre_course;
+    }
+    // var addi_pre_major = req.body.formResults.addi_pre_major;
+    // var addi_pre_level = req.body.formResults.addi_pre_level;
+    // var addi_pre_course = req.body.formResults.addi_pre_course;
     
-    var addi_pre_major = req.body.formResults.addi_pre_major;
-    var addi_pre_level = req.body.formResults.addi_pre_level;
-    var addi_pre_course = req.body.formResults.addi_pre_course;
+    
 
     // console.log("front end major is: " + addi_pre_major)
     // console.log("front end level is: " + addi_pre_level)
@@ -90,7 +105,22 @@ function pagelist(items) {
     //var major_condition = 'major: ' + "'" + addi_pre_major + "'";
     //var addi_pre_course = "{$ne: '411'}"
 
-    Addition.find({major: addi_pre_major, level: addi_pre_level, course: addi_pre_course},  {link: 1, major: 1, level: 1, course: 1, description: 1}).lean().exec(function(err, items){
+    // Addition.find({major: addi_pre_major, level: addi_pre_level, course: addi_pre_course},  {link: 1, major: 1, level: 1, course: 1, description: 1}).lean().exec(function(err, items){
+    //     if(err){
+    //         console.log(err);
+    //     } else {
+    //         //items.toObject();
+    //         //res.json(pagelist(items));
+    //         res.json(items);
+    //         // console.log("reach this point 1")
+    //         // console.log(items)
+    //         // console.log("reach this point 2")
+    //     }
+    // })
+
+    
+    //making search object dynamically
+    Addition.find(obj,  {link: 1, major: 1, level: 1, course: 1, description: 1}).lean().exec(function(err, items){
         if(err){
             console.log(err);
         } else {
@@ -102,7 +132,6 @@ function pagelist(items) {
             // console.log("reach this point 2")
         }
     })
-    
-})
+});
 
   module.exports = router;
