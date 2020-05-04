@@ -127,8 +127,8 @@ table{
         overflow:auto;
     }
     .contentWrapper{
-        /* width: 3250px; */
-        width:100%;
+        width: 3250px;
+        /* width:100%; */
        /* overflow-x: auto; */
 /* height: 100%;
 overflow:scroll;
@@ -139,4 +139,9 @@ overflow-y: hidden; */
     .content{
         width:325px;
         float:left;
+    }
+
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
     }
