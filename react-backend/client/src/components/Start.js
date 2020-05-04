@@ -367,6 +367,8 @@ class Start extends Component {
           sessionStorage.setItem('s_email', data[0].s_email);
           sessionStorage.setItem('s_password', data[0].s_password);
           sessionStorage.setItem('s_rawpassword', this.state.student_regi_password);
+          sessionStorage.setItem('s_major', data[0].s_major);
+          sessionStorage.setItem('s_edu_level', data[0].s_edu_level);
 
           sessionStorage.setItem('account_type', 'student');    
 

@@ -73,6 +73,58 @@ router.post('/update-age', (req, res) => {
     })
 });
 
+//update major ==========================================================
+router.post('/update-major', (req, res) => {
+    console.log("Trying to update a major...")
+    console.log(typeof req.body.formResults.major)
+    console.log(req.body)
+    const major = req.body.formResults.major;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE students SET s_major = ? WHERE s_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [major, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student major')
+        res.end()
+    })
+});
+
+//update education level ==========================================================
+router.post('/update-edu-level', (req, res) => {
+    console.log("Trying to update a edu-level...")
+    console.log(typeof req.body.formResults.edu_level)
+    console.log(req.body)
+    const edu_level = req.body.formResults.edu_level;
+    const id = req.body.formResults.id;
+    //const age = parseInt(req.body.formResults.age);
+    //const location = req.body.formResults.location;
+
+    const queryString = 'UPDATE students SET s_edu_level = ? WHERE s_id = ?'
+
+    //const queryString = 'INSERT INTO students (s_name, s_age, s_location) VALUES (?, ?, ?)'
+    
+    getConnection().query(queryString, [edu_level, id], (err, results, fields) => {
+        if (err) {
+            console.log("Failed to update: " + err)
+            res.sendStatus(500)
+            return
+        }
+
+        console.log('Update a student edu_level')
+        res.end()
+    })
+});
+
 //update location =======================================================
 router.post('/update-location', (req, res) => {
     console.log("Trying to update a location...")
