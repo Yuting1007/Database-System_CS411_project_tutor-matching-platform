@@ -31,10 +31,15 @@ class TutorHome extends Component {
             t_name: sessionStorage.getItem('t_name') + '!',
             t_id: sessionStorage.getItem('t_id')
         };
+        this.onMatchButtonClick = this.onMatchButtonClick.bind();
     }
 
     async componentDidMount() {
         this.state.t_name = sessionStorage.getItem('t_name')
+    }
+
+    onMatchButtonClick = () => {
+        this.props.history.push('/tsmatches')
     }
 
     render() {
@@ -61,6 +66,12 @@ class TutorHome extends Component {
                                     Your tutor ID is {this.state.t_id}
                                 </p>
 
+                            </Col>
+                            <Col>
+                            <p>
+                                <Button color="primary" size="lg" onClick={this.onMatchButtonClick} block>Matches</Button>
+                            </p>
+                                
                             </Col>
                         </Row>
                     </Container>

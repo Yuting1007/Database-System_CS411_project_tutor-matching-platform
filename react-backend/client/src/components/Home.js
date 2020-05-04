@@ -45,21 +45,71 @@ class StudentHome extends Component {
             preference_rating: 'None',
           
 
+            //additional resource preference
+            addi_pre_major:'',
+            addi_pre_level:'',
+            addi_pre_course:'',
+            isAddiPrefModalOpen: false,
+            resources:[],
+            isResourceListModalOpen: false,
+
+            //additional resource form error
+            error_message:'',
+            isAddiFormErrorModalOpen:false,
+
             //recommendation
             rec_tutors: [],
-            isRecommendListModalOpen: false
+            isRecommendListModalOpen: false,
+            userID: sessionStorage.getItem("s_id"),
+
+            //confirmation
+            isMatchAckModalOpen: false,
+            isMatchExistAckModalOpen: false
         };
         this.onMatchButtonClick = this.onMatchButtonClick.bind();
         this.togglePreferenceModal = this.togglePreferenceModal.bind();
         this.toggleRecommendListModal = this.toggleRecommendListModal.bind();
-      
-        
+        this.toggleMatchExistAckModal = this.toggleMatchExistAckModal.bind();
+        this.toggleMatchAckModal = this.toggleMatchAckModal.bind();
+        this.toggleAddiPrefModal = this.toggleAddiPrefModal.bind();
+        this.toggleResourceListModal = this.toggleResourceListModal.bind();
+        this.toggleAddiFormErrorModal = this.toggleAddiFormErrorModal.bind();
     }
 
     //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
 
     async componentDidMount() {
         this.state.s_name = sessionStorage.getItem('s_name')
+    }
+
+    toggleAddiFormErrorModal = () => {
+        this.setState({
+            isAddiFormErrorModalOpen: !this.state.isAddiFormErrorModalOpen
+        })
+    }
+
+    toggleResourceListModal = () => {
+        this.setState({
+            isResourceListModalOpen: !this.state.isResourceListModalOpen
+        })
+    }
+
+    toggleAddiPrefModal = () => {
+        this.setState({
+            isAddiPrefModalOpen: !this.state.isAddiPrefModalOpen
+        })
+    }
+
+    toggleMatchAckModal = () => {
+        this.setState({
+            isMatchAckModalOpen: !this.state.isMatchAckModalOpen
+        })
+    }
+
+    toggleMatchExistAckModal = () => {
+        this.setState({
+            isMatchExistAckModalOpen: !this.state.isMatchExistAckModalOpen
+        })
     }
 
     toggleRecommendListModal = () => {
@@ -132,6 +182,95 @@ class StudentHome extends Component {
             this.toggleRecommendListModal();
         });
     }
+
+    onStudentToTutorMatchClick = (e) => {
+        // console.log("click");
+        console.log(e.target.id);
+        console.log(this.state.userID)
+        // should first check if match exists !!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+
+        let newMatch = {
+            t_id: e.target.id,
+            s_id: this.state.userID,
+            m_s_like: 1,
+            m_t_like: 0
+           }
+        console.log(newMatch)
+           
+        //POST req here
+        const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({newMatch})
+        };
+
+        //check for existing matches
+        fetch('/matches/match-check', requestOptions)
+        .then(res => res.json())      
+        .then(data => {
+            console.log("reach this point")
+            console.log(data)
+            if (data.length === 0) {
+                this.toggleMatchAckModal();
+                //this.matchStudentToTutor(requestOptions)
+                fetch('/matches/match-create', requestOptions);
+            } else {
+                console.log("already exists")
+                this.toggleMatchExistAckModal();
+            }
+        });
+        console.log("tutorMatches: " +this.state.tutorMatches)
+    };
+
+    doneRecommendation = () => {
+        if (this.state.isRecommendListModalOpen === true) {
+            this.toggleRecommendListModal()
+        }
+        if (this.state.isPreferenceModalOpen === true) {
+            this.togglePreferenceModal()
+        }
+    }
+
+    searchAdditionalResource = (e) => {
+
+        e.preventDefault();
+        let formResults = {
+            addi_pre_course: this.state.addi_pre_course,
+            addi_pre_level: this.state.addi_pre_level,
+            addi_pre_major: this.state.addi_pre_major,
+        }
+
+        if (formResults.addi_pre_major === '') {
+            this.state.error_message = 'Major field cannot be empty!'
+            this.toggleAddiFormErrorModal()
+        } else if (formResults.addi_pre_course === '') {
+            this.state.error_message = 'Course field cannot be empty!'
+            this.toggleAddiFormErrorModal()
+        } else {
+            //POST req here
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({formResults})
+            };
+
+            fetch("/addition/get-resources", requestOptions)
+            .then(res => res.json())
+                //need to catch error somehow
+        
+            .then(resources => {
+                console.log(resources)
+                this.setState({ resources })
+                this.toggleResourceListModal();
+            });
+        }
+    }
+
+    clickLink = (e) => {
+        window.open(e.target.id)
+    }
+
 
     render() {
         if (this.state.redirect_settings) {
@@ -280,13 +419,113 @@ class StudentHome extends Component {
                                   </ModalBody>
 
                                   <ModalFooter>
+                                      Not satisfied with you what see? Try additional resources -->
                                       <Button 
                                         color="primary" 
-                                        onClick={this.toggleRecommendListModal}
+                                        onClick={this.toggleAddiPrefModal}
+                                        >Additional Resources
+                                      </Button>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.doneRecommendation}
                                         >Done
                                       </Button>
                                   </ModalFooter>
                                 </Modal>
+
+                                <Modal isOpen={this.state.isMatchExistAckModalOpen} toggle={this.toggleMatchExistAckModal} >
+                                    <ModalHeader toggle={this.toggleMatchExistAckModal}>You are already matched with this tutor! See your matched tutors in the match page</ModalHeader>
+                                    <ModalBody>
+                                        <Button color="primary" onClick={this.toggleMatchExistAckModal} type="submit">Got It</Button> {' '}
+                                    </ModalBody>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isMatchAckModalOpen} toggle={this.toggleMatchAckModal} >
+                                    <ModalHeader toggle={this.toggleMatchAckModal}>You are matched with the tutor! Go to the match page to see all your tutors.</ModalHeader>
+                                    <ModalBody>
+                                        <Button color="primary" onClick={this.toggleMatchAckModal} type="submit">Got It</Button> {' '}
+                                    </ModalBody>
+                                </Modal>
+
+                                {/* Additional Modal start here! */}
+
+                                <Modal isOpen={this.state.isAddiPrefModalOpen} toggle={this.toggleAddiPrefModal} >
+                                    <ModalHeader toggle={this.toggleAddiPrefModal}>Get study resource of a specific course in UIUC</ModalHeader>
+                                    <ModalBody>
+                                    <Form onSubmit={this.searchAdditionalResource}>
+                                        <FormGroup>
+                                            <Label for="addi_pre_major">Course Major (Enter abbreviation with capital letters)</Label>
+                                            <Input type="text" name="addi_pre_major" id="addi_pre_major" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_level">Course Level </Label>
+                                            <Input type="select" name="addi_pre_level" id="addi_pre_level" onChange={e => this.handlePreferenceChange(e)}>
+                                                <option>100</option>
+                                                <option>200</option>
+                                                <option>300</option>
+                                                <option>400</option>
+                                            </Input>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_course">Course Number </Label>
+                                            <Input type="text" name="addi_pre_course" id="addi_pre_course" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>
+                                        <Button color="primary" type="submit">Give me additional resources!</Button> {' '}
+                                        <Button color="secondary" onClick={this.toggleAddiPrefModal}>Cancel</Button>
+                                    </Form>
+                                    </ModalBody>
+                                </Modal>
+
+
+                                {/*Resource List Modal Below*/}
+                                <Modal size='lg' isOpen={this.state.isResourceListModalOpen} toggle={this.toggleResourceListModal}>
+                                  <ModalHeader toggle={this.toggleResourceListModal}>Here are our recommended study resources!</ModalHeader>
+                                  <ModalBody>
+                                    <Table striped className="resources-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Description</th>
+                                                <th>Link</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {this.state.resources.map(resources => 
+                                            <tr key={resources.link}>
+                                                <td>{resources.description}</td>
+                                                <td><Button id={resources.link} onClick={this.clickLink} color="link">Check It Out!</Button></td>
+                                            </tr>
+                                        )}
+                                        </tbody>
+                                    </Table>
+                                  </ModalBody>
+
+                                  <ModalFooter>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.toggleResourceListModal}
+                                        >Done
+                                      </Button>
+                                  </ModalFooter>
+                                </Modal>
+
+                                <Modal isOpen={this.state.isAddiFormErrorModalOpen} toggle={this.toggleAddiFormErrorModal}>
+                                  <ModalHeader toggle={this.toggleAddiFormErrorModal}>Invalid Information</ModalHeader>
+                                  <ModalBody>
+                                    {this.state.error_message}
+                                  </ModalBody>
+
+                                  <ModalFooter>
+                                      <Button 
+                                        color="primary" 
+                                        onClick={this.toggleAddiFormErrorModal}
+                                        >Fix It
+                                      </Button>
+                                  </ModalFooter>
+                                </Modal>
+
+                                
+
+                                
                     </Container>
                 </Jumbotron>
                 </div>

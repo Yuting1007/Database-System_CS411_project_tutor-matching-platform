@@ -275,7 +275,7 @@ class Matches extends Component {
         //this.getMatches();
         console.log("tutorMatches: " +this.state.tutorMatches)
         //call refresh
-      };
+    };
 
     render() {
         return (
