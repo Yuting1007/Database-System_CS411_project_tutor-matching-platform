@@ -431,7 +431,7 @@ class StudentHome extends Component {
                         <Row>
                             <Col>
                             <p className='button-p'>
-                                <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
+                            <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
                             </p>
                                 
                             </Col>
