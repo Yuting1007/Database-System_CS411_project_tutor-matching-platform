@@ -48,6 +48,8 @@ class Start extends Component {
             student_regi_pnum:'',
             student_regi_email:'',
             student_regi_password:'',
+            student_regi_major:'',
+            student_regi_edu_level: '',
 
             //tutor register info
             tutor_regi_name:'',
@@ -174,6 +176,9 @@ class Start extends Component {
         gender: this.state.student_regi_gender,
         email: this.state.student_regi_email,
         pnum: this.state.student_regi_pnum,
+        major: this.state.student_regi_major.toLowerCase(),
+        edu_level: this.state.student_regi_edu_level,
+        
 
         rawPassowrd: this.state.student_regi_password,
         hashedPassword: passwordHash.generate(this.state.student_regi_password)
@@ -187,7 +192,19 @@ class Start extends Component {
       } else if (formResults.age === '' || parseInt(formResults.age) <= 0) {
         this.state.error_message = 'Invalid Age!'
         this.toggleRegiErrorModal()
-      }  else if (formResults.location === '') {
+      }  else if(formResults.major === ''){
+          this.state.error_message = 'Major field cannot be empty!'
+          this.toggleRegiErrorModal()
+      }
+      else if(formResults.gender === ''){
+        this.state.error_message = 'Gender field cannot be empty!'
+        this.toggleRegiErrorModal()
+    }
+        else if(formResults.edu_level === ''){
+          this.state.error_message = "Choose education level from dropdown!"
+          this.toggleRegiErrorModal()
+        }
+      else if (formResults.location === '') {
         this.state.error_message = 'Location field cannot be empty!'
         this.toggleRegiErrorModal()
       } else if (formResults.email === '') {
@@ -263,15 +280,22 @@ class Start extends Component {
       }  else if (formResults.location === '') {
         this.state.error_message = 'Location field cannot be empty!'
         this.toggleRegiErrorModal()
-      }  else if (formResults.major === '') {
-        
+      }  else if (formResults.major === '') {   
         this.state.error_message = 'Major field cannot be empty!'
         this.toggleRegiErrorModal()
-      } else if (formResults.pnum === '') {
-        this.state.error_message = 'Education Level field cannot be empty!'
+      }  else if (formResults.edu_level === '') {
+        this.state.error_message = 'Choose education level from dropdown!'
+        this.toggleRegiErrorModal()
+      }
+      else if (formResults.grade === '') {
+        this.state.error_message = 'Choose grade from dropdown!'
+        this.toggleRegiErrorModal()
+      }
+      else if (formResults.pnum === '') {
+        this.state.error_message = 'Phone number field cannot be empty!'
         this.toggleRegiErrorModal()
       } else if (formResults.email === '') {
-        this.state.error_message = 'Education Level field cannot be empty!'
+        this.state.error_message = 'Email field cannot be empty!'
         this.toggleRegiErrorModal()
       } else if (formResults.rawPassowrd === '') {
         this.state.error_message = 'Password field cannot be empty!'
@@ -367,8 +391,9 @@ class Start extends Component {
           sessionStorage.setItem('s_email', data[0].s_email);
           sessionStorage.setItem('s_password', data[0].s_password);
           sessionStorage.setItem('s_rawpassword', this.state.student_regi_password);
-          sessionStorage.setItem('s_major', data[0].s_major);
           sessionStorage.setItem('s_edu_level', data[0].s_edu_level);
+          sessionStorage.setItem('s_major', data[0].s_major.toLowerCase());
+        
 
           sessionStorage.setItem('account_type', 'student');    
 
@@ -543,11 +568,28 @@ class Start extends Component {
                                         <FormGroup>
                                           <Label for="student_regi-gender">Gender</Label>
                                           <Input type="select" name="student_regi_gender" id="student_regi_gender" onChange={e => this.handleRegiChange(e)}>
+                                        <option></option>
                                         <option>None</option>
                                         <option>Female</option>
                                         <option>Male</option>
                                         <option>Other</option>
                                     </Input>
+                                        </FormGroup>
+                                        <FormGroup>
+                                          <Label for="student_regi-edu-level">Education Level</Label>
+                                          <Input type="select" name="student_regi_edu_level" id="student_regi_edu_level" onChange={e => this.handleRegiChange(e)}>
+                                        <option></option>
+                                        <option>Elementary School</option>
+                                        <option>Middle School</option>
+                                        <option>High School</option>
+                                        <option>College</option>
+                                        <option>Master</option>
+                                        <option>PHD</option>
+                                    </Input>
+                                        </FormGroup>
+                                        <FormGroup>
+                                          <Label for="student_regi-major">Major</Label>
+                                          <Input type="text" name="student_regi_major" id="student_regi-major"  onChange={e => this.handleRegiChange(e)} />
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="student_regi-pnum">Phone Number</Label>
@@ -600,6 +642,7 @@ class Start extends Component {
                                         <FormGroup>
                                           <Label for="tutor_regi-edu_level">Education Level</Label>
                                           <Input type="select" name="tutor_regi_edu_level" id="tutor_regi_edu_level" onChange={e => this.handleRegiChange(e)}>
+                                          <option></option>
                                           <option value="Elementary School">Elementary School</option>
                                           <option value="Middle School">Middle School</option>
                                           <option value="High School">High School</option>
@@ -817,3 +860,5 @@ class Start extends Component {
 }
 
 export default Start;
+
+

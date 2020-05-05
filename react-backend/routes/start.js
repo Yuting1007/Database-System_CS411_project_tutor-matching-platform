@@ -8,19 +8,12 @@ var passwordHash = require('password-hash');
 // Function that gets connection to SQL database
 function getConnection() {
     return mysql.createConnection({
-      host: 'us-cdbr-east-06.cleardb.net',
-      user: 'ba0144eebe0617',
-      password: '45188a1d', 
-      database: 'heroku_195486945502404'
-      ////////
-      // LOCAL HOST INFORMATION BELOW
-      // host: 'localhost',
-      // user: 'root',
-      // password: 'password', // PUT your own password here whatever it is locally
-      // database: '411project',
-      // port: 3307
-      //port: 3306
-      //insecureAuth : true
+      host: 'localhost',
+      user: 'root',
+      password: 'password', // PUT your own password here whatever it is locally
+      database: '411project',
+     
+     port: 3306
       })
 }
 
@@ -116,11 +109,13 @@ router.post('/student-create', (req, res) => {
   const email = req.body.formResults.email;
   const pnum = req.body.formResults.pnum;
   const password = req.body.formResults.hashedPassword;
+  const edu_level = req.body.formResults.edu_level;
+  const major = req.body.formResults.major;
 
   
-  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum, s_password,  s_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, 0)'
+  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum, s_password,  s_ratings, s_edu_level, s_major) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)'
   
-  getConnection().query(queryString, [name, age, location, gender, email, pnum, password], (err, results, fields) => {
+  getConnection().query(queryString, [name, age, location, gender, email, pnum, password, edu_level, major], (err, results, fields) => {
       if (err) {
           console.log("Failed to insert new user: " + err)
           res.sendStatus(500)
