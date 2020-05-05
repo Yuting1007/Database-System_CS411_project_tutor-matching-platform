@@ -54,6 +54,7 @@ class Settings extends Component {
             old_password: '',
             new_password: '',
             Hash: '',
+            
 
             //student info
             s_id: sessionStorage.getItem('s_id'),
@@ -152,12 +153,7 @@ EditPasswordFailure = () => {
        
     }
 
-    const requestOptions = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({formResults})
-    };
-    fetch('/settings/update-password', requestOptions)
+   
     
     
    if(formResults.new_password === ''){
@@ -165,13 +161,21 @@ EditPasswordFailure = () => {
     this.EditPasswordFailure()
 }
    else if (!passwordHash.verify(formResults.old_password, this.state.s_password)){
+        if (this.state.isEditPasswordFailureOpen === false) {
+            this.EditPasswordFailure()
+          }
     this.state.error_message = 'Old passwords do not match!'    
     this.EditPasswordFailure()
    }
    
   
    else{
-    
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({formResults})
+    };
+    fetch('/settings/update-password', requestOptions)
     this.state.s_password = formResults.Hash
     sessionStorage.setItem('s_password', formResults.Hash)
     this.EditPasswordSuccess()
@@ -493,7 +497,7 @@ EditPasswordFailure = () => {
         return (
 
             <React.Fragment>
-                <div>
+                <div >
                 <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
                     <NewNavBar/>
                     {/* <Nav tabs>
@@ -507,7 +511,7 @@ EditPasswordFailure = () => {
                         <NavLink href="/settings">Settings</NavLink>
                         </NavItem>
                     </Nav> */}
-                    <Jumbotron>
+                    <Jumbotron className='setting-tron'>
                         <Container>
                             <Row>
                                 <Col>
@@ -520,8 +524,8 @@ EditPasswordFailure = () => {
                 </div >
             
 
-                <div>
-                    <Jumbotron>
+                <div >
+                    <Jumbotron className = 'edit-tron'>
                         
                         <Container>
                             
@@ -632,7 +636,7 @@ EditPasswordFailure = () => {
                                     Delete account
                                 </Button>{'   '} 
 
-                                <Button color="primary" size="sm" onClick={this.toggleLogoutConfirmModal}>
+                                <Button color="primary" className = "logout-button" size="sm" onClick={this.toggleLogoutConfirmModal}>
                                     Logout
                                 </Button>
 
@@ -673,11 +677,20 @@ EditPasswordFailure = () => {
                             <ModalBody>
                                 {this.state.error_message}
                             </ModalBody>
+                            
                             <ModalFooter>
-
-
-
+                            <Button color="primary" onClick={this.toggleEditPassword}>
+                                        Try again
+                                      </Button>
+                                      <Button 
+                                        color="secondary" 
+                                        onClick={this.EditPasswordFailure}
+                                        >Cancel
+                                      </Button>
                                   </ModalFooter>
+
+
+                                  
                         </Modal>
 
 
@@ -805,7 +818,7 @@ EditPasswordFailure = () => {
                             
                         </Container>
                     </Jumbotron>
-                </div>
+                </div >
 
             </React.Fragment>
             
