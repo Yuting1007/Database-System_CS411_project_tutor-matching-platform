@@ -78,7 +78,7 @@ class StudentHome extends Component {
         this.toggleMatchAckModal = this.toggleMatchAckModal.bind();
         this.toggleAddiPrefModal = this.toggleAddiPrefModal.bind();
         this.toggleResourceListModal = this.toggleResourceListModal.bind();
-        this.toggleAddiFormErrorModal = this.toggleAddiFormErrorModal.bind();
+        // this.toggleAddiFormErrorModal = this.toggleAddiFormErrorModal.bind();
     }
 
     //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
