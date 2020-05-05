@@ -255,6 +255,11 @@ class StudentHome extends Component {
         if (this.state.isPreferenceModalOpen === true) {
             this.togglePreferenceModal()
         }
+        this.state.preference_major = 'None'
+        this.state.preference_gender = 'None'
+        this.state.preference_pastEx = 'None'
+        this.state.preference_rating = 'None'
+        this.state.preference_edu_level = 'None'
     }
 
     searchAdditionalResource = (e) => {
@@ -426,7 +431,7 @@ class StudentHome extends Component {
                         <Row>
                             <Col>
                             <p className='button-p'>
-                                <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
+                            <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
                             </p>
                                 
                             </Col>

@@ -563,6 +563,18 @@ EditPasswordFailure = () => {
                                 <hr/>
                                 <Row>
                                     <Col>
+                                    <strong>Major:</strong> <br /> {this.state.s_major}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary" size="sm" className = 'gender-button'onClick={this.toggleEditMajorModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>    
+                                </Row>
+                                <hr/>
+                                <Row>
+                                    <Col>
                                         <strong>Location:</strong> <br /> {this.state.s_location}
                                     </Col>
 

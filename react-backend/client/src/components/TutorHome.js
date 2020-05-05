@@ -219,16 +219,17 @@ class TutorHome extends Component {
     };
 
     doneRecommendation = () => {
-        this.state.preference_major = '';
-        this.state.preference_gender = '';
-        this.state.preference_rating = '';
-        this.state.preference_location = '';
         if (this.state.isRecommendListModalOpen === true) {
             this.toggleRecommendListModal()
         }
         if (this.state.isPreferenceModalOpen === true) {
             this.togglePreferenceModal()
         }
+        this.state.preference_major = 'None'
+        this.state.preference_gender = 'None'
+        this.state.preference_pastEx = 'None'
+        this.state.preference_rating = 'None'
+        this.state.preference_edu_level = 'None'
     }
 
     contribute = (e) => {
@@ -348,6 +349,10 @@ class TutorHome extends Component {
                                 <ModalBody>
                                 <Form onSubmit={this.recommend}>
                                     <FormGroup>
+                                        <Label for="preference_major">Your preference on student's major</Label>
+                                        <Input type="text" name="preference_major" id="preference_major" onChange={e => this.handlePreferenceChange(e)}/>
+                                    </FormGroup>
+                                    <FormGroup>
                                         <Label for="preference_location">Your preference on tutoring location</Label>
                                         <Input type="text" name="preference_location" id="preference_location" onChange={e => this.handlePreferenceChange(e)}/>
                                     </FormGroup>
@@ -359,10 +364,6 @@ class TutorHome extends Component {
                                             <option>Male</option>
                                             <option>Other</option>
                                         </Input>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="preference_major">Your preference on student's major</Label>
-                                        <Input type="text" name="preference_major" id="preference_major" onChange={e => this.handlePreferenceChange(e)}/>
                                     </FormGroup>
                                     <FormGroup>
                                         <Label for="preference_pastEx">Do you want us to consider your past matching experience? </Label>

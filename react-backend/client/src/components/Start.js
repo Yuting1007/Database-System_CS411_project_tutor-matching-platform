@@ -536,16 +536,17 @@ class Start extends Component {
                                 <Modal isOpen={this.state.isChoosingLoginOpen} toggle={this.toggleChoosingLoginModal} >
                                 <ModalHeader toggle={this.toggleChoosingLoginModal}>Login as </ModalHeader>
                                   <ModalBody>
-                                      <Button color="primary" onClick={this.toggleLoginModal} type="submit">Student</Button> {' '}
-                                      <Button color="primary" onClick={this.toggleTutorLoginModal}>Tutor</Button>
+                                      <Button className='sign-up-button'  onClick={this.toggleLoginModal} type="submit">eduFY Student</Button> {' '}
+                                      <Button className='login-button'  onClick={this.toggleTutorLoginModal}>eduFY Tutor</Button>
                                   </ModalBody>
                                 </Modal>
 
 
                                 <Modal isOpen={this.state.isChoosingOpen} toggle={this.toggleChoosingModal} >
+                                <ModalHeader toggle={this.toggleChoosingModal}>Sign up as  </ModalHeader>
                                   <ModalBody>
-                                      <Button color="primary" onClick={this.toggleStudentRegiModal} type="submit">Student</Button> {' '}
-                                      <Button color="primary" onClick={this.toggleTutorRegiModal}>Tutor</Button>
+                                      <Button className='sign-up-button' onClick={this.toggleStudentRegiModal} type="submit">eduFY Student</Button> {' '}
+                                      <Button className='login-button' onClick={this.toggleTutorRegiModal}>eduFY Tutor</Button>
                                   </ModalBody>
                                 </Modal>
 
