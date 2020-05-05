@@ -109,9 +109,6 @@ router.post("/get-resources", (req, res) => {
     if(req.body.formResults.addi_pre_course){
         obj['course'] = req.body.formResults.addi_pre_course;
     }
-    // var addi_pre_major = req.body.formResults.addi_pre_major;
-    // var addi_pre_level = req.body.formResults.addi_pre_level;
-    // var addi_pre_course = req.body.formResults.addi_pre_course;
     
     
 
@@ -136,18 +133,37 @@ router.post("/get-resources", (req, res) => {
     // })
 
 
-    Addition.find(obj,  {link: 1, major: 1, level: 1, course: 1, description: 1}).lean().exec(function(err, items){
+Addition.find(obj,  {link: 1, major: 1, level: 1, course: 1, description: 1}).lean().exec(function(err, items){
         if(err){
             console.log(err);
         } else {
-            //items.toObject();
-            //res.json(pagelist(items));
             res.json(items);
-            // console.log("reach this point 1")
-            // console.log(items)
-            // console.log("reach this point 2")
         }
     })
 });
 
+router.post('/insert-resource', (req, res) => {
+    console.log("reach insertion!!")
+    var obj = {};
+    if(req.body.formResults.major !== 'N/A'){
+        obj['major'] = req.body.formResults.major;
+    }
+    if(req.body.formResults.level !== 'N/A'){
+        obj['level'] = req.body.formResults.level;
+    }
+    if(req.body.formResults.course !== 'N/A'){
+        obj['course'] = req.body.formResults.course;
+    }
+    if(req.body.formResults.link){
+        obj['link'] = req.body.formResults.link;
+    }
+    if(req.body.formResults.description){
+        obj['description'] = req.body.formResults.description;
+    }
+
+    console.log('level is: ' + req.body.formResults.level)
+    console.log('major is: ' + req.body.formResults.major)
+
+    Addition.insertMany(obj);
+});
   module.exports = router;

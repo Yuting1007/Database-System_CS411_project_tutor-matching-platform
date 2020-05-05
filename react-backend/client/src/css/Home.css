@@ -20,6 +20,17 @@
     /* font-size: 70px; */
 }
 
+.contribute-button {
+    width: 200px;
+    /* height:60px; */
+    margin-left: 25px;
+    margin-top:47px;
+    vertical-align: bottom !important;
+    /* background-color: #fa744f !important;
+    border-color: #fa744f !important; */
+    /* font-size: 70px; */
+}
+
 .give-recommendation-button {
     margin-right: 25px;
     /*margin-top:47px; */
