@@ -60,6 +60,7 @@ class StudentHome extends Component {
             //additional resource form error
             error_message:'',
             isAddiFormErrorModalOpen:false,
+        
 
             //recommendation
             rec_tutors: [],
@@ -87,11 +88,6 @@ class StudentHome extends Component {
     }
 
 
-    toggleAddiFormErrorModal = () => {
-        this.setState({
-            isAddiFormErrorModalOpen: !this.state.isAddiFormErrorModalOpen
-        })
-    }
 
     toggleResourceListModal = () => {
         this.setState({
@@ -271,7 +267,7 @@ class StudentHome extends Component {
         //     });
         // }
 
-                //POST req here
+        //POST req here
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -288,6 +284,28 @@ class StudentHome extends Component {
             this.toggleResourceListModal();
         });
     }
+
+    // createAdditionalResource = (e) => {
+    //     console.log("createAdditionalResource called")
+    //     e.preventDefault();
+    //     let formResults = {
+    //         addi_pre_link: this.state.addi_prev_link,
+    //         addi_pre_course: this.state.addi_pre_course,
+    //         addi_pre_level: this.state.addi_pre_level,
+    //         addi_pre_major: this.state.addi_pre_major,
+    //         addi_pre_description: this.state.addi_pre_description,
+    //     }
+
+    //     const requestOptions = {
+    //         method: 'POST',
+    //         headers: {'Content-Type': 'application/json'},
+    //         body: JSON.stringify({formResults})
+    //     };
+
+    //     fetch("/addition/add-resources", requestOptions)
+    //     .then(res => res.json())
+
+    // }
 
     clickLink = (e) => {
         window.open(e.target.id)
@@ -461,6 +479,23 @@ class StudentHome extends Component {
                                         >Done
                                       </Button>
                                   </ModalFooter>
+                                {/* </Modal> */}
+
+                                <ModalFooter>
+                                      what to add additional resources?  -->
+                                      <Button 
+                                        className='home-match-button'
+                                        color="primary" 
+                                        onClick={this.toggleAddAddiPrefModal}
+                                        >Add Additional Resources
+                                      </Button>
+                                      <Button 
+                                        // className='cancel-button'
+                                        color="primary" 
+                                        onClick={this.doneRecommendation}
+                                        >Done
+                                      </Button>
+                                  </ModalFooter>
                                 </Modal>
 
                                 <Modal isOpen={this.state.isMatchExistAckModalOpen} toggle={this.toggleMatchExistAckModal} >
@@ -478,7 +513,6 @@ class StudentHome extends Component {
                                 </Modal>
 
                                 {/* Additional Modal start here! */}
-
                                 <Modal isOpen={this.state.isAddiPrefModalOpen} toggle={this.toggleAddiPrefModal} >
                                     <ModalHeader toggle={this.toggleAddiPrefModal}>Get study resource of a specific course in UIUC</ModalHeader>
                                     <ModalBody>
@@ -506,6 +540,42 @@ class StudentHome extends Component {
                                     </ModalBody>
                                 </Modal>
 
+                                {/* Add Additional Modal start here!
+                                <Modal isOpen={this.state.isAddAddiPrefModalOpen} toggle={this.toggleAddAddiPrefModal} >
+                                    <ModalHeader toggle={this.toggleAddAddiPrefModal}>Add study resource of a specific course in UIUC</ModalHeader>
+                                    <ModalBody>
+                                    <Form onSubmit={this.addAdditionalResource}>
+                                        <FormGroup>
+                                            <Label for="addi_pre_link">Resource Link</Label>
+                                            <Input type="text" name="addi_pre_link" id="addi_pre_link" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_major">Course Major (Enter abbreviation with capital letters)</Label>
+                                            <Input type="text" name="addi_pre_major" id="addi_pre_major" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_level">Course Level </Label>
+                                            <Input type="select" name="addi_pre_level" id="addi_pre_level" onChange={e => this.handlePreferenceChange(e)}>
+                                                <option>100</option>
+                                                <option>200</option>
+                                                <option>300</option>
+                                                <option>400</option>
+                                            </Input>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_course">Course Number </Label>
+                                            <Input type="text" name="addi_pre_course" id="addi_pre_course" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_course">Course Description </Label>
+                                            <Input type="text" name="addi_pre_description" id="addi_pre_description" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>                                   
+
+                                        <Button color="primary" type="submit">Add this additional resource!</Button> {' '}
+                                        <Button color="secondary" onClick={this.toggleAddiPrefModal}>Cancel</Button>
+                                    </Form>
+                                    </ModalBody>
+                                </Modal> */}
 
                                 {/*Resource List Modal Below*/}
                                 <Modal size='lg' isOpen={this.state.isResourceListModalOpen} toggle={this.toggleResourceListModal}>
