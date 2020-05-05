@@ -10,6 +10,7 @@ import {
     NavLink,
     Container,
     Row,
+    
     Col,
     Jumbotron,
     Button,
@@ -25,9 +26,11 @@ import {
     Redirect
   } from "react-router-dom";
 import '../css/Start.css'
+import '../css/Matches.css';
 import Users from './Users';
 import NewNavBar from './NewNavBar';
 import '../css/Logo.css';
+import '../css/Settings.css';
 var passwordHash = require('password-hash');
 
 class Settings extends Component {
@@ -480,7 +483,7 @@ EditPasswordFailure = () => {
             this.toggleLogoutConfirmModal();
         }
     }
-
+    
     render() {
 
         if (this.state.redirect_start) {
@@ -514,7 +517,7 @@ EditPasswordFailure = () => {
                             </Row>
                         </Container>
                     </Jumbotron>
-                </div>
+                </div >
             
 
                 <div>
@@ -524,120 +527,125 @@ EditPasswordFailure = () => {
                             
                                 <Row>
                                     <Col>
-                                        Name: {this.state.s_name}
+                                    <strong>Name:</strong> <br /> {this.state.s_name}
                                     </Col>
 
                                     <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditNameModal}>
+                                        <Button color="primary" className ='name-button' size="sm" onClick={this.toggleEditNameModal}>
                                             Edit
                                         </Button>
                                     </Col>                               
                                 </Row>
-
+                                <hr/>
                                 <Row>
                                     <Col>
-                                        Age: {this.state.s_age}
+                                    <strong>Age:</strong> <br /> {this.state.s_age}
                                     </Col>
 
                                     <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditAgeModal}>
+                                        <Button color="primary" className ='age-button' size="sm" onClick={this.toggleEditAgeModal}>
                                             Edit
                                         </Button>
                                     </Col>                         
                                 </Row>
-
+                                <hr/>
                                 <Row>
                                     <Col>
-                                        Gender: {this.state.s_gender}
+                                    <strong>Gender:</strong> <br /> {this.state.s_gender}
                                     </Col>
 
                                     <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditGenderModal}>
+                                        <Button color="primary" size="sm" className = 'gender-button'onClick={this.toggleEditGenderModal}>
                                             Edit
                                         </Button>
                                     </Col>    
                                 </Row>
-
+                                <hr/>
                                 <Row>
                                     <Col>
-                                        Location: {this.state.s_location}
+                                    <strong>Major:</strong> <br /> {this.state.s_major}
                                     </Col>
 
                                     <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditLocationModal}>
+                                        <Button color="primary" size="sm" className = 'gender-button'onClick={this.toggleEditMajorModal}>
+                                            Edit
+                                        </Button>
+                                    </Col>    
+                                </Row>
+                                <hr/>
+                                <Row>
+                                    <Col>
+                                        <strong>Location:</strong> <br /> {this.state.s_location}
+                                    </Col>
+
+                                    <Col>
+                                        <Button color="primary"  className = 'loc-button' size="sm" onClick={this.toggleEditLocationModal}>
                                             Edit
                                         </Button>
                                     </Col>                                  
                                 </Row>
+                                <hr/>
+                   
+                                
 
                                 <Row>
                                     <Col>
-                                        Major: {this.state.s_major}
+                                        <strong>Education Level:</strong> <br /> {this.state.s_edu_level}
                                     </Col>
 
                                     <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditMajorModal}>
+                                        <Button color="primary" className = 'edu-button'size="sm" onClick={this.toggleEditEduLevelModal}>
                                             Edit
                                         </Button>
                                     </Col>                                  
                                 </Row>
+                                <hr/>
 
                                 <Row>
                                     <Col>
-                                        Education Level: {this.state.s_edu_level}
+                                        <strong>Phone Number:</strong> <br />{this.state.s_pnum}
+
                                     </Col>
 
                                     <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditEduLevelModal}>
-                                            Edit
-                                        </Button>
-                                    </Col>                                  
-                                </Row>
-
-                                <Row>
-                                    <Col>
-                                        Phone Number: {this.state.s_pnum}
-                                    </Col>
-
-                                    <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditPnumModal}>
+                                        <Button color="primary "className = 'phone-button' size="sm" onClick={this.toggleEditPnumModal}>
                                             Edit
                                         </Button>
                                     </Col>                               
                                 </Row>
-
+                               <hr/>
                                 <Row>
                                     <Col>
-                                        Email: {this.state.s_email}
+                                    <strong>Email:</strong> <br /> {this.state.s_email}
                                     </Col>
                                     
                                     
 
                                     <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditEmailModal}>
+                                        <Button color="primary" className = 'email-button'size="sm" onClick={this.toggleEditEmailModal}>
                                             Edit
                                         </Button>
                                     </Col>                               
                                 </Row>
-
+                                <hr/>
                                 <Row>
                                     <Col>
-                                        Password: 
+                                    <strong>Password:</strong> <br />
                                     </Col>
 
                                     <Col>
-                                        <Button color="primary" size="sm" onClick={this.toggleEditPassword}>
+                                        <Button color="primary" className = 'password-button'size="sm" onClick={this.toggleEditPassword}>
                                             Edit
                                         </Button>
                                     </Col>                                  
                                 </Row>
+                                <hr/>
+                                <Button color="danger float-right" size="sm" onClick={this.toggleDeleteConfirmModal}>
+                                    Delete account
+                                </Button>{'   '} 
 
                                 <Button color="primary" size="sm" onClick={this.toggleLogoutConfirmModal}>
                                     Logout
-                                </Button>{'   '}
-
-                                <Button color="primary" size="sm" onClick={this.toggleDeleteConfirmModal}>
-                                    Delete Account
                                 </Button>
 
                                 <Modal isOpen={this.state.isLogoutConfirmModalOpen} toggle={this.toggleLogoutConfirmModal} >
@@ -692,7 +700,6 @@ EditPasswordFailure = () => {
                                       <Button color="secondary" onClick={this.toggleDeleteConfirmModal}>Cancel</Button>
                                   </ModalBody>
                                 </Modal>
-                                
                                 
 
                                 <Modal isOpen={this.state.isEditNameModalOpen} toggle={this.toggleEditNameModal} >
