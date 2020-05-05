@@ -68,7 +68,17 @@ class StudentHome extends Component {
 
             //confirmation
             isMatchAckModalOpen: false,
-            isMatchExistAckModalOpen: false
+            isMatchExistAckModalOpen: false,
+            isContributionAckModalOpen: false,
+
+            //contribution
+            isContributionFormModalOpen: false,
+            contribute_link:'',
+            contribute_course:'N/A',
+            contribute_level:'N/A',
+            contribute_major:'N/A',
+            contribute_description:'',
+
         };
         this.onMatchButtonClick = this.onMatchButtonClick.bind();
         this.togglePreferenceModal = this.togglePreferenceModal.bind();
@@ -78,12 +88,20 @@ class StudentHome extends Component {
         this.toggleAddiPrefModal = this.toggleAddiPrefModal.bind();
         this.toggleResourceListModal = this.toggleResourceListModal.bind();
         this.toggleAddiFormErrorModal = this.toggleAddiFormErrorModal.bind();
+        this.toggleContributeFormModal = this.toggleContributeFormModal.bind();
+        this.toggleContributionAckModal = this.toggleContributionAckModal.bind();
     }
 
-    //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
+    toggleContributionAckModal = () => {
+        this.setState({
+            isContributionAckModalOpen: !this.state.isContributionAckModalOpen
+        })
+    }
 
-    async componentDidMount() {
-        this.state.s_name = sessionStorage.getItem('s_name')
+    toggleContributeFormModal = () => {
+        this.setState({
+            isContributionFormModalOpen: !this.state.isContributionFormModalOpen
+        })
     }
 
 
@@ -246,32 +264,7 @@ class StudentHome extends Component {
             addi_pre_major: this.state.addi_pre_major,
         }
 
-        // if (formResults.addi_pre_major === '') {
-        //     this.state.error_message = 'Major field cannot be empty!'
-        //     this.toggleAddiFormErrorModal()
-        // } else if (formResults.addi_pre_course === '') {
-        //     this.state.error_message = 'Course field cannot be empty!'
-        //     this.toggleAddiFormErrorModal()
-        // } else {
-        //     //POST req here
-        //     const requestOptions = {
-        //         method: 'POST',
-        //         headers: {'Content-Type': 'application/json'},
-        //         body: JSON.stringify({formResults})
-        //     };
-
-        //     fetch("/addition/get-resources", requestOptions)
-        //     .then(res => res.json())
-        //         //need to catch error somehow
-        
-        //     .then(resources => {
-        //         console.log(resources)
-        //         this.setState({ resources })
-        //         this.toggleResourceListModal();
-        //     });
-        // }
-
-                //POST req here
+        //POST req here
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -291,6 +284,76 @@ class StudentHome extends Component {
 
     clickLink = (e) => {
         window.open(e.target.id)
+    }
+
+    contribute = (e) => {
+        e.preventDefault();
+        let formResults = {
+            major: this.state.contribute_major,
+            level: this.state.contribute_level,
+            link: this.state.contribute_link,
+            description: this.state.contribute_description,
+            course: this.state.contribute_course
+        }
+
+        if (formResults.major === '') {
+            formResults.major = 'N/A'
+        }
+
+        if (formResults.level === '') {
+            formResults.level = 'N/A'
+        }
+
+        if (formResults.course === '') {
+            formResults.course = 'N/A'
+        }
+
+        if (formResults.description === '') {
+            console.log("reach this point")
+            this.state.error_message = 'You have to provide a description to your study resource!'
+            this.toggleAddiFormErrorModal()
+        } else if (formResults.link === '') {
+            this.state.error_message = 'You have to provide a link to your study resource!'
+            this.toggleAddiFormErrorModal()
+        } else {
+            //POST req here
+            const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+            };
+            fetch('/addition/insert-resource', requestOptions)
+            this.toggleContributionAckModal();
+        }
+    }
+
+    doneContribution = () => {
+        if (this.state.isContributionAckModalOpen === true) {
+            this.toggleContributionAckModal();
+        }
+        if (this.state.isContributionFormModalOpen === true) {
+            this.toggleContributeFormModal();
+        }
+        this.state.contribute_course = 'N/A'
+        this.state.contribute_level = 'N/A'
+        this.state.contribute_major = 'N/A'
+        this.state.contribute_link = ''
+        this.state.contribute_description = ''
+    }
+
+    doneAdditionalRecommendation = () => {
+        if (this.state.isRecommendListModalOpen === true) {
+            this.toggleRecommendListModal();
+        }
+        if (this.state.isPreferenceModalOpen === true) {
+            this.togglePreferenceModal();
+        }
+        if (this.state.isAddiPrefModalOpen === true) {
+            this.toggleAddiPrefModal();
+        }
+        if (this.state.isResourceListModalOpen === true) {
+            this.toggleResourceListModal();
+        }
     }
 
 
@@ -316,7 +379,7 @@ class StudentHome extends Component {
                         <NavLink href="/settings">Settings</NavLink>
                         </NavItem>
                     </Nav> */}
-                    <Jumbotron className='welcome-jumbo'>
+                    <Jumbotron >
                         <Container>
                             <Row>
                                 <Col>
@@ -347,13 +410,13 @@ class StudentHome extends Component {
                             </Col>
                         </Row>
 
-                        {/* <Row>
+                        <Row>
                             <Col>
-                            <p>
-                                <Button className='recommend-button' size="lg" onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
-                            </p>
+                                <p>
+                                    <Button color='primary' className='contribute-button' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.toggleContributeFormModal} block>Contribute</Button>
+                                </p>
                             </Col>
-                        </Row> */}
+                        </Row>
                         <Row>
                             <Col>
                             <p>
@@ -408,6 +471,44 @@ class StudentHome extends Component {
                                         </FormGroup>
                                 <Button className='give-recommendation-button' type="submit">Give me recommendations!</Button> {' '}
                                 <Button className='cancel-button' onClick={this.togglePreferenceModal}>Cancel</Button>
+                            </Form>
+                            </ModalBody>
+
+                            
+                        </Modal>
+
+
+                        <Modal isOpen={this.state.isContributionFormModalOpen} toggle={this.toggleContributeFormModal} >
+                            <ModalHeader toggle={this.toggleContributeFormModal}>Fill in the related information of the study resource you recommend</ModalHeader>
+                            <ModalBody>
+                            <Form onSubmit={this.contribute}>
+                                <FormGroup>
+                                    <Label for="contribute_link">The link of the study resource</Label>
+                                    <Input type="text" name="contribute_link" id="contribute_link" onChange={e => this.handlePreferenceChange(e)}/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="contribute_major">What major does this study resource most likely belongs to</Label>
+                                    <Input type="text" name="contribute_major" id="contribute_major" onChange={e => this.handlePreferenceChange(e)}/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="contribute_level">Course Level </Label>
+                                    <Input type="select" name="contribute_level" id="contribute_level" onChange={e => this.handlePreferenceChange(e)}>
+                                        <option>100</option>
+                                        <option>200</option>
+                                        <option>300</option>
+                                        <option>400</option>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="contribute_course">Course Number </Label>
+                                    <Input type="number" name="contribute_course" id="contribute_course" onChange={e => this.handlePreferenceChange(e)}/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="contribute_description">Please BRIEFLY describe the study resource</Label>
+                                    <Input type="text" name="contribute_description" id="contribute_description" onChange={e => this.handlePreferenceChange(e)}/>
+                                </FormGroup>
+                                <Button className='give-recommendation-button' type="submit">Submit my contribution!</Button> {' '}
+                                <Button className='cancel-button' onClick={this.toggleContributeFormModal}>Cancel</Button>
                             </Form>
                             </ModalBody>
 
@@ -477,6 +578,16 @@ class StudentHome extends Component {
                                     </ModalBody>
                                 </Modal>
 
+                                <Modal isOpen={this.state.isContributionAckModalOpen} toggle={this.toggleContributionAckModal} >
+                                    <ModalHeader toggle={this.toggleContributionAckModal}>You Have Submitted Your Study Resource Contribution!</ModalHeader>
+                                    <ModalBody>
+                                         Our stuff will carefully consider your contribution. If your contribution is selected as our study resource, you will be given 5 upvotes as rewards! {'   '}
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button color="primary" onClick={this.doneContribution} type="submit">Got It</Button> {' '}
+                                    </ModalFooter>
+                                </Modal>
+
                                 {/* Additional Modal start here! */}
 
                                 <Modal isOpen={this.state.isAddiPrefModalOpen} toggle={this.toggleAddiPrefModal} >
@@ -532,7 +643,7 @@ class StudentHome extends Component {
                                   <ModalFooter>
                                       <Button 
                                         color="primary" 
-                                        onClick={this.toggleResourceListModal}
+                                        onClick={this.doneAdditionalRecommendation}
                                         >Done
                                       </Button>
                                   </ModalFooter>
