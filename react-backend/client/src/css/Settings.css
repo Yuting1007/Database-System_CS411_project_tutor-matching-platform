@@ -36,14 +36,19 @@
     background-color: #16817a !important;
     border-color: #16817a !important;
 }
-.j-tron{
-    background-color: #FFFFFF !important;
-    border-style: solid;
+
+.setting-tron{
+    background-color: #FFFFFF!important;
     border-color: #16817a !important;
+    border-style: solid
+    
+    
+   
+    
 }
-.s-tron{
-    background-color: #FFFFFF !important;
-    
-    
+
+.edit-tron{
+    background-color: #FFFFFF!important;
 
 }
+
