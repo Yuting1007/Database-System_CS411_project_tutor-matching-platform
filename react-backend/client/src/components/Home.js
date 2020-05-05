@@ -430,13 +430,13 @@ class StudentHome extends Component {
                     <Container>
                         <Row>
                             <Col>
-                            <p>
+                            <p className='button-p'>
                                 <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
                             </p>
                                 
                             </Col>
                             <Col>
-                            <p>
+                            <p className='button-p'>
                                 <Button className='recommend-button' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
                             </p>
                             </Col>

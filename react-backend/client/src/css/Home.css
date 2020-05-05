@@ -1,5 +1,5 @@
 .match-button-home {
-    width: 200px;
+    width: 540px;
     height:200px;
     margin-left: 25px;
     margin-top:47px;
@@ -10,7 +10,7 @@
 }
 
 .recommend-button {
-    width: 200px;
+    width: 540px;
     height:200px;
     margin-left: 25px;
     margin-top:47px;
@@ -20,11 +20,15 @@
     /* font-size: 70px; */
 }
 
+.button-p {
+    width: 200px !important;
+}
+
 .contribute-button {
-    width: 200px;
+    width: 1110px;
     /* height:60px; */
     margin-left: 25px;
-    margin-top:47px;
+    margin-top:72px;
     vertical-align: bottom !important;
     /* background-color: #fa744f !important;
     border-color: #fa744f !important; */

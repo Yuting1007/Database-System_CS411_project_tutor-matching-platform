@@ -19,7 +19,8 @@ var additionRouter = require('./routes/addition');
 //var homeRouter = require('./routes/home');
 
 //connect to mongoBD dbs
-mongoose.connect("mongodb://localhost:27017/addition",  {useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect("mongodb://localhost:27017/addition",  {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb://heroku_36pmj3h2:utoak6glqlmi9al4d6pbkj0l4c@ds057214.mlab.com:57214/heroku_36pmj3h2", {useNewUrlParser: true, useUnifiedTopology: true});
 
 var app = express();
 app.use(express.static(path.join(__dirname, '/client/build')))

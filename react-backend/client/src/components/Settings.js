@@ -693,6 +693,7 @@ EditPasswordFailure = () => {
                                   </ModalBody>
                                 </Modal>
                                 
+                                
 
                                 <Modal isOpen={this.state.isEditNameModalOpen} toggle={this.toggleEditNameModal} >
                                   <ModalHeader toggle={this.toggleEditNameModal}>Edit Name</ModalHeader>
