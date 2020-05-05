@@ -367,6 +367,8 @@ class Start extends Component {
           sessionStorage.setItem('s_email', data[0].s_email);
           sessionStorage.setItem('s_password', data[0].s_password);
           sessionStorage.setItem('s_rawpassword', this.state.student_regi_password);
+          sessionStorage.setItem('s_major', data[0].s_major);
+          sessionStorage.setItem('s_edu_level', data[0].s_edu_level);
 
           sessionStorage.setItem('account_type', 'student');    
 
@@ -506,16 +508,6 @@ class Start extends Component {
                                 <h1 className='welcome-text'>eduFY {this.state.s_name} </h1>
                                 <p>
 
-                                {/* <Button
-                                  tag="a"
-                                  size="large"
-                                  target="_blank"
-                                  className="sign-up-button"
-                                  onClick={this.toggleChoosingModal}
-                                >
-                                  Sign up!
-                                </Button> */}
-
                                 <Modal isOpen={this.state.isChoosingLoginOpen} toggle={this.toggleChoosingLoginModal} >
                                 <ModalHeader toggle={this.toggleChoosingLoginModal}>Login as </ModalHeader>
                                   <ModalBody>
@@ -577,6 +569,7 @@ class Start extends Component {
                                     <Button color="secondary" onClick={this.toggleStudentRegiModal}>Cancel</Button>
                                   </ModalFooter>
                                 </Modal>
+
 
 
                                 <Modal isOpen={this.state.isTutorRegiModalOpen} toggle={this.toggleTutorRegiModal} >

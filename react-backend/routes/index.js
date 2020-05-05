@@ -5,18 +5,18 @@ var mysql = require('mysql');
 // Function that gets connection to SQL database
 function getConnection() {
   return mysql.createConnection({
-    // host: 'us-cdbr-east-06.cleardb.net',
-    // user: 'ba0144eebe0617',
-    // password: '45188a1d', 
-    // database: 'heroku_195486945502404'
+    host: 'us-cdbr-east-06.cleardb.net',
+    user: 'ba0144eebe0617',
+    password: '45188a1d', 
+    database: 'heroku_195486945502404'
     ////////
     // LOCAL HOST INFORMATION BELOW
-    host: 'localhost',
-    user: 'root',
-    password: 'password', // PUT your own password here whatever it is locally
-    database: '411project',
-    //port: 3307
-    port: 3306
+    // host: 'localhost',
+    // user: 'root',
+    // password: 'password', // PUT your own password here whatever it is locally
+    // database: '411project',
+    // port: 3307
+    //port: 3306
     //insecureAuth : true
     })
 }
