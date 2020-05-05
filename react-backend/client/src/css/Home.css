@@ -20,8 +20,12 @@
     /* font-size: 70px; */
 }
 
+.button-p {
+    width: 200px !important;
+}
+
 .contribute-button {
-    width: 200px;
+    width: 1110px;
     /* height:60px; */
     margin-left: 25px;
     margin-top:72px;
