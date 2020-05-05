@@ -22,6 +22,10 @@ import {
     useHistory,
     Redirect
   } from "react-router-dom";
+import NewNavBar from './NewNavBar';
+import '../css/Logo.css';
+import '../css/Home.css';
+
   var passwordHash = require('password-hash');
 
 
@@ -56,6 +60,7 @@ class StudentHome extends Component {
             //additional resource form error
             error_message:'',
             isAddiFormErrorModalOpen:false,
+        
 
             //recommendation
             rec_tutors: [],
@@ -64,7 +69,17 @@ class StudentHome extends Component {
 
             //confirmation
             isMatchAckModalOpen: false,
-            isMatchExistAckModalOpen: false
+            isMatchExistAckModalOpen: false,
+            isContributionAckModalOpen: false,
+
+            //contribution
+            isContributionFormModalOpen: false,
+            contribute_link:'',
+            contribute_course:'N/A',
+            contribute_level:'N/A',
+            contribute_major:'N/A',
+            contribute_description:'',
+
         };
         this.onMatchButtonClick = this.onMatchButtonClick.bind();
         this.togglePreferenceModal = this.togglePreferenceModal.bind();
@@ -74,12 +89,8 @@ class StudentHome extends Component {
         this.toggleAddiPrefModal = this.toggleAddiPrefModal.bind();
         this.toggleResourceListModal = this.toggleResourceListModal.bind();
         this.toggleAddiFormErrorModal = this.toggleAddiFormErrorModal.bind();
-    }
-
-    //this.toggleRedirect_settings = this.toggleRedirect_settings.bind();
-
-    async componentDidMount() {
-        this.state.s_name = sessionStorage.getItem('s_name')
+        this.toggleContributeFormModal = this.toggleContributeFormModal.bind();
+        this.toggleContributionAckModal = this.toggleContributionAckModal.bind();
     }
 
     toggleAddiFormErrorModal = () => {
@@ -87,6 +98,20 @@ class StudentHome extends Component {
             isAddiFormErrorModalOpen: !this.state.isAddiFormErrorModalOpen
         })
     }
+
+    toggleContributionAckModal = () => {
+        this.setState({
+            isContributionAckModalOpen: !this.state.isContributionAckModalOpen
+        })
+    }
+
+    toggleContributeFormModal = () => {
+        this.setState({
+            isContributionFormModalOpen: !this.state.isContributionFormModalOpen
+        })
+    }
+
+
 
     toggleResourceListModal = () => {
         this.setState({
@@ -233,7 +258,7 @@ class StudentHome extends Component {
     }
 
     searchAdditionalResource = (e) => {
-
+        console.log("searchAdditionalResource called")
         e.preventDefault();
         let formResults = {
             addi_pre_course: this.state.addi_pre_course,
@@ -241,34 +266,121 @@ class StudentHome extends Component {
             addi_pre_major: this.state.addi_pre_major,
         }
 
-        if (formResults.addi_pre_major === '') {
-            this.state.error_message = 'Major field cannot be empty!'
-            this.toggleAddiFormErrorModal()
-        } else if (formResults.addi_pre_course === '') {
-            this.state.error_message = 'Course field cannot be empty!'
-            this.toggleAddiFormErrorModal()
-        } else {
-            //POST req here
-            const requestOptions = {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({formResults})
-            };
+        // if (formResults.addi_pre_major === '') {
+        //     this.state.error_message = 'Major field cannot be empty!'
+        //     this.toggleAddiFormErrorModal()
+        // } else if (formResults.addi_pre_course === '') {
+        //     this.state.error_message = 'Course field cannot be empty!'
+        //     this.toggleAddiFormErrorModal()
+        // } else {
+        //     //POST req here
+        //     const requestOptions = {
+        //         method: 'POST',
+        //         headers: {'Content-Type': 'application/json'},
+        //         body: JSON.stringify({formResults})
+        //     };
 
-            fetch("/addition/get-resources", requestOptions)
-            .then(res => res.json())
-                //need to catch error somehow
+        //     fetch("/addition/get-resources", requestOptions)
+        //     .then(res => res.json())
+        //         //need to catch error somehow
         
-            .then(resources => {
-                console.log(resources)
-                this.setState({ resources })
-                this.toggleResourceListModal();
-            });
-        }
+        //     .then(resources => {
+        //         console.log(resources)
+        //         this.setState({ resources })
+        //         this.toggleResourceListModal();
+        //     });
+        // }
+
+        //POST req here
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+        };
+
+        fetch("/addition/get-resources", requestOptions)
+        .then(res => res.json())
+            //need to catch error somehow
+    
+        .then(resources => {
+            console.log(resources)
+            this.setState({ resources })
+            this.toggleResourceListModal();
+        });
     }
 
     clickLink = (e) => {
         window.open(e.target.id)
+    }
+
+    contribute = (e) => {
+        e.preventDefault();
+        let formResults = {
+            major: this.state.contribute_major,
+            level: this.state.contribute_level,
+            link: this.state.contribute_link,
+            description: this.state.contribute_description,
+            course: this.state.contribute_course
+        }
+
+        if (formResults.major === '') {
+            formResults.major = 'N/A'
+        }
+
+        if (formResults.level === '') {
+            formResults.level = 'N/A'
+        }
+
+        if (formResults.course === '') {
+            formResults.course = 'N/A'
+        }
+
+        if (formResults.description === '') {
+            console.log("reach this point")
+            this.state.error_message = 'You have to provide a description to your study resource!'
+            this.toggleAddiFormErrorModal()
+        } else if (formResults.link === '') {
+            this.state.error_message = 'You have to provide a link to your study resource!'
+            this.toggleAddiFormErrorModal()
+        } else {
+            //POST req here
+            const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({formResults})
+            };
+            fetch('/addition/insert-resource', requestOptions)
+            this.toggleContributionAckModal();
+        }
+    }
+
+    doneContribution = () => {
+        if (this.state.isContributionAckModalOpen === true) {
+            this.toggleContributionAckModal();
+        }
+        if (this.state.isContributionFormModalOpen === true) {
+            this.toggleContributeFormModal();
+        }
+        this.state.contribute_course = 'N/A'
+        this.state.contribute_level = 'N/A'
+        this.state.contribute_major = 'N/A'
+        this.state.contribute_link = ''
+        this.state.contribute_description = ''
+    }
+
+    doneAdditionalRecommendation = () => {
+        if (this.state.isRecommendListModalOpen === true) {
+            this.toggleRecommendListModal();
+        }
+        if (this.state.isPreferenceModalOpen === true) {
+            this.togglePreferenceModal();
+        }
+        if (this.state.isAddiPrefModalOpen === true) {
+            this.toggleAddiPrefModal();
+        }
+        if (this.state.isResourceListModalOpen === true) {
+            this.toggleResourceListModal();
+        }
     }
 
 
@@ -281,8 +393,9 @@ class StudentHome extends Component {
             <React.Fragment>
             
                 <div>
-                    <p>  eduFY</p>
-                    <Nav tabs>
+                <Row className='logo'><div className='edu-text'>edu</div><div className='fy-text'>FY</div></Row>
+                    <NewNavBar/>
+                    {/* <Nav tabs>
                         <NavItem>
                         <NavLink href="/student/home">Home</NavLink>
                         </NavItem>
@@ -292,12 +405,12 @@ class StudentHome extends Component {
                         <NavItem>
                         <NavLink href="/settings">Settings</NavLink>
                         </NavItem>
-                    </Nav>
-                    <Jumbotron>
+                    </Nav> */}
+                    <Jumbotron >
                         <Container>
                             <Row>
                                 <Col>
-                                    <h1>Welcome, {this.state.s_name}</h1>
+                                    <h1  style={{fontSize: 45, fontWeight: 'bold'}}>Welcome, {this.state.s_name}</h1>
                                     <p>
                                         Your student ID is {this.state.s_id}
                                     </p>
@@ -308,22 +421,27 @@ class StudentHome extends Component {
                 </div>
 
                 <div>
-                <Jumbotron>
+                {/* <Jumbotron> */}
                     <Container>
                         <Row>
                             <Col>
-                            <p>
-                                <Button color="primary" size="lg" onClick={this.onMatchButtonClick} block>Matches</Button>
+                            <p className='button-p'>
+                                <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
                             </p>
                                 
+                            </Col>
+                            <Col>
+                            <p className='button-p'>
+                                <Button className='recommend-button' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
+                            </p>
                             </Col>
                         </Row>
 
                         <Row>
                             <Col>
-                            <p>
-                                <Button color="primary" size="lg" onClick={this.togglePreferenceModal} block>Recommend Tutors</Button>
-                            </p>
+                                <p>
+                                    <Button color='primary' className='contribute-button' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.toggleContributeFormModal} block>Contribute</Button>
+                                </p>
                             </Col>
                         </Row>
                         <Row>
@@ -378,8 +496,46 @@ class StudentHome extends Component {
                                           <Label for="preference_rating">Minimum Rating (Blank if you have no preference on rating)</Label>
                                           <Input type="number" name="preference_rating" id="tutor_regi-preference_rating" onChange={e => this.handlePreferenceChange(e)} />
                                         </FormGroup>
-                                <Button color="primary" type="submit">Give me recommendations!</Button> {' '}
-                                <Button color="secondary" onClick={this.togglePreferenceModal}>Cancel</Button>
+                                <Button className='give-recommendation-button' type="submit">Give me recommendations!</Button> {' '}
+                                <Button className='cancel-button' onClick={this.togglePreferenceModal}>Cancel</Button>
+                            </Form>
+                            </ModalBody>
+
+                            
+                        </Modal>
+
+
+                        <Modal isOpen={this.state.isContributionFormModalOpen} toggle={this.toggleContributeFormModal} >
+                            <ModalHeader toggle={this.toggleContributeFormModal}>Fill in the related information of the study resource you recommend</ModalHeader>
+                            <ModalBody>
+                            <Form onSubmit={this.contribute}>
+                                <FormGroup>
+                                    <Label for="contribute_link">The link of the study resource</Label>
+                                    <Input type="text" name="contribute_link" id="contribute_link" onChange={e => this.handlePreferenceChange(e)}/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="contribute_major">What major does this study resource most likely belongs to</Label>
+                                    <Input type="text" name="contribute_major" id="contribute_major" onChange={e => this.handlePreferenceChange(e)}/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="contribute_level">Course Level </Label>
+                                    <Input type="select" name="contribute_level" id="contribute_level" onChange={e => this.handlePreferenceChange(e)}>
+                                        <option>100</option>
+                                        <option>200</option>
+                                        <option>300</option>
+                                        <option>400</option>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="contribute_course">Course Number </Label>
+                                    <Input type="number" name="contribute_course" id="contribute_course" onChange={e => this.handlePreferenceChange(e)}/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="contribute_description">Please BRIEFLY describe the study resource</Label>
+                                    <Input type="text" name="contribute_description" id="contribute_description" onChange={e => this.handlePreferenceChange(e)}/>
+                                </FormGroup>
+                                <Button className='give-recommendation-button' type="submit">Submit my contribution!</Button> {' '}
+                                <Button className='cancel-button' onClick={this.toggleContributeFormModal}>Cancel</Button>
                             </Form>
                             </ModalBody>
 
@@ -398,7 +554,7 @@ class StudentHome extends Component {
                                                 <th>Education</th>
                                                 <th>Major</th>
                                                 <th>Phone Number</th>
-                                                <th>Email</th>
+                                                {/* <th>Email</th> */}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -410,8 +566,8 @@ class StudentHome extends Component {
                                                 <td>{tutor.t_edu_level}</td>
                                                 <td>{tutor.t_major}</td>
                                                 <td>{tutor.t_pnum}</td>
-                                                <td>{tutor.t_email}</td>
-                                                <td><Button id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
+                                                {/* <td>{tutor.t_email}</td> */}
+                                                <td><Button className='home-match-button' id={tutor.t_id} onClick={this.onStudentToTutorMatchClick}>Match!</Button></td>
                                             </tr>
                                         )}
                                         </tbody>
@@ -421,16 +577,35 @@ class StudentHome extends Component {
                                   <ModalFooter>
                                       Not satisfied with you what see? Try additional resources -->
                                       <Button 
+                                        className='home-match-button'
                                         color="primary" 
                                         onClick={this.toggleAddiPrefModal}
                                         >Additional Resources
                                       </Button>
                                       <Button 
+                                        // className='cancel-button'
                                         color="primary" 
                                         onClick={this.doneRecommendation}
                                         >Done
                                       </Button>
                                   </ModalFooter>
+                                {/* </Modal> */}
+
+                                {/* <ModalFooter>
+                                      what to add additional resources?  -->
+                                      <Button 
+                                        className='home-match-button'
+                                        color="primary" 
+                                        onClick={this.toggleAddAddiPrefModal}
+                                        >Add Additional Resources
+                                      </Button>
+                                      <Button 
+                                        // className='cancel-button'
+                                        color="primary" 
+                                        onClick={this.doneRecommendation}
+                                        >Done
+                                      </Button>
+                                  </ModalFooter> */}
                                 </Modal>
 
                                 <Modal isOpen={this.state.isMatchExistAckModalOpen} toggle={this.toggleMatchExistAckModal} >
@@ -447,8 +622,17 @@ class StudentHome extends Component {
                                     </ModalBody>
                                 </Modal>
 
-                                {/* Additional Modal start here! */}
+                                <Modal isOpen={this.state.isContributionAckModalOpen} toggle={this.toggleContributionAckModal} >
+                                    <ModalHeader toggle={this.toggleContributionAckModal}>You Have Submitted Your Study Resource Contribution!</ModalHeader>
+                                    <ModalBody>
+                                         Our stuff will carefully consider your contribution. If your contribution is selected as our study resource, you will be given 5 upvotes as rewards! {'   '}
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button color="primary" onClick={this.doneContribution} type="submit">Got It</Button> {' '}
+                                    </ModalFooter>
+                                </Modal>
 
+                                {/* Additional Modal start here! */}
                                 <Modal isOpen={this.state.isAddiPrefModalOpen} toggle={this.toggleAddiPrefModal} >
                                     <ModalHeader toggle={this.toggleAddiPrefModal}>Get study resource of a specific course in UIUC</ModalHeader>
                                     <ModalBody>
@@ -476,6 +660,42 @@ class StudentHome extends Component {
                                     </ModalBody>
                                 </Modal>
 
+                                {/* Add Additional Modal start here!
+                                <Modal isOpen={this.state.isAddAddiPrefModalOpen} toggle={this.toggleAddAddiPrefModal} >
+                                    <ModalHeader toggle={this.toggleAddAddiPrefModal}>Add study resource of a specific course in UIUC</ModalHeader>
+                                    <ModalBody>
+                                    <Form onSubmit={this.addAdditionalResource}>
+                                        <FormGroup>
+                                            <Label for="addi_pre_link">Resource Link</Label>
+                                            <Input type="text" name="addi_pre_link" id="addi_pre_link" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_major">Course Major (Enter abbreviation with capital letters)</Label>
+                                            <Input type="text" name="addi_pre_major" id="addi_pre_major" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_level">Course Level </Label>
+                                            <Input type="select" name="addi_pre_level" id="addi_pre_level" onChange={e => this.handlePreferenceChange(e)}>
+                                                <option>100</option>
+                                                <option>200</option>
+                                                <option>300</option>
+                                                <option>400</option>
+                                            </Input>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_course">Course Number </Label>
+                                            <Input type="text" name="addi_pre_course" id="addi_pre_course" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="addi_pre_course">Course Description </Label>
+                                            <Input type="text" name="addi_pre_description" id="addi_pre_description" onChange={e => this.handlePreferenceChange(e)}/>
+                                        </FormGroup>                                   
+
+                                        <Button color="primary" type="submit">Add this additional resource!</Button> {' '}
+                                        <Button color="secondary" onClick={this.toggleAddiPrefModal}>Cancel</Button>
+                                    </Form>
+                                    </ModalBody>
+                                </Modal> */}
 
                                 {/*Resource List Modal Below*/}
                                 <Modal size='lg' isOpen={this.state.isResourceListModalOpen} toggle={this.toggleResourceListModal}>
@@ -502,7 +722,7 @@ class StudentHome extends Component {
                                   <ModalFooter>
                                       <Button 
                                         color="primary" 
-                                        onClick={this.toggleResourceListModal}
+                                        onClick={this.doneAdditionalRecommendation}
                                         >Done
                                       </Button>
                                   </ModalFooter>
@@ -527,7 +747,7 @@ class StudentHome extends Component {
 
                                 
                     </Container>
-                </Jumbotron>
+                {/* </Jumbotron> */}
                 </div>
             </React.Fragment>
         );

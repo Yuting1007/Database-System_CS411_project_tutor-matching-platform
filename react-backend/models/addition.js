@@ -5,7 +5,8 @@ var additionSchema = new mongoose.Schema({
     link: String,
     major: String,
     level: String,
-    course: String
+    course: String,
+    description: String
 });
 
 //export model

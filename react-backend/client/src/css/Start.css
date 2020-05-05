@@ -7,3 +7,55 @@
     margin-bottom: 8px;
 }
 
+.welcome-text {
+    margin-bottom:10px;
+    margin-left:-340px;
+    color:white;
+}
+.logo-jumbo {
+    background-color: #f8a68d !important;
+    height: 100px !important;
+    padding-top:0px !important;
+    padding-left:0px !important;
+}
+
+.sign-up-button {
+    color: white !important;
+    background-color: #fa744f !important;
+    border-color: #fa744f !important;
+}
+
+.login-button {
+    color:white !important;
+    background-color: #16817a !important;
+    border-color: #16817a !important;
+    margin-left:20px;
+    
+}
+
+.button-div {
+ 
+    height:600px;
+
+    margin: 0 auto;
+    margin-top:100px;
+    width:50%;
+    align-items: center !important;
+}
+#button-div {
+    width:200px;
+    height:200px;
+    border-color: black;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+}
+
+.button-row {
+    margin-left:0px !important;
+    margin-top:25px;
+}
+
+/* .start-background, html {
+    overflow-y: hidden;
+} */

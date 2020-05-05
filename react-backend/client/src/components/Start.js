@@ -17,7 +17,8 @@ import {
     useHistory,
     Redirect
   } from "react-router-dom";
-import '../css/Start.css'
+import '../css/Start.css';
+import '../css/Logo.css';
 import Users from './Users';
 //import { response } from 'express';
 var passwordHash = require('password-hash');
@@ -366,6 +367,8 @@ class Start extends Component {
           sessionStorage.setItem('s_email', data[0].s_email);
           sessionStorage.setItem('s_password', data[0].s_password);
           sessionStorage.setItem('s_rawpassword', this.state.student_regi_password);
+          sessionStorage.setItem('s_major', data[0].s_major);
+          sessionStorage.setItem('s_edu_level', data[0].s_edu_level);
 
           sessionStorage.setItem('account_type', 'student');    
 
@@ -497,24 +500,13 @@ class Start extends Component {
       }
       
         return (
-            <div>
-                <Jumbotron>
+            <div className='start-background'>
+                <Jumbotron className='logo-jumbo'>
                     <Container>
                         <Row>
                             <Col>
-                                <h1 className='welcome-text'>Welcome to eduFY {this.state.s_name} </h1>
+                                <h1 className='welcome-text'>eduFY {this.state.s_name} </h1>
                                 <p>
-
-                                <Button
-                                  tag="a"
-                                  color="info"
-                                  size="large"
-                                  target="_blank"
-                                  className="start-buttons"
-                                  onClick={this.toggleChoosingModal}
-                                >
-                                  Sign up!
-                                </Button>
 
                                 <Modal isOpen={this.state.isChoosingLoginOpen} toggle={this.toggleChoosingLoginModal} >
                                 <ModalHeader toggle={this.toggleChoosingLoginModal}>Login as </ModalHeader>
@@ -550,7 +542,7 @@ class Start extends Component {
                                         </FormGroup>
                                         <FormGroup>
                                           <Label for="student_regi-gender">Gender</Label>
-                                          <Input type="select" name="student_regi-gender" id="student_regi-gender" onChange={e => this.handleRegiChange(e)}>
+                                          <Input type="select" name="student_regi_gender" id="student_regi_gender" onChange={e => this.handleRegiChange(e)}>
                                         <option>None</option>
                                         <option>Female</option>
                                         <option>Male</option>
@@ -655,16 +647,15 @@ class Start extends Component {
                                     
                                     
                                   
-                                <Button
+                                {/* <Button
                                     tag="a"
-                                    color="success"
                                     size="large"
                                     target="_blank"
                                     onClick={this.toggleChoosingLoginModal}
-                                    className="start-buttons"
+                                    className="login-button"
                                 >
                                     Login
-                                </Button>
+                                </Button> */}
 
                                 <Modal isOpen={this.state.isLoginModalOpen} toggle={this.toggleLoginModal} >
                                   <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
@@ -788,6 +779,39 @@ class Start extends Component {
                         </Row>
                     </Container>
                 </Jumbotron>
+                <div className='button-div'>
+                <Jumbotron>
+        <h4 className="display-3">Welcome to eduFY!</h4>
+        <p className="lead">Our goal is to provide students and tutors with a platform to match and find the best possible relationship. We help provide a way for students to browse and evaluate potential tutors based on their educational needs.</p>
+        <hr className="my-2" />
+        
+        <Row className='button-row'>
+                    <Button
+                      tag="a"
+                      size="large"
+                      target="_blank"
+                      className="sign-up-button"
+                      onClick={this.toggleChoosingModal}
+                    >
+                      Sign up!
+                    </Button>
+
+                    <Button
+                        tag="a"
+                        size="large"
+                        target="_blank"
+                        onClick={this.toggleChoosingLoginModal}
+                        className="login-button"
+                    >
+                        Login
+                    </Button>
+                  </Row>
+      </Jumbotron>
+                  
+                  
+                </div>
+
+
             </div>
         );
     }
