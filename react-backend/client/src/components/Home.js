@@ -255,6 +255,11 @@ class StudentHome extends Component {
         if (this.state.isPreferenceModalOpen === true) {
             this.togglePreferenceModal()
         }
+        this.state.preference_major = 'None'
+        this.state.preference_gender = 'None'
+        this.state.preference_pastEx = 'None'
+        this.state.preference_rating = 'None'
+        this.state.preference_edu_level = 'None'
     }
 
     searchAdditionalResource = (e) => {
