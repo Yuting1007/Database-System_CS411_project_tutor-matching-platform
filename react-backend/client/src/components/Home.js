@@ -25,6 +25,8 @@ import {
 import NewNavBar from './NewNavBar';
 import '../css/Logo.css';
 import '../css/Home.css';
+// import '../css/Home_local.css';
+
 
   var passwordHash = require('password-hash');
 
