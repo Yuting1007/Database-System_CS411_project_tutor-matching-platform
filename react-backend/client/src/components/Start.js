@@ -291,6 +291,10 @@ class Start extends Component {
         this.state.error_message = 'Choose grade from dropdown!'
         this.toggleRegiErrorModal()
       }
+      else if(formResults.gender === ''){
+        this.state.error_message = 'Choose gender from dropdrown!'
+        this.toggleRegiErrorModal()
+      }
       else if (formResults.pnum === '') {
         this.state.error_message = 'Phone number field cannot be empty!'
         this.toggleRegiErrorModal()
@@ -634,6 +638,7 @@ class Start extends Component {
                                         <FormGroup>
                                           <Label for="tutor_regi-gender">Gender</Label>
                                           <Input type="select" name="tutor_regi_gender" id="tutor_regi_gender" onChange={e => this.handleRegiChange(e)}>
+                                            <option></option>
                                         <option>None</option>
                                         <option>Female</option>
                                         <option>Male</option>
@@ -655,6 +660,7 @@ class Start extends Component {
                                         <FormGroup>
                                           <Label for="tutor_regi-grade">Your average grade</Label>
                                           <Input type="select" name="tutor_regi_grade" id="tutor_regi_grade" onChange={e => this.handleRegiChange(e)}>
+                                            <option></option>
                                           <option value="0-2">0-2 </option>
                                           <option value="2.5-3">2.5-3</option>
                                           <option value="3-3.3">3-3.3</option>
