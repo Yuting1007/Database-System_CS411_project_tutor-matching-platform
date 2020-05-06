@@ -784,10 +784,15 @@ EditPasswordFailure = () => {
                                   <ModalHeader toggle={this.toggleEditGenderModal}>Edit Gender</ModalHeader>
                                   <ModalBody>
                                     <Form onSubmit={this.onEditGenderFormSubmit}>
-                                      <FormGroup>
+                                    <FormGroup>
                                         <Label for="updated_gender">Enter your updated gender</Label>
-                                        <Input type="text" name="updated_gender" id="updated_gender" onChange={e => this.handleEditGenderChange(e)} />
-                                      </FormGroup>
+                                        <Input type="select" name="updated_gender" id="updated_gender" onChange={e => this.handleEditGenderChange(e)}>
+                                            <option>None</option>
+                                            <option>Female</option>
+                                            <option>Male</option>
+                                            <option>Other</option>
+                                        </Input>
+                                    </FormGroup>
                                       <Button color="primary" type="submit">Confirm</Button> {' '}
                                       <Button color="secondary" onClick={this.toggleEditGenderModal}>Cancel</Button>
                                     </Form>
@@ -798,10 +803,18 @@ EditPasswordFailure = () => {
                                   <ModalHeader toggle={this.toggleEditEduLevelModal}>Edit Your Education Level</ModalHeader>
                                   <ModalBody>
                                     <Form onSubmit={this.onEditEduLevelFormSubmit}>
-                                      <FormGroup>
-                                        <Label for="updated_edu_level">Enter your updated gender</Label>
-                                        <Input type="text" name="updated_edu_level" id="updated_edu_level" onChange={e => this.handleEditEduLevelChange(e)} />
-                                      </FormGroup>
+                                    <FormGroup>
+                                        <Label for="updated_edu_level">Enter your updated education level</Label>
+                                        <Input type="select" name="updated_edu_level" id="updated_edu_level" onChange={e => this.handleEditEduLevelChange(e)}>
+                                            <option>None</option>
+                                            <option>Elementary School</option>
+                                            <option>Middle School</option>
+                                            <option>High School</option>
+                                            <option>College</option>
+                                            <option>Master</option>
+                                            <option>PhD</option>
+                                        </Input>
+                                    </FormGroup>
                                       <Button color="primary" type="submit">Confirm</Button> {' '}
                                       <Button color="secondary" onClick={this.toggleEditEduLevelModal}>Cancel</Button>
                                     </Form>

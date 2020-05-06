@@ -1,0 +1,70 @@
+.match-button-home {
+    width: 540px;
+    height:200px;
+    margin-left: 25px;
+    margin-top:47px;
+    vertical-align: bottom !important;
+    background-color: #16817a !important;
+    border-color: #16817a !important;
+    /* font-size: 20px; */
+}
+
+.recommend-button {
+    width: 540px;
+    height:200px;
+    margin-left: 25px;
+    margin-top:47px;
+    vertical-align: bottom !important;
+    background-color: #fa744f !important;
+    border-color: #fa744f !important;
+    /* font-size: 70px; */
+}
+
+.button-p {
+    width: 540px !important;
+}
+
+.contribute-button {
+    width: 1110px;
+    /* height:60px; */
+    margin-left: 25px;
+    margin-top:72px;
+    vertical-align: bottom !important;
+    /* background-color: #fa744f !important;
+    border-color: #fa744f !important; */
+    /* font-size: 70px; */
+}
+
+.give-recommendation-button {
+    margin-right: 25px;
+    /*margin-top:47px; */
+    vertical-align: bottom !important;
+    background-color: #16817a !important;
+    border-color: #16817a !important;
+}
+
+.cancel-button {
+    vertical-align: bottom !important;
+    background-color: #a0a0a0 !important;
+}
+
+.home-match-button {
+    background-color: #16817a !important;
+    border-color: #16817a !important;
+    height:40px;
+}
+
+.additionalResourceButton {
+    background-color: #fa744f !important;
+    border-color: #fa744f !important;
+}
+
+.welcome-jumbo {
+    background-color: #f8a68d !important;
+    height: 180px !important;
+}
+
+.welcome-text {
+    margin-top:30px;
+    color:white;
+}
