@@ -23,6 +23,37 @@ function getConnection() {
       //insecureAuth : true
       })
 }
+var db_config = {
+  host: 'us-cdbr-east-06.cleardb.net',
+    user: 'ba0144eebe0617',
+    password: '45188a1d', 
+    database: 'heroku_195486945502404'
+};
+
+var safeConnection;
+
+function handleDisconnect() {
+  safeConnection = mysql.createConnection(db_config); // Recreate the connection, since
+                                                  // the old one cannot be reused.
+
+  safeConnection.connect(function(err) {              // The server is either down
+    if(err) {                                     // or restarting (takes a while sometimes).
+      console.log('error when connecting to db:', err);
+      setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
+    }                                     // to avoid a hot loop, and to allow our node script to
+  });                                     // process asynchronous requests in the meantime.
+                                          // If you're also serving http, display a 503 error.
+  safeConnection.on('error', function(err) {
+    console.log('db error', err);
+    if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+      handleDisconnect();                         // lost due to either server restart, or a
+    } else {                                      // connnection idle timeout (the wait_timeout
+      throw err;                                  // server variable configures this)
+    }
+  });
+}
+
+handleDisconnect();
 
 
 ////
@@ -116,13 +147,11 @@ router.post('/student-create', (req, res) => {
   const email = req.body.formResults.email;
   const pnum = req.body.formResults.pnum;
   const password = req.body.formResults.hashedPassword;
-  const edu_level = req.body.formResults.edu_level;
-  const major = req.body.formResults.major;
 
   
-  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum, s_password,  s_ratings, s_edu_level, s_major) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)'
+  const queryString = 'INSERT INTO students (s_name, s_age, s_location, s_gender, s_email, s_pnum, s_password,  s_ratings) VALUES (?, ?, ?, ?, ?, ?, ?, 0)'
   
-  getConnection().query(queryString, [name, age, location, gender, email, pnum, password, edu_level, major], (err, results, fields) => {
+  getConnection().query(queryString, [name, age, location, gender, email, pnum, password], (err, results, fields) => {
       if (err) {
           console.log("Failed to insert new user: " + err)
           res.sendStatus(500)
