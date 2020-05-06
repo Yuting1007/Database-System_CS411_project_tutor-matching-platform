@@ -20,14 +20,14 @@ function getConnection() {
     })
 }
 
-var db_config = {
-  host: 'us-cdbr-east-06.cleardb.net',
-    user: 'ba0144eebe0617',
-    password: '45188a1d', 
-    database: 'heroku_195486945502404'
-};
+// var db_config = {
+//   host: 'us-cdbr-east-06.cleardb.net',
+//     user: 'ba0144eebe0617',
+//     password: '45188a1d', 
+//     database: 'heroku_195486945502404'
+// };
 
-var safeConnection;
+// var safeConnection;
 
 // function handleDisconnect() {
 //   safeConnection = mysql.createConnection(db_config); // Recreate the connection, since
@@ -50,7 +50,7 @@ var safeConnection;
 //   });
 // }
 
-handleDisconnect();
+// handleDisconnect();
 
 /* GET home page. (this is for the express page, idk if we need this) */
 router.get('/', function(req, res, next) {
