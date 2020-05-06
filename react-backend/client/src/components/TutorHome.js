@@ -26,6 +26,8 @@ import NewNavBar from './NewNavBar';
 import '../css/Logo.css';
 import '../css/Matches.css';
 import '../css/Home.css';
+// import '../css/Home_local.css';
+
 
 class TutorHome extends Component {
     constructor(props) {
@@ -325,12 +327,12 @@ class TutorHome extends Component {
                         <Container>
                             <Row>
                                 <Col>
-                                    <p>
+                                    <p className='button-p'>
                                         <Button className='match-button-home' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.onMatchButtonClick} block>Matches</Button>
                                     </p>
                                 </Col>
                                 <Col>
-                                <p>
+                                <p className='button-p'> 
                                     <Button className='recommend-button' size="lg" style={{fontSize: 36, fontWeight: 'bold'}} onClick={this.togglePreferenceModal} block>Recommend Students</Button>
                                 </p>
                                 </Col>
