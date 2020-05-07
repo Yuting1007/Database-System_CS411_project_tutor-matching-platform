@@ -96,6 +96,7 @@ router.post("/add-resources", (req, res) => {
     })
 })
 
+//search for an additional information from DB
 router.post("/get-resources", (req, res) => {
     //making search object dynamically
     var obj = {}
@@ -109,29 +110,6 @@ router.post("/get-resources", (req, res) => {
     if(req.body.formResults.addi_pre_course){
         obj['course'] = req.body.formResults.addi_pre_course;
     }
-    
-    
-
-    // console.log("front end major is: " + addi_pre_major)
-    // console.log("front end level is: " + addi_pre_level)
-    // console.log("front end course is: " + addi_pre_course)
-
-    //var major_condition = 'major: ' + "'" + addi_pre_major + "'";
-    //var addi_pre_course = "{$ne: '411'}"
-
-    // Addition.find({major: addi_pre_major, level: addi_pre_level, course: addi_pre_course},  {link: 1, major: 1, level: 1, course: 1, description: 1}).lean().exec(function(err, items){
-    //     if(err){
-    //         console.log(err);
-    //     } else {
-    //         //items.toObject();
-    //         //res.json(pagelist(items));
-    //         res.json(items);
-    //         // console.log("reach this point 1")
-    //         // console.log(items)
-    //         // console.log("reach this point 2")
-    //     }
-    // })
-
 
 Addition.find(obj,  {link: 1, major: 1, level: 1, course: 1, description: 1}).lean().exec(function(err, items){
         if(err){
